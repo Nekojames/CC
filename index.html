@@ -115,12 +115,13 @@
   </div>
 </div> No</label>
 
-
   <div id="premiumAmountWrapper">
     <label>Premium/Extra Hours: <input type="number" id="premiumAmount" value="0" min="0"></label>
   </div>
 
   <label>Preferred Hours (optional): <input type="number" id="customHours" min="1" /></label>
+  <label>Frequency (per month): <input type="number" id="frequency" value="1" min="1" /></label>
+
   <button onclick="showBothCalculations()">Calculate</button>
 
   <div class="result-boxes">
@@ -156,7 +157,6 @@
     document.getElementById(id).classList.add("active");
   }
 
-  // Cleaning Calculator
   function togglePremiumAmount(show) {
     document.getElementById('premiumAmountWrapper').style.display = show ? 'block' : 'none';
   }
@@ -202,6 +202,7 @@
   function calculateAndDisplay(hours, elementId, includeExtraHour) {
     const membershipFee = getSelectedMembershipFee();
     const isPremium = isPremiumSelected();
+    const frequency = parseInt(document.getElementById("frequency").value) || 1;
     let premiumExtra = 0;
 
     if (isPremium) {
@@ -217,19 +218,20 @@
     const discounted = 23 * hours;
     const membership = discounted + premiumExtra;
     const totalMembership = membership + membershipFee;
+    const totalDiscountedPerMonth = discounted * frequency;
 
     document.getElementById(elementId).innerHTML +=
       `Recommended Hours: ${hours} hrs<br>` +
       `Regular Price ($53/hr): $${regular.toFixed(2)}<br>` +
       `National Average Rate ($75/hr): $${average.toFixed(2)}<br>` +
       `Discounted Price ($23/hr${premiumExtra > 0 ? ` + $${premiumExtra}` : ''}): $${membership.toFixed(2)}<br>` +
+      `Total Clean Per Month (Discounted x ${frequency}): $${totalDiscountedPerMonth.toFixed(2)}<br>` +
       `Forever Clean Membership ($23/hr + $${membershipFee} fee): $${totalMembership.toFixed(2)}<br>` +
       `Suggested Voucher Price: ${voucher}` +
       (elementId === 'customResult'
         ? `<br><br><em style="color: orange;">Note: Extra hours = $25/hr.</em>` : '');
   }
 
-  // ETF Calculator
   function getVoucherDiscount(hours) {
     if (hours >= 6) return 79;
     if (hours === 4) return 39;
@@ -255,7 +257,6 @@
     document.getElementById("result").textContent = `Result: $${fee.toFixed(2)}`;
   }
 
-  // OTC Calculator
   document.getElementById('hoursOtc').addEventListener('input', () => {
     const hours = parseFloat(document.getElementById('hoursOtc').value);
     const results = document.getElementById('resultsOtc');
