@@ -161,16 +161,24 @@
     return 2;
   }
 
-  function getVoucherPrice(hours) {
-    return "$79"; // Always cap voucher to $79
-  }
-
   function getSelectedMembershipFee() {
     return parseInt(document.querySelector('input[name="membershipFee"]:checked').value);
   }
 
   function isPremiumSelected() {
     return document.querySelector('input[name="premium"]:checked').value === 'yes';
+  }
+
+  function getVoucherDiscount(hours) {
+    if (hours >= 6) return 79;
+    if (hours === 4) return 39;
+    if (hours === 3) return 19;
+    if (hours === 2) return 9;
+    return 0;
+  }
+
+  function getVoucherPrice(hours) {
+    return "$" + getVoucherDiscount(hours);
   }
 
   function showBothCalculations() {
@@ -200,6 +208,7 @@
       if (includeExtraHour) hours += 1;
     }
 
+    const voucherValue = getVoucherDiscount(hours);
     const voucher = getVoucherPrice(hours);
     const regular = 53 * hours;
     const average = 75 * hours;
@@ -207,6 +216,8 @@
     const membership = discounted + premiumExtra;
     const totalMembership = membership + membershipFee;
     const totalDiscountedPerMonth = discounted * frequency;
+    const savingsVsNational = average - membership;
+    const savingsWithVoucher = regular - voucherValue;
 
     document.getElementById(elementId).innerHTML +=
       `Recommended Hours: ${hours} hrs<br>` +
@@ -215,17 +226,12 @@
       `Discounted Price ($23/hr${premiumExtra > 0 ? ` + $${premiumExtra}` : ''}): $${membership.toFixed(2)}<br>` +
       `Total Clean Per Month (Discounted x ${frequency}): $${totalDiscountedPerMonth.toFixed(2)}<br>` +
       `Forever Clean Membership ($23/hr + $${membershipFee} fee): $${totalMembership.toFixed(2)}<br>` +
-      `Suggested Voucher Price: ${voucher}` +
+      `Suggested Voucher Price: ${voucher}<br><br>` +
+      `<span style="color: #00ff99;">Savings vs National Average:</span> $${savingsVsNational.toFixed(2)}<br>` +
+      `<span style="color: #00ff99;">Initial Clean Savings with Voucher:</span> $${savingsWithVoucher.toFixed(2)}<br>` +
+      `<span style="color: #00ff99;">Voucher Value Applied:</span> $${voucherValue.toFixed(2)}` +
       (elementId === 'customResult'
         ? `<br><br><em style="color: orange;">Note: Extra hours = $23/hr.</em>` : '');
-  }
-
-  function getVoucherDiscount(hours) {
-    if (hours >= 6) return 79;
-    if (hours === 4) return 39;
-    if (hours === 3) return 19;
-    if (hours === 2) return 9;
-    return 0;
   }
 
   function calculateFee() {
