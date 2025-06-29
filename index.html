@@ -12,10 +12,10 @@
       color: #ffffff;
     }
     #cleaningCalc input[type="number"] {
-    width: 80px;
-    padding: 4px;
-    font-size: 0.9em;
-   }
+      width: 80px;
+      padding: 4px;
+      font-size: 0.9em;
+    }
     nav {
       background-color: #1e1e1e;
       display: flex;
@@ -23,7 +23,6 @@
       padding: 10px;
       border-bottom: 1px solid #333;
     }
-
     nav button {
       background: none;
       color: #ffffff;
@@ -33,38 +32,31 @@
       border-radius: 5px;
       cursor: pointer;
     }
-
     nav button:hover {
       background-color: #444;
     }
-
     section {
       display: none;
       padding: 20px;
       max-width: 800px;
       margin: auto;
     }
-
     section.active {
       display: block;
     }
-
     input, select, button {
       margin-top: 10px;
       padding: 6px;
       font-size: 1em;
     }
-
     .result, .result-box, .note {
       margin-top: 15px;
     }
-
     .result-boxes {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
     }
-
     .result-box {
       flex: 1;
       border: 1px solid #444;
@@ -73,12 +65,10 @@
       background-color: #1e1e1e;
       min-width: 250px;
     }
-
     .result-title {
       font-weight: bold;
       color: #00ffff;
     }
-
     #themeToggle {
       position: fixed;
       top: 10px;
@@ -100,20 +90,20 @@
   <label>Bathrooms: <input type="number" id="bathrooms" value="1" min="0" /></label>
 
   <div>
-  <label>Membership Fee:</label>
-  <div>
-    <label><input type="radio" name="membershipFee" value="49" checked> $49</label><br>
-    <label><input type="radio" name="membershipFee" value="59"> $59</label>
+    <label>Membership Fee:</label>
+    <div>
+      <label><input type="radio" name="membershipFee" value="49" checked> $49</label><br>
+      <label><input type="radio" name="membershipFee" value="59"> $59</label>
+    </div>
   </div>
-</div>
 
-<div style="margin-top: 10px;">
-  <label>Premium/Add-on:</label>
-  <div>
-    <label><input type="radio" name="premium" value="yes" onclick="togglePremiumAmount(true)"> Yes</label><br>
-    <label><input type="radio" name="premium" value="no" checked onclick="togglePremiumAmount(false)"> No</label>
+  <div style="margin-top: 10px;">
+    <label>Premium/Add-on:</label>
+    <div>
+      <label><input type="radio" name="premium" value="yes" onclick="togglePremiumAmount(true)"> Yes</label><br>
+      <label><input type="radio" name="premium" value="no" checked onclick="togglePremiumAmount(false)"> No</label>
+    </div>
   </div>
-</div> No</label>
 
   <div id="premiumAmountWrapper">
     <label>Premium/Extra Hours: <input type="number" id="premiumAmount" value="0" min="0"></label>
@@ -128,6 +118,8 @@
     <div class="result-box" id="recommendationResult"><div class="result-title">Recommended Estimate</div></div>
     <div class="result-box" id="customResult"><div class="result-title">Customer's Preference</div></div>
   </div>
+
+  <div class="note" style="color: orange; font-style: italic;">Note: Additional hours more than 6 hrs is +$23/hr.</div>
 </section>
 
 <section id="etfCalc">
@@ -170,11 +162,7 @@
   }
 
   function getVoucherPrice(hours) {
-    if (hours <= 2) return "$9";
-    if (hours === 3) return "$19";
-    if (hours === 4) return "$39";
-    if (hours === 6) return "$79";
-    return "$" + (79 + (hours - 6) * 25);
+    return "$79"; // Always cap voucher to $79
   }
 
   function getSelectedMembershipFee() {
@@ -229,7 +217,7 @@
       `Forever Clean Membership ($23/hr + $${membershipFee} fee): $${totalMembership.toFixed(2)}<br>` +
       `Suggested Voucher Price: ${voucher}` +
       (elementId === 'customResult'
-        ? `<br><br><em style="color: orange;">Note: Extra hours = $25/hr.</em>` : '');
+        ? `<br><br><em style="color: orange;">Note: Extra hours = $23/hr.</em>` : '');
   }
 
   function getVoucherDiscount(hours) {
