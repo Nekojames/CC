@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cleaning Tools Suite</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #121212;
+      color: #ffffff;
+    }
+    #cleaningCalc input[type="number"] {
+    width: 80px;
+    padding: 4px;
+    font-size: 0.9em;
+   }
+    nav {
+      background-color: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+    }
+
+    nav button {
+      background: none;
+      color: #ffffff;
+      border: 1px solid #444;
+      margin: 0 10px;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background-color: #444;
+    }
+
+    section {
+      display: none;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    input, select, button {
+      margin-top: 10px;
+      padding: 6px;
+      font-size: 1em;
+    }
+
+    .result, .result-box, .note {
+      margin-top: 15px;
+    }
+
+    .result-boxes {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .result-box {
+      flex: 1;
+      border: 1px solid #444;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: #1e1e1e;
+      min-width: 250px;
+    }
+
+    .result-title {
+      font-weight: bold;
+      color: #00ffff;
+    }
+
+    #themeToggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+    }
+  </style>
+</head>
+<body class="dark">
+
+<nav>
+  <button onclick="showSection('cleaningCalc')">Cleaning Calculator</button>
+  <button onclick="showSection('etfCalc')">ETF Calculator</button>
+  <button onclick="showSection('otcCalc')">OTC Trial Calculator</button>
+</nav>
+
+<section id="cleaningCalc" class="active">
+  <h1>Cleaning Calculator</h1>
+  <label>Bedrooms: <input type="number" id="bedrooms" value="0" min="0" /></label>
+  <label>Bathrooms: <input type="number" id="bathrooms" value="1" min="0" /></label>
+
+  <div>
+  <label>Membership Fee:</label>
+  <div>
+    <label><input type="radio" name="membershipFee" value="49" checked> $49</label><br>
+    <label><input type="radio" name="membershipFee" value="59"> $59</label>
+  </div>
+</div>
+
+<div style="margin-top: 10px;">
+  <label>Premium/Add-on:</label>
+  <div>
+    <label><input type="radio" name="premium" value="yes" onclick="togglePremiumAmount(true)"> Yes</label><br>
+    <label><input type="radio" name="premium" value="no" checked onclick="togglePremiumAmount(false)"> No</label>
+  </div>
+</div> No</label>
+
+
+  <div id="premiumAmountWrapper">
+    <label>Premium/Extra Hours: <input type="number" id="premiumAmount" value="0" min="0"></label>
+  </div>
+
+  <label>Preferred Hours (optional): <input type="number" id="customHours" min="1" /></label>
+  <button onclick="showBothCalculations()">Calculate</button>
+
+  <div class="result-boxes">
+    <div class="result-box" id="recommendationResult"><div class="result-title">Recommended Estimate</div></div>
+    <div class="result-box" id="customResult"><div class="result-title">Customer's Preference</div></div>
+  </div>
+</section>
+
+<section id="etfCalc">
+  <h2>Early Termination Fee Calculator</h2>
+  <label>Select Cohort:</label>
+  <select id="cohort">
+    <option value="cohort1">FULLPRICE/FOREVERCLEAN_49_1_6_99_10OFF</option>
+    <option value="cohort2">FOREVERCLEAN_49_1_6_35PERHOUR_10OFF</option>
+    <option value="cohort3">FOREVERCLEAN_59_1_6_25PERHOUR_10OFF</option>
+    <option value="cohort4">FOREVERCLEAN_59_1_6_35PERHOUR_10OFF</option>
+  </select>
+  <label>Cleaning Hours: <input type="number" id="hours" min="1" max="12" /></label>
+  <button onclick="calculateFee()">Calculate</button>
+  <div class="result" id="result">Result: $0.00</div>
+  <div class="note">Voucher discount applies only to 49 full price</div>
+</section>
+
+<section id="otcCalc">
+  <h2>One-Time & Trial Cleaning Calculator</h2>
+  <label>Enter Hours: <input type="number" id="hoursOtc" placeholder="e.g. 3" /></label>
+  <div id="resultsOtc"></div>
+</section>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+  }
+
+  // Cleaning Calculator
+  function togglePremiumAmount(show) {
+    document.getElementById('premiumAmountWrapper').style.display = show ? 'block' : 'none';
+  }
+
+  function getRecommendedHours(beds, baths) {
+    if (baths === 1 && beds === 0) return 2;
+    if (beds === 1 && baths === 1) return 3;
+    if ((beds === 2 && baths === 1) || (beds === 1 && baths === 2) || (beds === 2 && baths === 2)) return 4;
+    if ((beds === 3 && baths === 2) || (beds === 2 && baths === 3) || (beds >= 3 && baths >= 3)) return 6;
+    return 2;
+  }
+
+  function getVoucherPrice(hours) {
+    if (hours <= 2) return "$9";
+    if (hours === 3) return "$19";
+    if (hours === 4) return "$39";
+    if (hours === 6) return "$79";
+    return "$" + (79 + (hours - 6) * 25);
+  }
+
+  function getSelectedMembershipFee() {
+    return parseInt(document.querySelector('input[name="membershipFee"]:checked').value);
+  }
+
+  function isPremiumSelected() {
+    return document.querySelector('input[name="premium"]:checked').value === 'yes';
+  }
+
+  function showBothCalculations() {
+    const beds = parseInt(document.getElementById('bedrooms').value);
+    const baths = parseInt(document.getElementById('bathrooms').value);
+    const custom = parseFloat(document.getElementById('customHours').value);
+    const recommendedHours = getRecommendedHours(beds, baths);
+
+    document.getElementById('recommendationResult').innerHTML = '<div class="result-title">Recommended Estimate</div>';
+    document.getElementById('customResult').innerHTML = '<div class="result-title">Customer\'s Preference</div>';
+
+    calculateAndDisplay(recommendedHours, 'recommendationResult', true);
+    if (custom && custom > 0) calculateAndDisplay(custom, 'customResult', false);
+    else document.getElementById('customResult').innerHTML += '<em>No preferred hours entered.</em>';
+  }
+
+  function calculateAndDisplay(hours, elementId, includeExtraHour) {
+    const membershipFee = getSelectedMembershipFee();
+    const isPremium = isPremiumSelected();
+    let premiumExtra = 0;
+
+    if (isPremium) {
+      const inputPremium = parseFloat(document.getElementById('premiumAmount').value) || 0;
+      if (hours > 6) premiumExtra += 25;
+      premiumExtra += inputPremium * 25;
+      if (includeExtraHour) hours += 1;
+    }
+
+    const voucher = getVoucherPrice(hours);
+    const regular = 53 * hours;
+    const average = 75 * hours;
+    const discounted = 23 * hours;
+    const membership = discounted + premiumExtra;
+    const totalMembership = membership + membershipFee;
+
+    document.getElementById(elementId).innerHTML +=
+      `Recommended Hours: ${hours} hrs<br>` +
+      `Regular Price ($53/hr): $${regular.toFixed(2)}<br>` +
+      `National Average Rate ($75/hr): $${average.toFixed(2)}<br>` +
+      `Discounted Price ($23/hr${premiumExtra > 0 ? ` + $${premiumExtra}` : ''}): $${membership.toFixed(2)}<br>` +
+      `Forever Clean Membership ($23/hr + $${membershipFee} fee): $${totalMembership.toFixed(2)}<br>` +
+      `Suggested Voucher Price: ${voucher}` +
+      (elementId === 'customResult'
+        ? `<br><br><em style="color: orange;">Note: Extra hours = $25/hr.</em>` : '');
+  }
+
+  // ETF Calculator
+  function getVoucherDiscount(hours) {
+    if (hours >= 6) return 79;
+    if (hours === 4) return 39;
+    if (hours === 3) return 19;
+    if (hours === 2) return 9;
+    return 0;
+  }
+
+  function calculateFee() {
+    const cohort = document.getElementById("cohort").value;
+    const hours = parseInt(document.getElementById("hours").value);
+    let fee = 0;
+
+    if (isNaN(hours) || hours <= 0) {
+      document.getElementById("result").textContent = "Please enter valid hours.";
+      return;
+    }
+
+    if (cohort === "cohort1") fee = (53 * hours) - getVoucherDiscount(hours);
+    else if (cohort === "cohort2") fee = 25 * hours;
+    else if (cohort === "cohort3" || cohort === "cohort4") fee = 35 * hours;
+
+    document.getElementById("result").textContent = `Result: $${fee.toFixed(2)}`;
+  }
+
+  // OTC Calculator
+  document.getElementById('hoursOtc').addEventListener('input', () => {
+    const hours = parseFloat(document.getElementById('hoursOtc').value);
+    const results = document.getElementById('resultsOtc');
+    results.innerHTML = '';
+
+    if (!isNaN(hours) && hours > 0) {
+      if (hours >= 3) results.innerHTML += `<div class="result"><strong>Regular 30|30:</strong> $${(hours * 57.66).toFixed(2)}</div>`;
+      results.innerHTML += `<div class="result"><strong>Regular 25|25:</strong> $${(hours * 63).toFixed(2)}</div>`;
+      results.innerHTML += `<div class="result"><strong>Trial Cleaning 20|20:</strong> $${(hours * 52.5).toFixed(2)}<div class="note">* Cancel within 30-day trial to avoid $99 cancellation.</div></div>`;
+    }
+  });
+</script>
+
+</body>
+</html>
