@@ -204,29 +204,35 @@
     }
 
     const voucherValue = getVoucherDiscount(hours); // numeric
-    const voucher = getVoucherPrice(hours); // string for display
+    if (elementId === 'customResult' && hours > 6) voucherValue += 23;
+    const voucher = "$" + voucherValue;
+    const regular = 53 * hours * frequency; // 💡 revised to include frequency
+    const average = 75 * hours * frequency; // 💡 revised to include frequenc
     const regular = 53 * hours * frequency;
     const average = 75 * hours * frequency;
     const discounted = 23 * hours;
     const membership = (discounted*frequency) + premiumExtra;
     const totalMembership = membership + membershipFee;
     const totalDiscountedPerMonth = discounted * frequency;
+     const savingsVsRegular = regular - totalMembership; // 💡 NEW savings calculation
     const savingsVsNational = average - membership;
     const savingsWithVoucher = regular - (voucherValue + membershipFee); // ✅ Correct logic
 
     document.getElementById(elementId).innerHTML +=
-      `Recommended Hours: ${hours} hrs<br>` +
-      `Regular Price ($53/hr): $${regular.toFixed(2)}<br>` +
-      `National Average Rate ($75/hr): $${average.toFixed(2)}<br>` +
-      `Discounted Price ($23/hr${premiumExtra > 0 ? ` + $${premiumExtra}` : ''}): $${membership.toFixed(2)}<br>` +
-      `Total Clean Per Month (Discounted x ${frequency}): $${totalDiscountedPerMonth.toFixed(2)}<br>` +
-      `Forever Clean Membership ($23/hr + $${membershipFee} fee): $${totalMembership.toFixed(2)}<br>` +
-      `Suggested Voucher Price: ${voucher}<br><br>` +
-      `<span style="color: #00ff99;">Savings vs National Average:</span> $${savingsVsNational.toFixed(2)}<br>` +
-      `<span style="color: #00ff99;">Initial Clean Savings with Voucher:</span> $${savingsWithVoucher.toFixed(2)}<br>` +
-      `<span style="color: #00ff99;">Voucher Value Applied:</span> $${voucherValue.toFixed(2)}` +
-      (elementId === 'customResult'
-        ? `<br><br><em style="color: orange;">Note: Extra hours = $23/hr.</em>` : '');
+    `Recommended Hours: ${hours} hrs<br>` +
+    `Regular Price ($53/hr x ${frequency}): $${regular.toFixed(2)}<br>` + // 💡 updated label
+    `National Average Rate ($75/hr x ${frequency}): $${average.toFixed(2)}<br>` + // 💡 updated label
+    `Discounted Price ($23/hr${premiumExtra > 0 ? ` + $${premiumExtra}` : ''}): $${membership.toFixed(2)}<br>` +
+    `Total Clean Per Month (Discounted x ${frequency}): $${totalDiscountedPerMonth.toFixed(2)}<br>` +
+    `Forever Clean Membership ($23/hr x ${frequency} + $${membershipFee} fee): $${totalMembership.toFixed(2)}<br>` + // 💡 updated label
+    `Suggested Voucher Price: ${voucher}<br><br>` +
+    `<span style="color: #00ff99;">Savings vs National Average:</span> $${savingsVsNational.toFixed(2)}<br>` +
+    `<span style="color: #00ff99;">Savings vs Regular Price:</span> $${savingsVsRegular.toFixed(2)}<br>` + // 💡 NEW line
+    `<span style="color: #00ff99;">Initial Clean Savings with Voucher:</span> $${savingsWithVoucher.toFixed(2)}<br>` +
+    `<span style="color: #00ff99;">Voucher Value Applied:</span> $${voucherValue.toFixed(2)}` +
+    (elementId === 'customResult'
+      ? `<br><br><em style="color: orange;">Note: Extra hours = $23/hr. Voucher bonus +$23 for custom hours > 6.</em>` // 💡 new user-facing note
+      : '');
   }
 
   function calculateFee() {
