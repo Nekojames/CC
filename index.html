@@ -252,8 +252,8 @@
     results.innerHTML = '';
 
     if (!isNaN(hours) && hours > 0) {
-      if (hours >= 3) results.innerHTML += `<div class="result"><strong>Regular 30|30:</strong> $${(hours * 57.66).toFixed(2)}</div>`;
-      results.innerHTML += `<div class="result"><strong>Regular 25|25:</strong> $${(hours * 63).toFixed(2)}</div>`;
+      if (hours >= 3) results.innerHTML += `<div class="result"><strong>Regular 25|25:</strong> $${(hours * 57.66).toFixed(2)}</div>`;
+      results.innerHTML += `<div class="result"><strong>Regular 30|30:</strong> $${(hours * 63).toFixed(2)}</div>`;
       results.innerHTML += `<div class="result"><strong>Trial Cleaning 20|20:</strong> $${(hours * 52.5).toFixed(2)}<div class="note">* Cancel within 30-day trial to avoid $99 cancellation.</div></div>`;
     }
   });
