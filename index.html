@@ -69,11 +69,6 @@
       font-weight: bold;
       color: #00ffff;
     }
-    #themeToggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-    }
   </style>
 </head>
 <body class="dark">
@@ -217,7 +212,7 @@
     const totalMembership = membership + membershipFee;
     const totalDiscountedPerMonth = discounted * frequency;
     const savingsVsNational = average - membership;
-    const savingsWithVoucher = regular - voucherValue;
+    const savingsWithVoucher = regular - (voucherValue + membershipFee); // Corrected here
 
     document.getElementById(elementId).innerHTML +=
       `Recommended Hours: ${hours} hrs<br>` +
