@@ -203,9 +203,10 @@
       if (includeExtraHour) hours += 1;
     }
 
-    const voucherValue = getVoucherDiscount(hours); // numeric
-    if (elementId === 'customResult' && hours > 6) voucherValue += 23;
-    const voucher = "$" + voucherValue;
+    let voucherValue = getVoucherDiscount(hours); // numeric
+if (elementId === 'customResult' && hours > 6) voucherValue += 23;
+const voucher = "$" + voucherValue.toFixed(2); // for displaying only
+  
     const regular = 53 * hours * frequency; // 💡 revised to include frequency
     const average = 75 * hours * frequency; // 💡 revised to include frequenc
     const regular = 53 * hours * frequency;
