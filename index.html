@@ -208,7 +208,7 @@
     const regular = 53 * hours;
     const average = 75 * hours;
     const discounted = 23 * hours;
-    const membership = discounted + premiumExtra;
+    const membership = (discounted*frequency) + premiumExtra;
     const totalMembership = membership + membershipFee;
     const totalDiscountedPerMonth = discounted * frequency;
     const savingsVsNational = average - membership;
