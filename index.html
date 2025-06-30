@@ -203,8 +203,8 @@
       if (includeExtraHour) hours += 1;
     }
 
-    const voucherValue = getVoucherDiscount(hours);
-    const voucher = getVoucherPrice(hours);
+    const voucherValue = getVoucherDiscount(hours); // numeric
+    const voucher = getVoucherPrice(hours); // string for display
     const regular = 53 * hours;
     const average = 75 * hours;
     const discounted = 23 * hours;
@@ -212,7 +212,7 @@
     const totalMembership = membership + membershipFee;
     const totalDiscountedPerMonth = discounted * frequency;
     const savingsVsNational = average - membership;
-    const savingsWithVoucher = regular - (voucherValue + membershipFee); // Corrected here
+    const savingsWithVoucher = regular - (voucherValue + membershipFee); // ✅ Correct logic
 
     document.getElementById(elementId).innerHTML +=
       `Recommended Hours: ${hours} hrs<br>` +
