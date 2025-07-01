@@ -85,6 +85,51 @@
             font-weight: bold;
             color: #00ffff;
         }
+.container {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  margin: auto;
+}
+
+.container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #63d471;
+}
+
+.radio-group label {
+  font-weight: normal;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #63d471;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+}
+
+.container button:hover {
+  background-color: #52b262;
+}
+
+.container .result {
+  margin-top: 20px;
+  background-color: #2c2c2c;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 1.1em;
+}
+
     </style>
 </head>
 
@@ -92,6 +137,7 @@
 
     <nav>
         <button onclick="showSection('cleaningCalc')">Cleaning Calculator</button>
+        <button onclick="showSection('termNegotiation')">Term Negotiation</button>
         <button onclick="showSection('etfCalc')">ETF Calculator</button>
         <button onclick="showSection('otcCalc')">OTC Trial Calculator</button>
     </nav>
@@ -141,6 +187,35 @@
         </div>
     </section>
 
+<section id="termNegotiation">
+  <div class="container">
+    <h2>Term Negotiation Calculator</h2>
+
+    <label for="plan">Select Plan:</label>
+    <select id="plan" onchange="updateDiscounts()">
+      <option value="49">Forever Clean $49/mo</option>
+      <option value="59">Forever Clean $59/mo</option>
+    </select>
+
+    <label for="discount">Select Negotiated Monthly Price:</label>
+    <select id="discount"></select>
+
+    <label>Select Commitment Term (months):</label>
+    <div class="radio-group">
+      <label><input type="radio" name="term" value="6" checked> 6</label>
+      <label><input type="radio" name="term" value="4"> 4</label>
+      <label><input type="radio" name="term" value="5"> 5</label>
+    </div>
+
+    <button onclick="calculateNegotiatedPrice()">Calculate</button>
+
+    <div class="result" id="negotiationResult">
+      Negotiated Total: $0.00
+    </div>
+  </div>
+</section>
+
+
     <section id="etfCalc">
         <h2>Early Termination Fee Calculator</h2>
         <label>Select Cohort:</label>
@@ -163,6 +238,39 @@
     </section>
 
     <script>
+  function updateDiscounts() {
+    const discountSelect = document.getElementById('discount');
+    const plan = document.getElementById('plan').value;
+    discountSelect.innerHTML = '';
+
+    let prices = [];
+    if (plan === '49') {
+      prices = [49, 44, 39];
+    } else {
+      prices = [59, 54, 49];
+    }
+
+    prices.forEach(price => {
+      const option = document.createElement('option');
+      option.value = price;
+      option.textContent = `$${price.toFixed(2)} / mo`;
+      discountSelect.appendChild(option);
+    });
+  }
+
+  function calculateNegotiatedPrice() {
+    const discountSelect = document.getElementById('discount');
+    const monthly = parseFloat(discountSelect.value);
+    const term = parseInt(document.querySelector('input[name="term"]:checked').value);
+    const total = monthly * term;
+
+    document.getElementById('negotiationResult').textContent = `Negotiated Total: $${total.toFixed(2)}`;
+  }
+
+  // Initialize on load
+  window.addEventListener('DOMContentLoaded', () => {
+    updateDiscounts();
+  });
         function showSection(id) {
             document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
             document.getElementById(id).classList.add("active");
