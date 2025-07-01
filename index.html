@@ -281,21 +281,23 @@
         }
 
         function getRecommendedHours(beds, baths) {
+    function getRecommendedHours(beds, baths) {
     // 6 hours if either beds or baths is 3 or more
     if (beds >= 3 || baths >= 3) return 6;
 
-    // 4 hours for 1-2 beds and 1-2 baths
+    // 4 hours for 1–2 beds and 1–2 baths
     if (beds >= 1 && beds <= 2 && baths >= 1 && baths <= 2) return 4;
 
-    // 3 hours for 1 bed and 1 bath only
+    // 3 hours for exactly 1 bed and 1 bath
     if (beds === 1 && baths === 1) return 3;
 
-    // 2 hours for 0 bed and 1 bath only
+    // 2 hours for 0 bed and 1 bath
     if (beds === 0 && baths === 1) return 2;
 
     // Default fallback
     return 2;
 }
+
 
         function getSelectedMembershipFee() {
             return parseInt(document.querySelector('input[name="membershipFee"]:checked').value);
