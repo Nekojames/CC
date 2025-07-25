@@ -1,310 +1,1899 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Cleaning Tools Suite</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homeaglow Sales Script Guide</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #121212;
-            color: #ffffff;
-        }
-
-        #cleaningCalc input[type="number"] {
-            width: 80px;
-            padding: 4px;
-            font-size: 0.9em;
-        }
-
-        nav {
-            background-color: #1e1e1e;
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a; /* Black background */
+            color: white; /* White text */
             display: flex;
             justify-content: center;
-            padding: 10px;
-            border-bottom: 1px solid #333;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 20px;
         }
-
-        nav button {
-            background: none;
-            color: #ffffff;
-            border: 1px solid #444;
-            margin: 0 10px;
-            padding: 8px 16px;
-            border-radius: 5px;
+        .container {
+            background-color: #1a1a1a; /* Match body background */
+            border-radius: 1rem; /* Rounded corners for the main container */
+            overflow: hidden;
+            width: 100%;
+            max-width: 1200px; /* Max width for larger screens */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        .header {
+            background-color: #000; /* Darker header background */
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 600; /* font-semibold */
+            border-bottom: 4px solid #fcd34d; /* Yellow accent */
+            border-radius: 1rem 1rem 0 0; /* Rounded top corners */
+        }
+        .nav-bar {
+            background-color: #000; /* Darker nav background */
+            padding: 0.5rem 1rem;
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            gap: 0.5rem; /* Space between nav items */
+            justify-content: center;
+            border-bottom: 4px solid #fcd34d; /* Yellow accent */
+        }
+        .nav-button {
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem; /* Rounded corners for buttons */
+            font-weight: 500; /* Medium font weight */
             cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent; /* Default transparent border */
+            white-space: nowrap; /* Prevent text wrapping */
+            color: white; /* White text for nav buttons */
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+        .nav-button.active {
+            border-color: #fcd34d; /* Yellow border for active */
+            background-color: #fcd34d; /* Yellow background for active */
+            color: #1a1a1a; /* Dark text for active */
+            font-weight: 700; /* Bold text for active */
+        }
+        .content-area {
+            background-color: #333; /* Dark grey for content background */
+            padding: 2rem;
+            min-height: 400px; /* Minimum height for content area */
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem; /* Space between content sections */
+            border-radius: 0 0 1rem 1rem; /* Rounded bottom corners */
+        }
+        .content-card {
+            background-color: #444; /* Slightly lighter grey for content cards */
+            color: white; /* White text for content cards */
+            padding: 1.5rem;
+            border-radius: 0.75rem; /* Rounded corners for content cards */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            font-size: 1.125rem; /* text-lg */
+            line-height: 1.6;
+            margin-bottom: 1rem; /* Space between cards */
+        }
+        .content-card ul {
+            list-style: disc;
+            margin-left: 1.5rem;
+        }
+        .content-card ol {
+            list-style: decimal;
+            margin-left: 1.5rem;
+        }
+        .content-card table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .content-card th, .content-card td {
+            border: 1px solid #555; /* Darker border for tables */
+            padding: 8px;
+            text-align: left;
+        }
+        .content-card th {
+            background-color: #555; /* Darker background for table headers */
+        }
+        .bottom-buttons {
+            background-color: #333; /* Dark grey background */
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem; /* Space between bottom buttons */
+            border-radius: 0 0 1rem 1rem; /* Rounded bottom corners */
+        }
+        .action-button {
+            background-color: #555; /* Grey for action buttons */
+            color: white; /* White text */
+            padding: 1rem 2rem;
+            border-radius: 9999px; /* Fully rounded (pill shape) */
+            font-weight: 600; /* Semi-bold */
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #777; /* Lighter grey border */
+        }
+        .action-button:hover {
+            background-color: #fcd34d; /* Yellow on hover */
+            border-color: #fcd34d;
+            color: #1a1a1a; /* Dark text on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        /* Specific nav button colors - adjusted for dark theme */
+        .nav-button[data-phase="opening-spiel"] { background-color: #ef4444; color: white; } /* Red */
+        .nav-button[data-phase="discovery"] { background-color: #f97316; color: white; } /* Orange */
+        .nav-button[data-phase="elevator-pitch"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
+        .nav-button[data-phase="data-gathering"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
+        .nav-button[data-phase="sales-pitch"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
+        .nav-button[data-phase="booking"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
+        .nav-button[data-phase="booking-proper"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
+        .nav-button[data-phase="verbatim"] { background-color: #f97316; color: white; } /* Orange */
+        .nav-button[data-phase="value-statements"] { background-color: #ec4899; color: white; } /* Pink */
+        .nav-button[data-phase="common-objections"] { background-color: #a855f7; color: white; } /* Purple */
+        .nav-button[data-phase="discovery-questions"] { background-color: #ec4899; color: white; } /* Pink */
+        .nav-button[data-phase="faqs"] { background-color: #f43f5e; color: white; } /* Rose */
+
+        /* Override active color for specific buttons to maintain contrast */
+        .nav-button[data-phase="elevator-pitch"].active,
+        .nav-button[data-phase="data-gathering"].active,
+        .nav-button[data-phase="sales-pitch"].active,
+        .nav-button[data-phase="booking"].active,
+        .nav-button[data-phase="booking-proper"].active {
+            background-color: #fcd34d; /* Keep yellow */
+            color: #1a1a1a; /* Keep dark text */
+            border-color: #1a1a1a; /* Darker border for emphasis */
         }
 
-        nav button:hover {
+        /* Hamburger menu icon */
+        .hamburger-icon {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            padding: 5px;
+            box-sizing: content-box;
+        }
+        .hamburger-icon div {
+            width: 100%;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .nav-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            .nav-button {
+                width: 90%;
+            }
+            .header {
+                font-size: 1.5rem;
+                padding: 0.8rem 1rem;
+            }
+            .content-area {
+                padding: 1rem;
+            }
+            .content-card {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+            .bottom-buttons {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            .action-button {
+                width: 90%;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #222; /* Darker background for modal content */
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 600px;
+            position: relative;
+            color: white; /* White text for modal content */
+            max-height: 90vh; /* Limit height for scrollability */
+            overflow-y: auto; /* Enable scrolling for long content */
+        }
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #fcd34d; /* Yellow close button */
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .modal-close-button:hover {
             background-color: #444;
         }
 
-        section {
-            display: none;
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
+        /* Calculator specific styles */
+        .calculator-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #555;
+            border-radius: 0.75rem;
+            background-color: #333;
         }
-
-        section.active {
+        .calculator-section label {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
             display: block;
         }
-
-        input,
-        select,
-        button {
-            margin-top: 10px;
-            padding: 6px;
-            font-size: 1em;
+        .calculator-section input[type="number"],
+        .calculator-section select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #777;
+            background-color: #555;
+            color: white;
+            font-size: 1rem;
         }
-
-        .result,
-        .result-box,
-        .note {
-            margin-top: 15px;
+        .calculator-section input[type="radio"] {
+            margin-right: 0.5rem;
         }
-
-        .result-boxes {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
+        .calculator-section .radio-group label {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 1rem;
         }
-
-        .result-box {
-            flex: 1;
-            border: 1px solid #444;
-            padding: 10px;
-            border-radius: 8px;
-            background-color: #1e1e1e;
-            min-width: 250px;
+        .calculator-section button {
+            background-color: #fcd34d; /* Yellow button */
+            color: #1a1a1a; /* Dark text */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
         }
-
-        .result-title {
+        .calculator-section button:hover {
+            background-color: #eab308; /* Darker yellow on hover */
+            transform: translateY(-1px);
+        }
+        .calculator-results {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border: 1px dashed #fcd34d; /* Yellow dashed border */
+            border-radius: 0.75rem;
+            background-color: #1a1a1a; /* Black background for results */
+        }
+        .calculator-results .result-title {
             font-weight: bold;
-            color: #00ffff;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: #fcd34d; /* Yellow title */
         }
-.container {
-  background-color: #1e1e1e;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-  margin: auto;
-}
+        .calculator-results p, .calculator-results span {
+            margin-bottom: 0.5rem;
+        }
+        .calculator-results .note {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 0.5rem;
+        }
 
-.container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #63d471;
-}
+        /* Floating widget buttons */
+        .floating-button-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+        .floating-button {
+            background-color: #f43f5e; /* Rose color */
+            color: white;
+            padding: 15px 20px;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .floating-button:hover {
+            background-color: #e11d48; /* Darker rose */
+            transform: translateY(-2px);
+        }
+        .floating-button.etf {
+            background-color: #a855f7; /* Purple for ETF */
+        }
+        .floating-button.etf:hover {
+            background-color: #9333ea; /* Darker purple */
+        }
 
-.radio-group label {
-  font-weight: normal;
-  display: inline-block;
-  margin-right: 10px;
-}
-
-.container button {
-  width: 100%;
-  padding: 10px;
-  background-color: #63d471;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  color: #000;
-  cursor: pointer;
-}
-
-.container button:hover {
-  background-color: #52b262;
-}
-
-.container .result {
-  margin-top: 20px;
-  background-color: #2c2c2c;
-  padding: 10px;
-  border-radius: 6px;
-  font-size: 1.1em;
-}
-
+        /* Responsive for floating buttons */
+        @media (max-width: 768px) {
+            .floating-button-container {
+                bottom: 10px;
+                right: 10px;
+                gap: 8px;
+            }
+            .floating-button {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
+<body>
+    <div class="container">
+        <div class="header" id="header-title">Phase 1: Opening Spiel</div>
 
-<body class="dark">
-
-    <nav>
-        <button onclick="showSection('cleaningCalc')">Cleaning Calculator</button>
-        <button onclick="showSection('termNegotiation')">Term Negotiation</button>
-        <button onclick="showSection('etfCalc')">ETF Calculator</button>
-        <button onclick="showSection('otcCalc')">OTC Trial Calculator</button>
-    </nav>
-
-    <section id="cleaningCalc" class="active">
-        <h1>Cleaning Calculator</h1>
-        <label>Bedrooms: <input type="number" id="bedrooms" value="0" min="0" /></label>
-        <label>Bathrooms: <input type="number" id="bathrooms" value="1" min="0" /></label>
-
-        <div>
-            <label>Membership Fee:</label>
-            <div>
-                <label><input type="radio" name="membershipFee" value="49" checked> $49</label><br>
-                <label><input type="radio" name="membershipFee" value="59"> $59</label>
+        <div class="nav-bar" id="nav-bar">
+            <div class="nav-button hamburger-icon">
+                <div></div>
+                <div></div>
+                <div></div>
             </div>
+            <button class="nav-button active" data-phase="opening-spiel">Opening Spiel</button>
+            <button class="nav-button" data-phase="discovery">Discovery</button>
+            <button class="nav-button" data-phase="elevator-pitch">Elevator Pitch</button>
+            <button class="nav-button" data-phase="data-gathering">Data Gathering</button>
+            <button class="nav-button" data-phase="sales-pitch">Sales Pitch</button>
+            <button class="nav-button" data-phase="booking">Booking</button>
+            <button class="nav-button" data-phase="booking-proper">Booking Proper</button>
+            <button class="nav-button" data-phase="verbatim">Verbatim</button>
+            <button class="nav-button" data-phase="value-statements">Value Statements</button>
+            <button class="nav-button" data-phase="common-objections">Common Objections</button>
+            <button class="nav-button" data-phase="discovery-questions">Discovery Questions</button>
+            <button class="nav-button" data-phase="faqs">FAQs</button>
         </div>
 
-        <div style="margin-top: 10px;">
-            <label>Premium/Add-on:</label>
-            <div>
-                <label><input type="radio" name="premium" value="yes" onclick="togglePremiumAmount(true)">
-                    Yes</label><br>
-                <label><input type="radio" name="premium" value="no" checked onclick="togglePremiumAmount(false)">
-                    No</label>
-            </div>
+        <div class="content-area" id="content-area">
+            <!-- Content will be dynamically loaded here -->
         </div>
 
-        <div id="premiumAmountWrapper">
-            <label>Premium/Extra Hours: <input type="number" id="premiumAmount" value="0" min="0"></label>
+        <div class="bottom-buttons" id="bottom-buttons">
+            <!-- Buttons will be dynamically loaded here -->
         </div>
-
-        <label>Preferred Hours (optional): <input type="number" id="customHours" min="1" /></label>
-        <label>Frequency (per month): <input type="number" id="frequency" value="1" min="1" /></label>
-
-        <button onclick="showBothCalculations()">Calculate</button>
-
-        <div class="result-boxes">
-            <div class="result-box" id="recommendationResult">
-                <div class="result-title">Recommended Estimate</div>
-            </div>
-            <div class="result-box" id="customResult">
-                <div class="result-title">Customer's Preference</div>
-            </div>
-        </div>
-
-        <div class="note" style="color: orange; font-style: italic;">Note: Additional Hrs and premiums + $23hr.
-        </div>
-    </section>
-
-<section id="termNegotiation">
-  <div class="container">
-    <h2>Term Negotiation Calculator</h2>
-
-    <label for="plan">Select Plan:</label>
-    <select id="plan" onchange="updateDiscounts()">
-      <option value="49">Forever Clean $49/mo</option>
-      <option value="59">Forever Clean $59/mo</option>
-    </select>
-
-    <label for="discount">Select Negotiated Monthly Price:</label>
-    <select id="discount"></select>
-
-    <label>Select Commitment Term (months):</label>
-    <div class="radio-group">
-      <label><input type="radio" name="term" value="6" checked> 6</label>
-      <label><input type="radio" name="term" value="4"> 4</label>
-      <label><input type="radio" name="term" value="5"> 5</label>
     </div>
 
-    <button onclick="calculateNegotiatedPrice()">Calculate</button>
-
-    <div class="result" id="negotiationResult">
-      Negotiated Total: $0.00
+    <!-- Floating Calculator Buttons -->
+    <div class="floating-button-container">
+        <button class="floating-button" id="open-cleaning-calculator">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h8"/><path d="M8 18h8"/></svg>
+            Cleaning Calculator
+        </button>
+        <button class="floating-button etf" id="open-etf-calculator">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            ETF Calculator
+        </button>
     </div>
-  </div>
-</section>
 
+    <!-- Cleaning Calculator Modal -->
+    <div id="cleaning-calculator-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-cleaning-calculator">&times;</button>
+            <h2 class="text-2xl font-bold mb-4">Cleaning Calculator</h2>
 
-    <section id="etfCalc">
-        <h2>Early Termination Fee Calculator</h2>
-        <label>Select Cohort:</label>
-        <select id="cohort">
-            <option value="cohort1">FULLPRICE/FOREVERCLEAN_49_1_6_99_10OFF</option>
-            <option value="cohort2">FOREVERCLEAN_59_1_6_25PERHOUR_10OFF</option>
-            <option value="cohort3">FOREVERCLEAN_49_1_6_35PERHOUR_10OFF</option>
-            <option value="cohort4">FOREVERCLEAN_59_1_6_35PERHOUR_10OFF</option>
-        </select>
-        <label>Cleaning Hours: <input type="number" id="hours" min="1" max="12" /></label>
-        <button onclick="calculateFee()">Calculate</button>
-        <div class="result" id="result">Result: $0.00</div>
-        <div class="note">Voucher discount applies only to 49 full price</div>
-    </section>
+            <div class="calculator-section">
+                <h3 class="text-xl font-semibold mb-2">Home Details</h3>
+                <div>
+                    <label for="bedrooms">Bedrooms:</label>
+                    <input type="number" id="bedrooms" value="1" min="0">
+                </div>
+                <div>
+                    <label for="bathrooms">Bathrooms:</label>
+                    <input type="number" id="bathrooms" value="1" min="0">
+                </div>
+                <div>
+                    <label for="customHours">Customer's Preferred Hours (Optional):</label>
+                    <input type="number" id="customHours" placeholder="e.g., 3.5" step="0.5" min="0">
+                </div>
+                <div>
+                    <label for="premiumAmount">Premium Hours (e.g., for deep clean, extras):</label>
+                    <input type="number" id="premiumAmount" value="0" step="0.5" min="0">
+                </div>
+                <div>
+                    <label for="frequency">Frequency (times per month):</label>
+                    <select id="frequency">
+                        <option value="1">1x / month</option>
+                        <option value="2">2x / month</option>
+                        <option value="3">3x / month</option>
+                        <option value="4">4x / month</option>
+                    </select>
+                </div>
+                <div class="radio-group">
+                    <label>Membership Fee:</label>
+                    <label><input type="radio" name="membershipFee" value="49" checked> $49/mo</label>
+                    <label><input type="radio" name="membershipFee" value="59"> $59/mo</label>
+                </div>
+                <button id="calculate-cleaning-estimate">Calculate Estimate</button>
+            </div>
 
-    <section id="otcCalc">
-        <h2>One-Time & Trial Cleaning Calculator</h2>
-        <label>Enter Hours: <input type="number" id="hoursOtc" placeholder="e.g. 3" /></label>
-        <div id="resultsOtc"></div>
-    </section>
+            <div id="recommendationResult" class="calculator-results"></div>
+            <div id="customResult" class="calculator-results mt-4"></div>
+            <div id="spielResult" class="calculator-results mt-4"></div>
+        </div>
+    </div>
+
+    <!-- ETF Calculator Modal -->
+    <div id="etf-calculator-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-etf-calculator">&times;</button>
+            <h2 class="text-2xl font-bold mb-4">ETF Calculator</h2>
+
+            <div class="calculator-section">
+                <h3 class="text-xl font-semibold mb-2">Early Termination Fee Calculation</h3>
+                <div>
+                    <label for="cohort">Select Cohort:</label>
+                    <select id="cohort">
+                        <option value="cohort1">Cohort 1 ($49MF Full Price ETF)</option>
+                        <option value="cohort2">Cohort 2 ($59MF $25/hr ETF)</option>
+                        <option value="cohort3">Cohort 3 ($59MF $35/hr ETF)</option>
+                        <option value="cohort4">Cohort 4 ($49MF $35/hr ETF)</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="hours">Initial Cleaning Hours:</label>
+                    <input type="number" id="hours" value="2" min="1" step="0.5">
+                </div>
+                <button id="calculate-etf">Calculate ETF</button>
+            </div>
+
+            <div id="etfResult" class="calculator-results">
+                <div class="result-title">Result:</div>
+                <p id="etf-display-result">Enter hours and select cohort to calculate.</p>
+            </div>
+        </div>
+    </div>
 
     <script>
-  function updateDiscounts() {
-    const discountSelect = document.getElementById('discount');
-    const plan = document.getElementById('plan').value;
-    discountSelect.innerHTML = '';
+        // Data structure to hold all content for each phase and level
+        const scriptContent = {
+            "opening-spiel": {
+                title: "Phase 1: Opening Spiel",
+                content: [
+                    "Hi (Customer), this is (Your Name) from Homeaglow calling on a recorded line. I noticed you visited one of our websites or have seen one of our ads. I wanted to call to see how we can help schedule a cleaning for you."
+                ],
+                buttons: [
+                    { text: "Sales Discovery - Regular", action: "show-sales-discovery-regular" },
+                    { text: "Sales Pitch – Explicit Trial or One Time", action: "show-sales-pitch-explicit" }
+                ]
+            },
+            "discovery": {
+                title: "Phase 2: Sales Discovery",
+                content: [
+                    "S1: (Customer Name), it's important that I make sure we cover all the things that are important for you. I'd like to ask a few questions to make sure that we are the right match for you. (Proceed to Sales Discovery Questions)",
+                    "S2: (Customer Name), I want to make sure that we get the best bang for your buck. I'd like to ask a few questions to make sure we check all the boxes for you.",
+                    "S3: (Customer Name), My goal is to make sure we're a good fit for you. Would you mind answering a few quick questions so I can get a better sense of what you're looking for?"
+                ],
+                buttons: [
+                    { text: "Sales Discovery Questions – Regular Cleaning", action: "show-discovery-level-1" },
+                    { text: "Sales Pitch – Explicit Trial or One Time", action: "show-sales-pitch-explicit" }
+                ]
+            },
+            "discovery-level-1": {
+                title: "Discovery – Level 1: Uncovering Basic Need for Cleaning Service",
+                content: [
+                    "S1: What prompted you to look for a cleaning service?",
+                    "S2: What made you decide to look for a cleaning service?",
+                    "S3: How long have you been considering getting a cleaner for your home?"
+                ],
+                buttons: [
+                    { text: "Back to Discovery Questions", action: "show-discovery-questions" },
+                    { text: "Proceed to Level 2", action: "show-discovery-level-2" }
+                ]
+            },
+            "discovery-level-2": {
+                title: "Discovery – Level 2: Encourage Customers To Share Why They Need The Service",
+                content: [
+                    "S1: You mentioned you haven't had your home cleaned in a while, how is this affecting your day-to-day?",
+                    "S2: You mentioned you are unable to clean your home because of (cite the pain point), how long has it been a problem for you?"
+                ],
+                buttons: [
+                    { text: "Back to Discovery Questions", action: "show-discovery-questions" },
+                    { text: "Proceed to Level 3", action: "show-discovery-level-3" }
+                ]
+            },
+            "discovery-level-3": {
+                title: "Discovery – Level 3: Uncovering Customer Expectations",
+                content: [
+                    "S1: What are your expectations when looking for a cleaning service?",
+                    "S2: What part of a cleaning service do you think you'll be most happy with?"
+                ],
+                buttons: [
+                    { text: "Back to Discovery Questions", action: "show-discovery-questions" },
+                    { text: "Proceed to Level 4", action: "show-discovery-level-4" }
+                ]
+            },
+            "discovery-level-4": {
+                title: "Discovery – Level 4: Anticipating Roadblocks",
+                content: [
+                    "S1: What's the biggest factor for you in deciding whether our cleaning service is a good fit for you?",
+                    "S2: What factors are most important to you when considering a regular cleaning service like ours?",
+                    "S3: What's the key factor for you in determining if our cleaning service suits your needs?",
+                    "S4: What factors are most important to you when choosing a regular cleaning service like ours?"
+                ],
+                buttons: [
+                    { text: "Back to Discovery Questions", action: "show-discovery-questions" },
+                    { text: "Proceed to Level 5", action: "show-discovery-level-5" }
+                ]
+            },
+            "discovery-level-5": {
+                title: "Discovery – Level 5: Checking For Readiness",
+                content: [
+                    "S1: Would you be happy to proceed if we can meet all your requirements for a cleaning service?",
+                    "S2: Are you open to moving forward if we satisfy all your requirements?",
+                    "S3: Assuming we check all the boxes for you, would you be happy to move forward?",
+                    "S4: Would you be ready to proceed if we cam satisfy all that you're looking for in a cleaning service?"
+                ],
+                buttons: [
+                    { text: "Back to Discovery Questions", action: "show-discovery-questions" },
+                    { text: "Elevator Pitch", action: "show-elevator-pitch" }
+                ]
+            },
+            "elevator-pitch": {
+                title: "Phase 3: Elevator Pitch – HAG Intro",
+                content: [
+                    "A little about us, Homeaglow is the largest home cleaning company in the U.S., with over 10 years of experience and 2.6 million cleanings completed for nearly 900,000 customers.",
+                    "We connect you with 20,000+ trusted, background-checked cleaners including over 100 in your area. Best of all, we offer deeply discounted rates to make quality cleaning more affordable than ever."
+                ],
+                buttons: [
+                    { text: "Data Gathering", action: "show-data-gathering" }
+                ]
+            },
+            "data-gathering": {
+                title: "Phase 4: Data Gathering",
+                content: [
+                    "<ul><li>How many rooms are we looking to clean?</li><li>How many bedrooms and bathrooms?</li><li>How often are you looking to get your home cleaned?</li></ul>"
+                ],
+                buttons: [
+                    { text: "Proceed to Segue Statement", action: "show-regular-cleaning-staging" }
+                ]
+            },
+            "regular-cleaning-staging": {
+                title: "Phase 4: Regular Cleaning - Staging",
+                content: [
+                    "S1: Thank you so much for choosing Homeaglow! Just to make sure I understand this better, how do you envision the regular cleaning as part of your routine?",
+                    "S2: I can understand how tight schedules can get especially if you're working and have kids. Many of our customers choose Homeaglow for the exact same reason.",
+                    "S3: Thanks for sharing that with me. My (grandma/grandpa/aunt/etc) also struggles with cleaning their own home and it really helped her a lot when she started getting a cleaning professional."
+                ],
+                buttons: [
+                    { text: "Sales Pitch", action: "show-sales-pitch" }
+                ]
+            },
+            "sales-pitch": {
+                title: "Phase 5: Sales Pitch",
+                content: [
+                    "Please select a sales pitch option below:"
+                ],
+                buttons: [
+                    { text: "DHJ $49MF Full Price ETF (Cohort 1)", action: "show-sales-pitch-cohort-1-pt1" },
+                    { text: "DHJ $49MF $35/hr. ETF (Cohort 2)", action: "show-sales-pitch-cohort-2-pt1" },
+                    { text: "Move-Out Cleaning (Placeholder)", action: "show-sales-pitch-placeholder" },
+                    { text: "DHJ $59MF $25/hr. ETF (Cohort 3)", action: "show-sales-pitch-cohort-3-pt1" },
+                    { text: "DHJ $59MF $35/hr. ETF (Cohort 4)", action: "show-sales-pitch-cohort-4-pt1" },
+                    { text: "Trial or One-Time Only Cleaning", action: "show-sales-pitch-trial-one-time-pt1" }
+                ]
+            },
+            "sales-pitch-cohort-1-pt1": {
+                title: "Phase 5: Sales Pitch (I/II) – Cohort 1",
+                content: [
+                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]]</span>).",
+                    "Now with your FC Membership, you get to enjoy heavily-discounted rates of as low as around $23/hour for your cleanings. You mentioned earlier that you were looking to have your home cleaned ([[RECOMMENDED_HOURS]] hours, frequency) in a month. This means you're only looking at around [[ESTIMATED_MONTHLY_COST]]. How does this sound for you?",
+                    "You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hour</span>) cleaning for only (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>)?",
+                    "Excellent! I can get you one of our promotional vouchers for (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>) and that would cover the entire (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hours</span>) on your very first cleaning."
+                ],
+                buttons: [
+                    { text: "Sales Pitch pt. 2", action: "show-sales-pitch-cohort-1-pt2" }
+                ]
+            },
+            "sales-pitch-cohort-1-pt2": {
+                title: "Phase 5: Sales Pitch (II/II) – Cohort 1",
+                content: [
+                    "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$49/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
+                    "What's good about the membership is that you can cancel anytime.",
+                    "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay the difference between the full price of your first cleaning minus the voucher purchase amount.</span>",
+                    "Note: If the customer asks how much: \"That should be around <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span>\"",
+                    `<table>
+                        <thead>
+                            <tr>
+                                <th>1st Appointment Cleaning Duration (hrs.)</th>
+                                <th>Estimated Full Price of 1st Cleaning</th>
+                                <th>Minus the voucher price</th>
+                                <th>Estimated ETF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2</td>
+                                <td>$106.00</td>
+                                <td>$9.00</td>
+                                <td>$97.00</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>$159.00</td>
+                                <td>$19.00</td>
+                                <td>$140.00</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>$212.00</td>
+                                <td>$39.00</td>
+                                <td>$173.00</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>$318.00</td>
+                                <td>$79.00</td>
+                                <td>$239.00</td>
+                            </tr>
+                        </tbody>
+                    </table>`
+                ],
+                buttons: [
+                    { text: "Final Offer", action: "show-final-offer" },
+                    { text: "Book Appointment", action: "show-booking" }
+                ]
+            },
+            "sales-pitch-cohort-2-pt1": {
+                title: "Phase 5: Sales Pitch (I/II) – Cohort 2",
+                content: [
+                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]]</span>).",
+                    "Now with your FC Membership, you get to enjoy heavily-discounted rates of as low as around $23/hour for your cleanings. You mentioned earlier that you were looking to have your home cleaned ([[RECOMMENDED_HOURS]] hours, frequency) in a month. This means you're only looking at around [[ESTIMATED_MONTHLY_COST]]. How does this sound for you?",
+                    "You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hour</span>) cleaning for only (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>)?",
+                    "Excellent! I can get you one of our promotional vouchers for (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>) and that would cover the entire (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hours</span>) on your very first cleaning."
+                ],
+                buttons: [
+                    { text: "Sales Pitch pt. 2", action: "show-sales-pitch-cohort-2-pt2" }
+                ]
+            },
+            "sales-pitch-cohort-2-pt2": {
+                title: "Phase 5: Sales Pitch (II/II) – Cohort 2",
+                content: [
+                    "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$59/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
+                    "What's good about the membership is that you can cancel anytime.",
+                    "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
+                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
+                    `<table>
+                        <thead>
+                            <tr>
+                                <th>1st Appointment Cleaning Duration</th>
+                                <th>Estimated ETF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2 Hours</td>
+                                <td>$50.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Hours</td>
+                                <td>$75.00</td>
+                            </tr>
+                            <tr>
+                                <td>4 Hours</td>
+                                <td>$100.00</td>
+                            </tr>
+                            <tr>
+                                <td>6 Hours</td>
+                                <td>$150.00</td>
+                            </tr>
+                        </tbody>
+                    </table>`
+                ],
+                buttons: [
+                    { text: "Final Offer", action: "show-final-offer" },
+                    { text: "Book Appointment", action: "show-booking" }
+                ]
+            },
+            "sales-pitch-cohort-3-pt1": {
+                title: "Phase 5: Sales Pitch (I/II) – Cohort 3",
+                content: [
+                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]]</span>).",
+                    "Now with your FC Membership, you get to enjoy heavily-discounted rates of as low as around $23/hour for your cleanings. You mentioned earlier that you were looking to have your home cleaned ([[RECOMMENDED_HOURS]] hours, frequency) in a month. This means you're only looking at around [[ESTIMATED_MONTHLY_COST]]. How does this sound for you?",
+                    "You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hour</span>) cleaning for only (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>)?",
+                    "Excellent! I can get you one of our promotional vouchers for (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>) and that would cover the entire (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hours</span>) on your very first cleaning."
+                ],
+                buttons: [
+                    { text: "Sales Pitch pt. 2", action: "show-sales-pitch-cohort-3-pt2" }
+                ]
+            },
+            "sales-pitch-cohort-3-pt2": {
+                title: "Phase 5: Sales Pitch (II/II) – Cohort 3",
+                content: [
+                    "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$59/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
+                    "What's good about the membership is that you can cancel anytime.",
+                    "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
+                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
+                    `<table>
+                        <thead>
+                            <tr>
+                                <th>1st Appointment Cleaning Duration</th>
+                                <th>Estimated ETF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2 Hours</td>
+                                <td>$70.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Hours</td>
+                                <td>$105.00</td>
+                            </tr>
+                            <tr>
+                                <td>4 Hours</td>
+                                <td>$140.00</td>
+                            </tr>
+                            <tr>
+                                <td>6 Hours</td>
+                                <td>$210.00</td>
+                            </tr>
+                        </tbody>
+                    </table>`
+                ],
+                buttons: [
+                    { text: "Final Offer", action: "show-final-offer" },
+                    { text: "Book Appointment", action: "show-booking" }
+                ]
+            },
+            "sales-pitch-cohort-4-pt1": {
+                title: "Phase 5: Sales Pitch (I/II) – Cohort 4",
+                content: [
+                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]]</span>).",
+                    "Now with your FC Membership, you get to enjoy heavily-discounted rates of as low as around $23/hour for your cleanings. You mentioned earlier that you were looking to have your home cleaned ([[RECOMMENDED_HOURS]] hours, frequency) in a month. This means you're only looking at around [[ESTIMATED_MONTHLY_COST]]. How does this sound for you?",
+                    "You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hour</span>) cleaning for only (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>)?",
+                    "Excellent! I can get you one of our promotional vouchers for (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>) and that would cover the entire (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hours</span>) on your very first cleaning."
+                ],
+                buttons: [
+                    { text: "Sales Pitch pt. 2", action: "show-sales-pitch-cohort-4-pt2" }
+                ]
+            },
+            "sales-pitch-cohort-4-pt2": {
+                title: "Phase 5: Sales Pitch (II/II) – Cohort 4",
+                content: [
+                    "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$49/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
+                    "What's good about the membership is that you can cancel anytime.",
+                    "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
+                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
+                    `<table>
+                        <thead>
+                            <tr>
+                                <th>1st Appointment Cleaning Duration</th>
+                                <th>Estimated ETF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2 Hours</td>
+                                <td>$70.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Hours</td>
+                                <td>$105.00</td>
+                            </tr>
+                            <tr>
+                                <td>4 Hours</td>
+                                <td>$140.00</td>
+                            </tr>
+                            <tr>
+                                <td>6 Hours</td>
+                                <td>$210.00</td>
+                            </tr>
+                        </tbody>
+                    </table>`
+                ],
+                buttons: [
+                    { text: "Final Offer", action: "show-final-offer" },
+                    { text: "Book Appointment", action: "show-booking" }
+                ]
+            },
+            "sales-pitch-trial-one-time-pt1": {
+                title: "Phase 5: Sales Pitch – Trial or One-Time Only Cleaning (I/III)",
+                content: [
+                    "Step 1: Acknowledge and Present Cleaning Options",
+                    "Got it! We'd be happy to take care of that for you!",
+                    "For a non-recurring cleaning, you've got a couple of great options:",
+                    "<ol><li>Standard One-Time Cleaning - this would be at our regular price of (<span style='font-weight: bold;'>$X for X hours</span>). If the cleaning goes over 3 hours, I can also apply a special discount to bring it down to (<span style='font-weight: bold;'>$Y</span>).</li><li>Trial Cleaning - you can also try us out for 30 days at a discounted rate of (<span style='font-weight: bold;'>$X</span>). If you love the service, it automatically rolls into our ForeverClean membership at (<span style='font-weight: bold;'>$49/$59</span>) per month with discounted rates on cleanings. You can cancel any time during the 30 days at no extra cost.</li></ol>",
+                    "Would either of these work for what you need today?"
+                ],
+                buttons: [
+                    { text: "Trial/ One-Time Clean pt. 2", action: "show-sales-pitch-trial-one-time-pt2" }
+                ]
+            },
+            "sales-pitch-trial-one-time-pt2": {
+                title: "Phase 5: Sales Pitch – Trial or One-Time Only Cleaning (II/III)",
+                content: [
+                    "Step 2: Gauge Openness to Membership",
+                    "Out of curiosity, if this first cleaning ends up being super helpful, do you see yourself needing this kind of help every so often?",
+                    "I only ask because a lot of our customers start with a one-time clean but end up finding value in having ongoing support, and our ForeverClean membership could save you up to 60% each time you have a cleaning. It starts as low as (<span style='font-weight: bold;'>$49/$59</span>) a month, and the savings from today alone could already make up for it. Would you like me to walk you through what that could look like?",
+                    "Step 3: Qualify the Objection",
+                    "<span style='font-weight: bold;'>Note to agent: If the Customer says no the the membership, explore “why” to better match their needs.</span>",
+                    "Totally fair. Just so I can better understand, is it more about the cost, because there's a commitment, or do you just feel like you don't need regular cleanings right now?"
+                ],
+                buttons: [
+                    { text: "Trial/ One-Time Clean pt. 3", action: "show-sales-pitch-trial-one-time-pt3" }
+                ]
+            },
+            "sales-pitch-trial-one-time-pt3": {
+                title: "Phase 5: Sales Pitch – Trial or One-Time Only Cleaning (III/III)",
+                content: [
+                    "Step 4: Negotiate",
+                    "If reason for declining membership is MF = reduce based on the cohort",
+                    "For $59 cohort: reduce to $54, then to $49 if necessary",
+                    "For $49 cohort: reduce to $44, then to $39 if necessary",
+                    "If reason for declining membership is MCT duration = offer to shorten",
+                    "If reason for declining membership are both MF and MCT duration = offer reducing both",
+                    "If C's response to the question does not have anything to do with cost/commitment, proceed to booking OTC/Trial Clean"
+                ],
+                buttons: [
+                    { text: "Proceed to Booking", action: "show-booking" }
+                ]
+            },
+            "booking": {
+                title: "Phase 6: Booking Appointment",
+                content: [
+                    "So, if that checks out with you, let's get you one of the vouchers and set-up the cleaning. I just need your card details.",
+                    "May I ask for your ZIP code?",
+                    "What date would you like us to come and clean?",
+                    "<span style='font-weight: bold;'>(Note: If customer has no exact date yet, you can say one of the ff-)</span>",
+                    "We can book the appointment as early as (Mention 2 days from today), will that work for you?",
+                    "We can make a standing appointment for you and then change it later on once you have the exact date on when you'd like to have the cleaning."
+                ],
+                buttons: [
+                    { text: "Booking Proper", action: "show-booking-proper" },
+                    { text: "Same Day Booking", action: "show-booking-proper" } // Assuming this also leads to booking proper for now
+                ]
+            },
+            "booking-proper": {
+                title: "Phase 7: Booking Proper",
+                content: [
+                    "I am now setting up your appointment. To ensure we cover all the bases, can you tell me your:",
+                    "<ul><li>Preferred Appointment Date</li><li>Alternate Appointment Date</li><li>Complete Address</li><li>Full Name</li><li>Customer's Email</li><li>Customer's Phone Number</li><li>Priority List/Focus Area</li></ul>",
+                    "Just in case you'd like to update this. I'll add a link to your dashboard in the confirmation email I'll send after this call.",
+                    "<span style='font-weight: bold;'>Note to Agent: Internal use only. Use these links when purchasing the voucher and booking the appointment</span>",
+                    "For $59 MF + $25/hr ETF Cohort - <a href='https://try.homeaglow.com/deal?lower_etf_higher_fc_charge_v2=variant_59_25' target='_blank' style='color: #fcd34d; text-decoration: underline;'>https://try.homeaglow.com/deal?lower_etf_higher_fc_charge_v2=variant_59_25</a>",
+                    "For $59 MF + $35/hr ETF Cohort - <a href='https://try.homeaglow.com/deal?lower_etf_higher_fc_charge_v2=variant_59_35' target='_blank' style='color: #fcd34d; text-decoration: underline;'>https://try.homeaglow.com/deal?lower_etf_higher_fc_charge_v2=variant_59_35</a>",
+                    "For $49 MF + $35/hr ETF Cohort - <a href='https://try.homeaglow.com/deal?lower_etf_higher_fc_charge_v2=variant_49_35' target='_blank' style='color: #fcd34d; text-decoration: underline;'>https://try.homeaglow.com/deal?lower_etf_higher_fc_charge_v2=variant_49_35</a>",
+                    "For $49 MF + Original ETF Cohort - <a href='http://homeaglow.com/deal?lower_etf_higher_fc_charge=control' target='_blank' style='color: #fcd34d; text-decoration: underline;'>http://homeaglow.com/deal?lower_etf_higher_fc_charge=control</a>"
+                ],
+                buttons: [
+                    { text: "Mandatory Verbatim", action: "show-verbatim" } // Placeholder for next step
+                ]
+            },
+            "final-offer": {
+                title: "Phase 5: Sales Pitch – Final Offer",
+                content: [
+                    "Okay, so based on everything we've discussed, here’s what I can do for you. We can schedule your first cleaning for (X hours) for just ($Y). This includes [mention key benefits, e.g., deep cleaning of bathrooms and kitchen, dusting, vacuuming, mopping].",
+                    "And with the ForeverClean membership at ($49/$59) per month, you’ll get unlimited cleanings at a discounted rate of ($23/hr). This membership is flexible, and you can cancel anytime. If you cancel before the 6-month minimum term, you’d only pay the difference between the full price of your first cleaning and the voucher amount.",
+                    "How does that sound? Are you ready to book your first cleaning and start enjoying a sparkling clean home?"
+                ],
+                buttons: [
+                    { text: "Proceed to Trial/One-Time Cleaning", action: "show-sales-pitch-trial-one-time-pt1" },
+                    { text: "Back to Sales Pitch Options", action: "show-sales-pitch" }
+                ]
+            },
+            "verbatim": {
+                title: "Phase 8: Mandatory Verbatim - Select Option",
+                content: ["Please select the appropriate verbatim script:"],
+                buttons: [
+                    { text: "DHJ Voucher Full ETF", action: "show-verbatim-dhj-voucher-full-etf" },
+                    { text: "DHJ $59 MF $25/hr. ETF", action: "show-verbatim-dhj-59-25-etf" },
+                    { text: "DHJ $59 MF $35/hr. ETF", action: "show-verbatim-dhj-59-35-etf" },
+                    { text: "DHJ $49 MF $35/hr. ETF", action: "show-verbatim-dhj-49-35-etf" },
+                    { text: "Trial Cleaning (no ETF)", action: "show-verbatim-trial-cleaning" },
+                    { text: "One-Time Cleaning", action: "show-verbatim-one-time-cleaning" }
+                ]
+            },
+            "verbatim-dhj-voucher-full-etf": {
+                title: "Mandatory Verbatim - DHJ Voucher Full ETF",
+                content: [
+                    "Just to confirm we got everything correctly, I'll just go over everything that we have discussed. Please answer with a clear yes if you agree. To start....",
+                    "Your email is _____, phone number is _____, and your address is _____. Are these correct?",
+                    "Your cleaning request for (<span style='color: red; font-weight: bold;'>date</span>) for (<span style='color: red; font-weight: bold;'>duration</span>) has been booked.",
+                    "S1: The alternate cleaning date would be _____. Is that correct?",
+                    "S2: There's no alternate cleaning date. Is that correct?",
+                    "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
+                    "After your first appointment, your ForeverClean membership will start, and the first membership fee of $49 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
+                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in your first cleaning on (<span style='color: red; font-weight: bold;'>date</span>) being charged at full price less the voucher purchase amount, that's around <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span>. Are these terms clear for you?",
+                    `<table>
+                        <thead>
+                            <tr>
+                                <th>1st Appointment Cleaning Duration (hrs.)</th>
+                                <th>Estimated Full Price of 1st Cleaning</th>
+                                <th>Minus the voucher price</th>
+                                <th>Estimated ETF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2</td>
+                                <td>$106.00</td>
+                                <td>$9.00</td>
+                                <td>$97.00</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>$159.00</td>
+                                <td>$19.00</td>
+                                <td>$140.00</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>$212.00</td>
+                                <td>$39.00</td>
+                                <td>$173.00</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>$318.00</td>
+                                <td>$79.00</td>
+                                <td>$239.00</td>
+                            </tr>
+                        </tbody>
+                    </table>`
+                ],
+                buttons: [
+                    { text: "System Notes", action: "show-placeholder-system-notes" }
+                ]
+            },
+            "verbatim-dhj-59-25-etf": {
+                title: "Mandatory Verbatim - DHJ $59 MF $25/hr. ETF",
+                content: [
+                    "Just to confirm we got everything correctly, I'll just go over everything that we have discussed. Please answer with a clear yes if you agree. To start....",
+                    "Your email is _____, phone number is _____, and your address is _____. Are these correct?",
+                    "Your cleaning request for (<span style='color: red; font-weight: bold;'>date</span>) for (<span style='color: red; font-weight: bold;'>duration</span>) has been booked.",
+                    "S1: The alternate cleaning date would be _____. Is that correct?",
+                    "S2: There's no alternate cleaning date. Is that correct?",
+                    "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
+                    "After your first appointment, your ForeverClean membership will start, and the first membership fee of $59 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
+                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $25 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
+                    `<table>
+                        <thead>
+                            <tr>
+                                <th>1st Appointment Cleaning Duration</th>
+                                <th>Estimated ETF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2 Hours</td>
+                                <td>$50.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Hours</td>
+                                <td>$75.00</td>
+                            </tr>
+                            <tr>
+                                <td>4 Hours</td>
+                                <td>$100.00</td>
+                            </tr>
+                            <tr>
+                                <td>6 Hours</td>
+                                <td>$150.00</td>
+                            </tr>
+                        </tbody>
+                    </table>`
+                ],
+                buttons: [
+                    { text: "System Notes", action: "show-placeholder-system-notes" }
+                ]
+            },
+            "verbatim-dhj-59-35-etf": {
+                title: "Mandatory Verbatim - DHJ $59 MF $35/hr. ETF",
+                content: [
+                    "Just to confirm we got everything correctly, I'll just go over everything that we have discussed. Please answer with a clear yes if you agree. To start....",
+                    "Your email is _____, phone number is _____, and your address is _____. Are these correct?",
+                    "Your cleaning request for (<span style='color: red; font-weight: bold;'>date</span>) for (<span style='color: red; font-weight: bold;'>duration</span>) has been booked.",
+                    "S1: The alternate cleaning date would be _____. Is that correct?",
+                    "S2: There's no alternate cleaning date. Is that correct?",
+                    "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
+                    "After your first appointment, your ForeverClean membership will start, and the first membership fee of $59 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
+                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
+                    `<table>
+                        <thead>
+                            <tr>
+                                <th>1st Appointment Cleaning Duration</th>
+                                <th>Estimated ETF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2 Hours</td>
+                                <td>$70.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Hours</td>
+                                <td>$105.00</td>
+                            </tr>
+                            <tr>
+                                <td>4 Hours</td>
+                                <td>$140.00</td>
+                            </tr>
+                            <tr>
+                                <td>6 Hours</td>
+                                <td>$210.00</td>
+                            </tr>
+                        </tbody>
+                    </table>`
+                ],
+                buttons: [
+                    { text: "System Notes", action: "show-placeholder-system-notes" }
+                ]
+            },
+            "verbatim-dhj-49-35-etf": {
+                title: "Mandatory Verbatim - DHJ $49 MF $35/hr. ETF",
+                content: [
+                    "Just to confirm we got everything correctly, I'll just go over everything that we have discussed. Please answer with a clear yes if you agree. To start....",
+                    "Your email is _____, phone number is _____, and your address is _____. Are these correct?",
+                    "Your cleaning request for (<span style='color: red; font-weight: bold;'>date</span>) for (<span style='color: red; font-weight: bold;'>duration</span>) has been booked.",
+                    "S1: The alternate cleaning date would be _____. Is that correct?",
+                    "S2: There's no alternate cleaning date. Is that correct?",
+                    "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
+                    "After your first appointment, your ForeverClean membership will start, and the first membership fee of $49 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
+                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
+                    `<table>
+                        <thead>
+                            <tr>
+                                <th>1st Appointment Cleaning Duration</th>
+                                <th>Estimated ETF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2 Hours</td>
+                                <td>$70.00</td>
+                            </tr>
+                            <tr>
+                                <td>3 Hours</td>
+                                <td>$105.00</td>
+                            </tr>
+                            <tr>
+                                <td>4 Hours</td>
+                                <td>$140.00</td>
+                            </tr>
+                            <tr>
+                                <td>6 Hours</td>
+                                <td>$210.00</td>
+                            </tr>
+                        </tbody>
+                    </table>`
+                ],
+                buttons: [
+                    { text: "System Notes", action: "show-placeholder-system-notes" }
+                ]
+            },
+            "verbatim-trial-cleaning": {
+                title: "Mandatory Verbatim - Trial Cleaning (no ETF)",
+                content: [
+                    "Just to confirm we got everything correctly, I'll just go over everything that we have discussed. Please answer with a clear yes if you agree. To start....",
+                    "Your email is _____, phone number is _____, and your address is _____. Are these correct?",
+                    "Your cleaning request for (<span style='color: red; font-weight: bold;'>date</span>) for (<span style='color: red; font-weight: bold;'>duration</span>) has been booked.",
+                    "S1: The alternate cleaning date would be _____. Is that correct?",
+                    "S2: There's no alternate cleaning date. Is that correct?",
+                    "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. You mentioned that for this cleaning, your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
+                    "This cleaning will be for a total of (<span style='font-weight: bold;'>X</span>) hours and will be charged upfront at a discounted rate of (<span style='font-weight: bold;'>$XXX.XX</span>). Is this clear?",
+                    "The membership is $59/49 per month, with future cleanings heavily discounted at around ($XXX.XX) inclusive of a 15% transaction fee. You have 30 days to decide if it's right for you. After that, the membership will continue automatically. Is that clear?"
+                ],
+                buttons: [
+                    { text: "System Notes", action: "show-placeholder-system-notes" }
+                ]
+            },
+            "verbatim-one-time-cleaning": {
+                title: "Mandatory Verbatim - One-Time Cleaning",
+                content: [
+                    "Just to confirm we got everything correctly, I'll just go over everything that we have discussed. Please answer with a clear yes if you agree. To start....",
+                    "Your email is _____, phone number is _____, and your address is _____. Are these correct?",
+                    "Your one-time cleaning request for (<span style='color: red; font-weight: bold;'>date</span>) for (<span style='color: red; font-weight: bold;'>duration</span>) has been booked.",
+                    "S1: The alternate cleaning date would be _____. Is that correct?",
+                    "S2: There's no alternate cleaning date. Is that correct?",
+                    "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning will entail being charged upfront with a total amount of (<span style='font-weight: bold;'>XX.XX</span>). This amount should cover a total of (<span style='font-weight: bold;'>X- hours</span>) of standard cleaning and in this appointment, you mentioned your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?"
+                ],
+                buttons: [
+                    { text: "System Notes", action: "show-placeholder-system-notes" }
+                ]
+            },
+            "value-statements": {
+                title: "Phase 9: Value Statements - Select Option",
+                content: ["Please select the value statement category:"],
+                buttons: [
+                    { text: "24/7 Customer Service", action: "show-value-statement-247-customer-service" },
+                    { text: "Price and Cost Efficiency", action: "show-value-statement-price-cost-efficiency" },
+                    { text: "Schedule Flexibility", action: "show-value-statement-schedule-flexibility" },
+                    { text: "Top-Rated Cleaners", action: "show-value-statement-top-rated-cleaners" },
+                    { text: "Cleaning Professional Availability", action: "show-value-statement-cleaning-professional-availability" }
+                ]
+            },
+            "value-statement-247-customer-service": {
+                title: "Value Statements - 24/7 Customer Service",
+                content: [
+                    "S1: Unlike most cleaning companies, we offer 24/7 support across the board -not just for customer service, but for sales and scheduling too. You may have noticed how quickly we called you -that's not typical. Other companies may take hours or days to respond, if they reply at all.",
+                    "With Homeaglow, you also get access to a 24/7 online dashboard, so you can reschedule or reschedule your cleanings anytime, without needing to wait on emails or phone calls.",
+                    "And if anything isn't up to your expectations after a cleaning, our round-the-clock Customer Support Team is ready to jump in and make it right.",
+                    "S2: What really sets Homeaglow apart from other cleaning companies is that we have a dedicated 24/7 Customer Support Team. This means that anytime you need help with your appointments, we're always with you to make sure that everything goes smoothly.",
+                    "S3: Most of our customers enjoy the benefit of knowing that we have a 24/7 Customer Support Team ready to assist anytime. This means that if something wasn't to your liking after an appointment, you can let us know and we'd be happy to make it right for you."
+                ],
+                buttons: [
+                    { text: "Back to Value Statements", action: "show-value-statements" }
+                ]
+            },
+            "value-statement-price-cost-efficiency": {
+                title: "Value Statements - Price and Cost Efficiency",
+                content: [
+                    "S1: Our FC Membership is built for value. Members enjoy rates up to 60% lower than traditional cleaning companies—without compromising on quality.",
+                    "Now you might be wondering how we do that. Because we’ve streamlined operations with an online dashboard, we save on customer service costs -and we pass those savings directly on to you.",
+                    "It’s cost-efficient, high-quality cleaning that aligns with your budget perfectly.",
+                    "S2: Our FC Membership is designed to give our customers heavily-discounted rates on their subsequent cleanings. This means that you get to enjoy quality, cost-efficient cleaning that aligns with your budget.",
+                    "S3: What our members love about their FC Membership is that they get to enjoy rates that are up to 60% lower than other cleaning companies. This means you get to enjoy better quality cleaning service at a more affordable cost."
+                ],
+                buttons: [
+                    { text: "Back to Value Statements", action: "show-value-statements" }
+                ]
+            },
+            "value-statement-schedule-flexibility": {
+                title: "Value Statements - Schedule Flexibility",
+                content: [
+                    "S1: Our customers love their Account Dashboard. This gives you full control and freedom to manage your appointments - change the date, the time, even book as many or as few cleanings as it fits into your schedule.",
+                    "S2: The beauty of your FC Membership is that it comes with your own personal Dashboard. This means that you can manage your appointments in minutes, making it easier and more seamless for you to plan your schedule."
+                ],
+                buttons: [
+                    { text: "Back to Value Statements", action: "show-value-statements" }
+                ]
+            },
+            "value-statement-top-rated-cleaners": {
+                title: "Value Statements - Top-Rated Cleaners",
+                content: [
+                    "S1: Most of our customers truly value the peace of mind they get knowing every cleaner on the Homeaglow platform is thoroughly vetted, with strict criminal and background checks. But we go beyond safety, we focus on quality too.",
+                    "Just to share with you, 91.4% of jobs are completed by cleaners with a 4.5-star rating or higher.",
+                    "And because we collect ratings and reviews after every appointment, we’re able to continually curate the best professionals. Unlike the gray market, where underperforming cleaners can bounce between clients, Homeaglow ensures only top-rated, trustworthy cleaners stay on our platform -so you always get someone who knows how to deliver a great clean.",
+                    "S2: Hey you know most of our customers appreciate that all of the cleaning professionals who get on board the platform are thoroughly vetted and have gone through strict criminal and background checking. This gives you the peace of mind, knowing that the person cleaning your home is someone who is trustworthy, and has the experience to do job excellently."
+                ],
+                buttons: [
+                    { text: "Back to Value Statements", action: "show-value-statements" }
+                ]
+            },
+            "value-statement-cleaning-professional-availability": {
+                title: "Value Statements - Cleaning Professional Availability",
+                content: [
+                    "One of the biggest advantages of booking through us is the reliability at scale.",
+                    "With over 20,000 cleaning professionals on our platform, you’re never left hanging. If your cleaner is unavailable, whether it’s last-minute or due to illness, we’ve got qualified backups ready to step in.",
+                    "In fact, over 90% of cleaning requests get picked up, and more than half of them are claimed within just 50 minutes of booking.",
+                    "That kind of speed and dependability is something you won’t find with traditional cleaning companies."
+                ],
+                buttons: [
+                    { text: "Back to Value Statements", action: "show-value-statements" }
+                ]
+            },
+            "common-objections": {
+                title: "Phase 10: Common Objections and Sample Rebuttals",
+                content: ["Please select a common objection to view its rebuttal:"],
+                buttons: [
+                    { text: "Already Found a Cleaner", action: "show-objection-already-found-cleaner" },
+                    { text: "Need to Consult Spouse", action: "show-objection-consult-spouse" },
+                    { text: "Not Interested", action: "show-objection-not-interested" },
+                    { text: "Thinks This Is A Scam", action: "show-objection-thinks-scam" },
+                    { text: "Will Not Use Service Often", action: "show-objection-not-use-often" },
+                    { text: "Does Not Want To Give Card Info.", action: "show-objection-no-card-info" },
+                    { text: "Negative Review", action: "show-objection-negative-review" },
+                    { text: "Pricing Concerns", action: "show-objection-pricing-concerns" },
+                    { text: "Wants To Pay in Cash", action: "show-objection-pay-in-cash" },
+                    { text: "Don't Want A Membership", action: "show-objection-no-membership" },
+                    { text: "Not At This Time / I'm Not Ready To Book", action: "show-objection-not-ready-to-book" },
+                    { text: "Thinks Competitors Are More Affordable", action: "show-objection-competitors-affordable" }
+                ]
+            },
+            "objection-already-found-cleaner": {
+                title: "Objections - Already Found a Cleaner",
+                content: [
+                    "E: Hey it’s great to hear that you have someone working to clean your home.",
+                    "C: I just want to make sure you have all the information you need. Correct me if I’m wrong, it looks like it’s really important that you have your home regularly cleaned. Is this correct?",
+                    "O: Thanks for sharing that with me. What sets Homeaglow apart (<span style='font-weight: bold;'>mention HAG’s competitive advantages</span>), in fact, what our long-term customers truly love about their FC membership is (<span style='font-weight: bold;'>mention competitive pricing vs. local market rate</span>).",
+                    "C: Did my explanation of how our FC membership brings your cost per clean well below industry average help? Let’s review our terms and lock in your first cleaning!"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-consult-spouse": {
+                title: "Objections - Need to Consult Spouse",
+                content: [
+                    "E: It’s great that you’re making a joint decision. It’s important to make sure that everyone is on board...",
+                    "C: I wanted to confirm that I’m fully understanding you so please keep me honest, (<span style='font-weight: bold;'>Agreed Upon Value</span>) ... did I get this correctly?",
+                    "O: Ok cool! The vouchers we have are limited. And what our FC Members truly love about it is you get to enjoy your very first cleaning at a heavily-discounted rate, and (<span style='font-weight: bold;'>mention key benefits of FC</span>) for all your future cleanings!",
+                    "C: If it might be of interest, I’ll hold on to one of the vouchers and stay on the line while you talk with your spouse. Does this work for you?"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-not-interested": {
+                title: "Objections - Not Interested",
+                content: [
+                    "E: I can understand why you would feel that way...",
+                    "C: I want to make sure I provide you with all the information you’ll be needing when deciding on a cleaning service. Correct me if I’m wrong, (<span style='font-weight: bold;'>Agreed Upon Value</span>) ... does this sound accurate?",
+                    "O: Hey thanks for clarifying that with me. Most of our customers had the same sentiments initially. They quickly see the value of the service once they had their first cleaning, in fact what they love most is (<span style='font-weight: bold;'>provide Value Statement</span>)",
+                    "C: Now do you see how our service can greatly benefit you and address your concern for (<span style='font-weight: bold;'>pain point</span>)?"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-thinks-scam": {
+                title: "Objections - Thinks This is a Scam",
+                content: [
+                    "S1: I totally get you. Usually when the price is really good, it’s also a cause for concern. Can you share what specific part of our service makes you feel hesitant?",
+                    "S2: I hear you. In fact, most of our customers who felt the same way you do in the beginning are the one who had someone working for them in the past. Have you had past experiences with another cleaning company that have contributed to your concerns?",
+                    "S3: Totally fair. It’s smart to be cautious with things online. What part feels off to you, if you don’t mind me asking? We’ve actually been in business for over 10 years, and every cleaner goes through background checks. On top of that, our work is backed by the Homeaglow Happiness Guarantee, and we’ve helped nearly 900,000 customers. Hopefully that gives you a little peace of mind. Would you feel better if I walked you through how it works?"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-not-use-often": {
+                title: "Objections - Will Not Use Service Often",
+                content: [
+                    "E: Hey I appreciate your sharing that with me.",
+                    "C: I want to make sure that you’re getting the most out of your service with us. Correct me if I’m wrong, it’s important for you to have your home cleaned, you’re just concerned that you might not use it often, is this correct?",
+                    "O: What our FC Members truly love about is that FC offers flexibility with (<span style='font-weight: bold;'>mention the ability to manage appointments via Dashboard</span>), so you can tailor it to fit your schedule. Additionally, even if you use the service less often, the membership often provides cost savings and added benefits that can be worthwhile.",
+                    "C: Was I able to ease your concern about how FC membership fits into your schedule? Let’s set up your cleaning!"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-no-card-info": {
+                title: "Objections - Doesn't Want To Give Card Info.",
+                content: [
+                    "E: Hey with how much fraud went up last year, I completely understand your hesitation to provide your card details over the phone.",
+                    "C: I want to be sure that we don’t leave any stones unturned before we move forward. If I’m hearing this right, you see how our service can help you and are just concerned about the security of your payment information. Is this correct?",
+                    "O: Thanks for sharing that with me. One of the reasons why our long-term customers have total confidence in HAG is that we take your security very seriously and use a double secure socket layer (SSL) encryption to protect your information.",
+                    "C: If it would make you feel more comfortable, I can assist you on how to process the payment online yourself so you don’t need to give out any of your card information. How does this sound for you?"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-negative-review": {
+                title: "Objections - Negative Review",
+                content: [
+                    "E: I completely understand your concerns about the reviews you’ve seen...",
+                    "C: And I want to make sure we set you up for success. Just so I am getting this correctly, it’s important for you to have your home cleaned, you’re only concerned about the quality of the cleaning you’d get. Is this correct?",
+                    "O: Thanks for sharing that with me. One of the things that our FC Members love and which I think truly sets us apart from other cleaning companies is that (<span style='font-weight: bold;'>mention one key benefit of FC</span>).",
+                    "C: Was I able to ease your concern about the quality of cleaning we provide?"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-pricing-concerns": {
+                title: "Objections - Pricing Concerns",
+                content: [
+                    "E: I totally get you. I know that cost is an important factor when deciding...",
+                    "C: And it’s important for me to ensure that we get the best value for your money. If I’m understanding you correctly, (<span style='font-weight: bold;'>Agreed Upon Value</span>) ...did I get it correctly?",
+                    "O: Hey I’m glad we’re on the same page. Most of our long-term customers felt the exact same way, and what they realized after their first cleaning is that (<span style='font-weight: bold;'>add Value Statement</span>)",
+                    "C: Did my explanation of how our FC Membership brings your cost per clean well below industry average help? Let’s review our terms and lock in your first cleaning!"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-pay-in-cash": {
+                title: "Objections - Wants To Pay in Cash",
+                content: [
+                    "E: I appreciate you sharing your preferred method of payment",
+                    "C: I want to make sure we go by your rules. Correct me if I’m wrong, you would feel more at ease if you didn’t have to give your payment card information over the phone. Am I getting this right?",
+                    "O: I totally understand. In fact, most of our long-term customers initially had the same concerns but quickly see the value on why we only accept card payments over the phone for convenience and security reasons. If it’s helpful, I can assist you on how to process the payment online yourself so you don’t need to give out any of your card information.",
+                    "C: Would you feel more comfortable processing the payment at the comfort of your own home while I have you on the line? Great! (<span style='font-weight: bold;'>walk through via website</span>)"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-no-membership": {
+                title: "Objections - Don't Want A Membership",
+                content: [
+                    "E: I hear you. I know that saying yes to membership is a big decision...",
+                    "C: My goal is to make sure that our service is the right match for you. Just to make sure I’m getting a clear picture, (<span style='font-weight: bold;'>Agreed Upon Value</span>) ... does this sound correct?",
+                    "O: What our members love about the FC Membership is (<span style='font-weight: bold;'>mention key benefits to highlight value</span>)",
+                    "C: Just to make sure we’re aligned, was I able to provide more details on how we can help you with (<span style='font-weight: bold;'>mention Customer pain points</span>)?",
+                    "Excellent! Let’s schedule your first cleaning!"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-not-ready-to-book": {
+                title: "Objections - Not At This Time / I'm Not Ready To Book",
+                content: [
+                    "E: Hey I completely get you. I understand life can get busy and sometimes it feels that there are other priorities.",
+                    "C: I want to be sure I capture what truly matters to you. If I’m understanding this right, you see value in having a regular cleaning service, you’re just not sure if it’s a good fit. Did I get this correctly?",
+                    "O: Thanks for sharing that with me. One of the things our long-term customers love about their membership is the flexibility it gives (<span style='font-weight: bold;'>mention Dashboard and flexibility</span>). In fact, we can make a standing appointment on (<span style='font-weight: bold;'>future date</span>) – you can change the date once you decide when to have the cleaning, and rescheduling is free.",
+                    "C: Does this make you feel more at ease now that you have full control and flexibility when managing your appointments? What date would you like to have your cleaning?"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "objection-competitors-affordable": {
+                title: "Objections - Thinks Competitors Are More Affordable",
+                content: [
+                    "E: Of course. I hear you that cost is an important factor...",
+                    "C: I want to make sure that we are the right match for you. Correct me if I’m wrong, you find value in our service and are just not sure that we have the most competitive price. Is this correct?",
+                    "O: While you might find lower prices with other providers, our service stands out for (<span style='font-weight: bold;'>mention benefits other than cost</span>). Our focus is on providing our customers quality cleaning which often leads to long-term value for our customers.",
+                    "C: Did my explanation of how our FC membership help bring your cost per clean well below industry average help? Let’s review our terms and lock in your first cleaning!"
+                ],
+                buttons: [
+                    { text: "Back to Common Objections", action: "show-common-objections" }
+                ]
+            },
+            "discovery-questions": {
+                title: "Phase 11: Discovery Questions",
+                content: ["Please select a level to view the discovery questions:"],
+                buttons: [
+                    { text: "Level 1: Uncovering Basic Need For Cleaning Service", action: "show-discovery-level-1" },
+                    { text: "Level 2: Encourage Customers To Share Why They Need The Service", action: "show-discovery-level-2" },
+                    { text: "Level 3: Uncovering Customer Expectations", action: "show-discovery-level-3" },
+                    { text: "Level 4: Anticipating Roadblocks", action: "show-discovery-level-4" },
+                    { text: "Level 5: Checking For Readiness", action: "show-discovery-level-5" }
+                ]
+            },
+            "faqs": {
+                title: "Phase 12: Frequently Asked Questions",
+                content: ["Please select a question to view its answer:"],
+                buttons: [
+                    { text: "Are your cleaners bonded and insured?", action: "show-faq-bonded-insured" },
+                    { text: "Can I book an appointment for tomorrow?", action: "show-faq-book-tomorrow" },
+                    { text: "How can I get the same cleaner for all of my upcoming cleaning appointments?", action: "show-faq-same-cleaner" },
+                    { text: "My bank flagged the company as a scam and won't approve any future transactions using their bank.", action: "show-faq-bank-flagged-scam" },
+                    { text: "What cleaning tools or supplies will my cleaner bring?", action: "show-faq-cleaner-supplies" },
+                    { text: "What happens if my cleaner is late or doesn't show up? Who do I contact?", action: "show-faq-cleaner-late-no-show" },
+                    { text: "What if I'm not happy with my first cleaning? Will I get a refund?", action: "show-faq-not-happy-refund" },
+                    { text: "What is included in the cleaning service?", action: "show-faq-included-service" },
+                    { text: "Will it be a $23/hr cleaner rate for all my future cleaning appointments?", action: "show-faq-23-hr-rate" }
+                ]
+            },
+            "faq-bonded-insured": {
+                title: "FAQs – Are your cleaners bonded and insured?",
+                content: [
+                    "S1: Every Cleaning Professional on Homeaglow has passed through extensive certification and strict criminal background check. And while we do not provide insurance, many of the Cleaning Professionals joined Homeaglow having operated their own cleaning businesses and many choose to carry their own bonding and insurance.",
+                    "S2: You would be delighted to know that while the Cleaning Professionals who get onboard the Homeaglow platform are independent contractors, they all go through extensive certification and strict criminal background checking. This gives you the peace of mind knowing that the person you let in your home is someone who has gone through strict screening."
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "faq-book-tomorrow": {
+                title: "FAQs – Can I book an appointment for tomorrow?",
+                content: [
+                    "Normally we recommend a 2-day window to allow the CPs to take the appointment. (<span style='font-weight: bold;'>Try to confirm if C will agree to book 2 days from today</span>).",
+                    "If no:",
+                    "We will do our best to schedule your cleaning for tomorrow. However, please keep in mind that we can’t guarantee a cleaner will be available on short notice.",
+                    "To ensure we can accommodate you, it might be helpful to provide an alternate date that works for you.",
+                    "(<span style='font-weight: bold;'>Note to agent: Send message to cpcalldown_24hoursfromstarttime_jobs channel in Slack.</span>)"
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "faq-same-cleaner": {
+                title: "FAQs – How can I get the same cleaner for all of my upcoming cleaning appointments?",
+                content: [
+                    "I get you! It just makes things a whole lot easier if it’s the same person every time. And you would be happy to know that you have the option to book the same Cleaning Professional for all your appointments simply by logging in to your dashboard.",
+                    "However, please keep in mind that this is still subject to the cleaner’s availability, as they may have other commitments. We recommend booking in advance to increase the chances of securing your preferred cleaner. If you have any questions or need assistance with the booking process, feel free to reach out!"
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "faq-bank-flagged-scam": {
+                title: "FAQs – My bank flagged the company as a scam and won't approve any future transactions using their bank.",
+                content: [
+                    "(<span style='font-weight: bold;'>Ask for another card</span>)",
+                    "Thank You for bringing this to our attention. I’m sorry to hear that your bank flagged our transaction. We understand that this can be frustrating, and I want to assure you that I’m here to work with you until this gets resolved.",
+                    "If you’re comfortable, you might consider using a different payment card for this transaction. This could help resolve the issue quickly and ensure we can complete booking your first appointment with us.",
+                    "(<span style='font-weight: bold;'>If no other card, offer to call bank</span>)",
+                    "I’m sorry to hear that your bank flagged our transaction. Sometimes banks use strict security measures to protect their customers, and this can lead to misunderstandings.",
+                    "If possible, I can stay with you on the line if you want to contact your bank to clarify the situation. They may be able to adjust their settings to allow transactions with us to go through."
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "faq-cleaner-supplies": {
+                title: "FAQs – What cleaning tools or supplies will my cleaner bring?",
+                content: [
+                    "S1: You don’t need to provide anything. Cleaners generally bring their own equipment and supplies. If you’d like your cleaner to use your own products, that’s possible too. Just let them know prior to your appointment.",
+                    "S2: You are not required to supply anything. Typically, cleaners bring their own cleaning tools supplies. It’s also an option if you want your cleaner to use your own supplies, or if there is a particular cleaning product you prefer them to use during the cleaning. Simply inform them before your scheduled visit."
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "faq-cleaner-late-no-show": {
+                title: "FAQs – What happens if my cleaner is late or doesn't show up? Who do I contact?",
+                content: [
+                    "S1: I can understand why that would be a concern. All the Cleaning Professionals are thoroughly vetted and have gone through extensive screening. You would be happy to know that in the rare event that they arrive late or failed to show up to your appointment, we have a 24/7 Customer Support Team to help you. Just let us know and we’ll be glad to rectify it for you.",
+                    "S2: I hear you. It would really be concerning if they arrive late or failed to show up to your appointment. The beauty of booking with Homeaglow is that you get direct contact with your assigned Cleaning Professional once they claim your request.",
+                    "You will see their information on your dashboard, including their phone number, in case you’d like to contact them before the cleaning. Alternatively, the cleaner may also contact you before your scheduled cleaning date"
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "faq-not-happy-refund": {
+                title: "FAQs – What if I'm not happy with my first cleaning? Will I get a refund?",
+                content: [
+                    "S1: That makes perfect sense. Here at Homeaglow, your satisfaction is our top priority. This means that after your cleaning appointment, and you feel that your expectations were not met or something isn’t to your liking, please let us know and we have all the checks and balances to help rectify that for you.",
+                    "S2: Hey, I get you! Most of our long-term customers had the same concerns initially. All of the Cleaning Professionals who get on board the Homeaglow platform have gone through extensive certification and go through regular reviews based on customer feedback and ratings. This means you get only the top-rated professionals to clean your home. Now if after the appointment you feel that your expectations were not met or something isn’t to your liking, please let us know and we’ll be happy to take care of it for you."
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "faq-included-service": {
+                title: "FAQs – What is included in the cleaning service?",
+                content: [
+                    "S1: Here at Homeaglow, we want to make sure that no corners are left untouched. A standard cleaning with Homeaglow includes wiping down and sanitizing surfaces, vacuuming and mopping floors, cleaning and sanitizing sinks, showers, and bathtubs, tidying, and removing garbage.",
+                    "S2: We take care of everything from top to bottom! Vacuuming, mopping, dusting, wiping of surfaces, bathrooms, kitchen sinks, we even take out the trash for you! We want to make sure that everything is sparkly clean, and that no corners are left untouched after the appointment."
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "faq-23-hr-rate": {
+                title: "FAQs – Will it be a $23/hr cleaner rate for all my future cleaning appointments?",
+                content: [
+                    "S1: What most of our members love about FC is that their subsequent cleanings cost as low as $23/hour, a savings of up to 50%compared to local average rate when enrolled in the ForeverClean membership.",
+                    "S2: The majority of our members love FC because, when enrolled in the ForeverClean membership, their subsequent cleanings are as little as $23/hour, saving them up to 50% over the average charge in the area."
+                ],
+                buttons: [
+                    { text: "Back to FAQs", action: "show-faqs" }
+                ]
+            },
+            "sales-pitch-explicit": {
+                title: "Sales Pitch – Explicit Trial or One Time",
+                content: ["Content for Sales Pitch – Explicit Trial or One Time will go here. This was a button from the Opening Spiel, but no further content was provided for it."],
+                buttons: []
+            },
+            "sales-pitch-placeholder": {
+                title: "Sales Pitch Option (Placeholder)",
+                content: ["Content for this specific sales pitch option is not yet available. Please select another option or navigate back."],
+                buttons: [{ text: "Back to Sales Pitch Options", action: "show-sales-pitch" }]
+            },
+            "placeholder-system-notes": {
+                title: "System Notes (Placeholder)",
+                content: ["Content for system notes will go here."],
+                buttons: [{ text: "Back to Verbatim Options", action: "show-verbatim" }]
+            }
+        };
 
-    let prices = [];
-    if (plan === '49') {
-      prices = [49, 44, 39];
-    } else {
-      prices = [59, 54, 49];
-    }
+        // Global variables to store calculator results for dynamic content
+        let lastRecommendedHours = 0;
+        let lastFirstCleaningCost = 0;
+        let lastEstimatedMonthlyCost = 0;
+        let lastVoucherAmount = 0;
+        let lastFcRatePerCleaning = 0;
+        let lastCalculatedETF = 0;
 
-    prices.forEach(price => {
-      const option = document.createElement('option');
-      option.value = price;
-      option.textContent = `$${price.toFixed(2)} / mo`;
-      discountSelect.appendChild(option);
-    });
-  }
+        // Get DOM elements
+        const headerTitle = document.getElementById('header-title');
+        const navBar = document.getElementById('nav-bar');
+        const contentArea = document.getElementById('content-area');
+        const bottomButtons = document.getElementById('bottom-buttons');
+        const navButtons = document.querySelectorAll('.nav-button[data-phase]');
 
-  function calculateNegotiatedPrice() {
-    const discountSelect = document.getElementById('discount');
-    const monthly = parseFloat(discountSelect.value);
-    const term = parseInt(document.querySelector('input[name="term"]:checked').value);
-    const total = monthly * term;
+        // Calculator Modals and Buttons
+        const cleaningCalculatorModal = document.getElementById('cleaning-calculator-modal');
+        const openCleaningCalculatorBtn = document.getElementById('open-cleaning-calculator');
+        const closeCleaningCalculatorBtn = document.getElementById('close-cleaning-calculator');
 
-    document.getElementById('negotiationResult').textContent = `Negotiated Total: $${total.toFixed(2)}`;
-  }
+        const etfCalculatorModal = document.getElementById('etf-calculator-modal');
+        const openEtfCalculatorBtn = document.getElementById('open-etf-calculator');
+        const closeEtfCalculatorBtn = document.getElementById('close-etf-calculator');
 
-  // Initialize on load
-  window.addEventListener('DOMContentLoaded', () => {
-    updateDiscounts();
-  });
-        function showSection(id) {
-            document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-            document.getElementById(id).classList.add("active");
+        // Calculator input elements
+        const bedroomsInput = document.getElementById('bedrooms');
+        const bathroomsInput = document.getElementById('bathrooms');
+        const customHoursInput = document.getElementById('customHours');
+        const premiumAmountInput = document.getElementById('premiumAmount');
+        const frequencySelect = document.getElementById('frequency');
+        const membershipFeeRadios = document.querySelectorAll('input[name="membershipFee"]');
+
+        const calculateCleaningEstimateBtn = document.getElementById('calculate-cleaning-estimate');
+        const recommendationResultDiv = document.getElementById('recommendationResult');
+        const customResultDiv = document.getElementById('customResult');
+        const spielResultDiv = document.getElementById('spielResult');
+
+        const etfCohortSelect = document.getElementById('cohort');
+        const etfHoursInput = document.getElementById('hours');
+        const calculateEtfBtn = document.getElementById('calculate-etf');
+        const etfDisplayResult = document.getElementById('etf-display-result');
+
+
+        let currentPhase = "opening-spiel"; // Initial phase
+
+        /**
+         * Renders the content and buttons for the given phase.
+         * @param {string} phaseKey - The key of the phase in the scriptContent object.
+         */
+        function renderContent(phaseKey) {
+            const phaseData = scriptContent[phaseKey];
+            if (!phaseData) {
+                console.error("Phase data not found for key:", phaseKey);
+                return;
+            }
+
+            // Update header title
+            headerTitle.textContent = phaseData.title;
+
+            contentArea.innerHTML = '';
+            phaseData.content.forEach(text => {
+                let processedText = text;
+
+                // Replace placeholders if values are available
+                if (lastRecommendedHours > 0) {
+                    processedText = processedText.replace(/\[\[RECOMMENDED_HOURS\]\]/g, lastRecommendedHours.toFixed(0));
+                    processedText = processedText.replace(/\[\[FIRST_CLEANING_HOURS\]\]/g, lastRecommendedHours.toFixed(0));
+                }
+                if (lastFirstCleaningCost > 0) {
+                    processedText = processedText.replace(/\[\[FIRST_CLEANING_COST\]\]/g, lastFirstCleaningCost.toFixed(2));
+                }
+                if (lastEstimatedMonthlyCost > 0) {
+                    processedText = processedText.replace(/\[\[ESTIMATED_MONTHLY_COST\]\]/g, `$${lastEstimatedMonthlyCost.toFixed(2)}`);
+                }
+                if (lastVoucherAmount > 0) {
+                    processedText = processedText.replace(/\[\[VOUCHER_AMOUNT\]\]/g, lastVoucherAmount.toFixed(2));
+                }
+                if (lastFcRatePerCleaning > 0) {
+                    processedText = processedText.replace(/\[\[FC_RATE_PER_CLEANING\]\]/g, lastFcRatePerCleaning.toFixed(2));
+                }
+                // Only replace ETF if it's a specific ETF value, not 0 (default)
+                if (lastCalculatedETF > 0) {
+                    processedText = processedText.replace(/\[\[ETF_CALCULATED_VALUE\]\]/g, lastCalculatedETF.toFixed(2));
+                }
+
+
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.innerHTML = processedText;
+                contentArea.appendChild(card);
+            });
+
+            // Update bottom buttons
+            bottomButtons.innerHTML = '';
+            phaseData.buttons.forEach(button => {
+                const btn = document.createElement('button');
+                btn.className = 'action-button';
+                btn.textContent = button.text;
+                btn.setAttribute('data-action', button.action);
+                bottomButtons.appendChild(btn);
+            });
+
+            // Update active navigation button
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+                // For sub-phases like discovery-level-1, highlight the main 'discovery' nav button
+                const mainPhase = phaseKey.split('-')[0];
+                if (btn.getAttribute('data-phase') === mainPhase || phaseKey.startsWith('discovery-level-')) {
+                    // Special handling for discovery-level-X to activate 'discovery-questions' nav button
+                    if (phaseKey.startsWith('discovery-level-') && btn.getAttribute('data-phase') === 'discovery-questions') {
+                        btn.classList.add('active');
+                    } else if (btn.getAttribute('data-phase') === mainPhase) {
+                         btn.classList.add('active');
+                    }
+                } else if (phaseKey.startsWith('faq-') && btn.getAttribute('data-phase') === 'faqs') {
+                    btn.classList.add('active');
+                }
+            });
+
+            currentPhase = phaseKey; // Update current phase
         }
 
-        function togglePremiumAmount(show) {
-            document.getElementById('premiumAmountWrapper').style.display = show ? 'block' : 'none';
+        /**
+         * Handles clicks on navigation buttons.
+         * @param {Event} event - The click event.
+         */
+        function handleNavClick(event) {
+            const phase = event.target.getAttribute('data-phase');
+            if (phase) {
+                renderContent(phase);
+            }
         }
 
-        
-    function getRecommendedHours(beds, baths) {
-    // 6 hours if either beds or baths is 3 or more
-    if (beds >= 3 || baths >= 3) return 6;
-
-    // 4 hours for 1–2 beds and 1–2 baths
-    if (beds >= 1 && beds <= 2 && baths >= 1 && baths <= 2) return 4;
-
-    // 3 hours for exactly 1 bed and 1 bath
-    if (beds === 1 && baths === 1) return 3;
-
-    // 2 hours for 0 bed and 1 bath
-    if (beds === 0 && baths === 1) return 2;
-
-    // Default fallback
-    return 2;
-}
-
-
-        function getSelectedMembershipFee() {
-            return parseInt(document.querySelector('input[name="membershipFee"]:checked').value);
+        /**
+         * Handles clicks on bottom action buttons.
+         * @param {Event} event - The click event.
+         */
+        function handleActionClick(event) {
+            const action = event.target.getAttribute('data-action');
+            if (action) {
+                switch (action) {
+                    case "show-sales-discovery-regular":
+                        renderContent("discovery");
+                        break;
+                    case "show-sales-pitch-explicit":
+                        renderContent("sales-pitch-explicit");
+                        break;
+                    case "show-discovery-level-1":
+                        renderContent("discovery-level-1");
+                        break;
+                    case "show-discovery-level-2":
+                        renderContent("discovery-level-2");
+                        break;
+                    case "show-discovery-level-3":
+                        renderContent("discovery-level-3");
+                        break;
+                    case "show-discovery-level-4":
+                        renderContent("discovery-level-4");
+                        break;
+                    case "show-discovery-level-5":
+                        renderContent("discovery-level-5");
+                        break;
+                    case "show-elevator-pitch":
+                        renderContent("elevator-pitch");
+                        break;
+                    case "show-data-gathering":
+                        renderContent("data-gathering");
+                        break;
+                    case "show-regular-cleaning-staging":
+                        renderContent("regular-cleaning-staging");
+                        break;
+                    case "show-sales-pitch":
+                        renderContent("sales-pitch");
+                        break;
+                    case "show-sales-pitch-cohort-1-pt1":
+                        renderContent("sales-pitch-cohort-1-pt1");
+                        break;
+                    case "show-sales-pitch-cohort-1-pt2":
+                        renderContent("sales-pitch-cohort-1-pt2");
+                        break;
+                    case "show-sales-pitch-cohort-2-pt1":
+                        renderContent("sales-pitch-cohort-2-pt1");
+                        break;
+                    case "show-sales-pitch-cohort-2-pt2":
+                        renderContent("sales-pitch-cohort-2-pt2");
+                        break;
+                    case "show-sales-pitch-cohort-3-pt1":
+                        renderContent("sales-pitch-cohort-3-pt1");
+                        break;
+                    case "show-sales-pitch-cohort-3-pt2":
+                        renderContent("sales-pitch-cohort-3-pt2");
+                        break;
+                    case "show-sales-pitch-cohort-4-pt1":
+                        renderContent("sales-pitch-cohort-4-pt1");
+                        break;
+                    case "show-sales-pitch-cohort-4-pt2":
+                        renderContent("sales-pitch-cohort-4-pt2");
+                        break;
+                    case "show-sales-pitch-trial-one-time-pt1":
+                        renderContent("sales-pitch-trial-one-time-pt1");
+                        break;
+                    case "show-sales-pitch-trial-one-time-pt2":
+                        renderContent("sales-pitch-trial-one-time-pt2");
+                        break;
+                    case "show-sales-pitch-trial-one-time-pt3":
+                        renderContent("sales-pitch-trial-one-time-pt3");
+                        break;
+                    case "show-booking":
+                        renderContent("booking");
+                        break;
+                    case "show-booking-proper":
+                        renderContent("booking-proper");
+                        break;
+                    case "show-verbatim":
+                        renderContent("verbatim");
+                        break;
+                    case "show-final-offer":
+                        renderContent("final-offer");
+                        break;
+                    case "show-verbatim-dhj-voucher-full-etf":
+                        renderContent("verbatim-dhj-voucher-full-etf");
+                        break;
+                    case "show-verbatim-dhj-59-25-etf":
+                        renderContent("verbatim-dhj-59-25-etf");
+                        break;
+                    case "show-verbatim-dhj-59-35-etf":
+                        renderContent("verbatim-dhj-59-35-etf");
+                        break;
+                    case "show-verbatim-dhj-49-35-etf":
+                        renderContent("verbatim-dhj-49-35-etf");
+                        break;
+                    case "show-verbatim-trial-cleaning":
+                        renderContent("verbatim-trial-cleaning");
+                        break;
+                    case "show-verbatim-one-time-cleaning":
+                        renderContent("verbatim-one-time-cleaning");
+                        break;
+                    case "show-value-statements":
+                        renderContent("value-statements");
+                        break;
+                    case "show-value-statement-247-customer-service":
+                        renderContent("value-statement-247-customer-service");
+                        break;
+                    case "show-value-statement-price-cost-efficiency":
+                        renderContent("value-statement-price-cost-efficiency");
+                        break;
+                    case "show-value-statement-schedule-flexibility":
+                        renderContent("value-statement-schedule-flexibility");
+                        break;
+                    case "show-value-statement-top-rated-cleaners":
+                        renderContent("value-statement-top-rated-cleaners");
+                        break;
+                    case "show-value-statement-cleaning-professional-availability":
+                        renderContent("value-statement-cleaning-professional-availability");
+                        break;
+                    case "show-common-objections":
+                        renderContent("common-objections");
+                        break;
+                    case "show-objection-already-found-cleaner":
+                        renderContent("objection-already-found-cleaner");
+                        break;
+                    case "show-objection-consult-spouse":
+                        renderContent("objection-consult-spouse");
+                        break;
+                    case "show-objection-not-interested":
+                        renderContent("objection-not-interested");
+                        break;
+                    case "show-objection-thinks-scam":
+                        renderContent("objection-thinks-scam");
+                        break;
+                    case "show-objection-not-use-often":
+                        renderContent("objection-not-use-often");
+                        break;
+                    case "show-objection-no-card-info":
+                        renderContent("objection-no-card-info");
+                        break;
+                    case "show-objection-negative-review":
+                        renderContent("objection-negative-review");
+                        break;
+                    case "show-objection-pricing-concerns":
+                        renderContent("objection-pricing-concerns");
+                        break;
+                    case "show-objection-pay-in-cash":
+                        renderContent("objection-pay-in-cash");
+                        break;
+                    case "show-objection-no-membership":
+                        renderContent("objection-no-membership");
+                        break;
+                    case "show-objection-not-ready-to-book":
+                        renderContent("objection-not-ready-to-book");
+                        break;
+                    case "show-objection-competitors-affordable":
+                        renderContent("objection-competitors-affordable");
+                        break;
+                    case "show-discovery-questions":
+                        renderContent("discovery-questions");
+                        break;
+                    case "show-faqs":
+                        renderContent("faqs");
+                        break;
+                    case "show-faq-bonded-insured":
+                        renderContent("faq-bonded-insured");
+                        break;
+                    case "show-faq-book-tomorrow":
+                        renderContent("faq-book-tomorrow");
+                        break;
+                    case "show-faq-same-cleaner":
+                        renderContent("faq-same-cleaner");
+                        break;
+                    case "show-faq-bank-flagged-scam":
+                        renderContent("faq-bank-flagged-scam");
+                        break;
+                    case "show-faq-cleaner-supplies":
+                        renderContent("faq-cleaner-supplies");
+                        break;
+                    case "show-faq-cleaner-late-no-show":
+                        renderContent("faq-cleaner-late-no-show");
+                        break;
+                    case "show-faq-not-happy-refund":
+                        renderContent("faq-not-happy-refund");
+                        break;
+                    case "show-faq-included-service":
+                        renderContent("faq-included-service");
+                        break;
+                    case "show-faq-23-hr-rate":
+                        renderContent("faq-23-hr-rate");
+                        break;
+                    case "show-placeholder-system-notes":
+                        renderContent("placeholder-system-notes");
+                        break;
+                    case "show-sales-pitch-placeholder":
+                        renderContent("sales-pitch-placeholder");
+                        break;
+                    default:
+                        console.warn("Unknown action:", action);
+                }
+            }
         }
 
-        function isPremiumSelected() {
-            return document.querySelector('input[name="premium"]:checked').value === 'yes';
+        // Add event listeners
+        navButtons.forEach(button => {
+            button.addEventListener('click', handleNavClick);
+        });
+
+        bottomButtons.addEventListener('click', handleActionClick); // Event delegation for bottom buttons
+
+        // Initial render on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderContent(currentPhase);
+        });
+
+        /* Calculator Logic (from provided script.js, adapted for modals) */
+
+        // Cleaning Calculator Functions
+        function getRecommendedHours(beds, baths) {
+            beds = parseInt(beds);
+            baths = parseInt(baths);
+
+            // 6 HR if 3+ bedrooms or 3+ bathrooms
+            if (beds >= 3 || baths >= 3) return 6;
+
+            // 4 HR if 2 beds + 2 baths
+            if (beds === 2 && baths === 2) return 4;
+
+            // 4 HR if 1 bed + 2 baths, 2 beds + 1 bath, or 3 beds + 1 bath
+            if (
+                (beds === 1 && baths === 2) ||
+                (beds === 2 && baths === 1) ||
+                (beds === 3 && baths === 1)
+            ) return 4;
+
+            // 3 HR if 1 bed + 1 bath
+            if (beds === 1 && baths === 1) return 3;
+
+            // 2 HR if 0 bed + 1 bath
+            if (beds === 0 && baths === 1) return 2;
+
+            // Default fallback
+            return 2;
         }
 
         function getVoucherDiscount(hours) {
@@ -315,103 +1904,196 @@
             return 0;
         }
 
-        function getVoucherPrice(hours) {
-            return "$" + getVoucherDiscount(hours);
+        function getSelectedMembershipFee() {
+            const selectedRadio = document.querySelector('input[name="membershipFee"]:checked');
+            return selectedRadio ? parseInt(selectedRadio.value) : 49; // Default to 49 if none selected
         }
 
-        function showBothCalculations() {
-            const beds = parseInt(document.getElementById('bedrooms').value);
-            const baths = parseInt(document.getElementById('bathrooms').value);
-            const custom = parseFloat(document.getElementById('customHours').value);
+        function calculateAndDisplayCleaning(baseHours, elementId, isCustomInput) {
+            const membershipFee = getSelectedMembershipFee();
+            const frequency = parseInt(frequencySelect.value) || 1;
+
+            const rawPremium = premiumAmountInput.value.trim();
+            const premiumHours = rawPremium === '' || isNaN(rawPremium) ? 0 : parseFloat(rawPremium);
+
+            let totalHours = baseHours + premiumHours;
+
+            let voucherValue;
+            let voucherTotal;
+            let extraCharge = 0;
+
+            if (totalHours > 6) {
+                voucherValue = getVoucherDiscount(6); // Max voucher discount is for 6 hours
+                extraCharge = (totalHours - 6) * 23; // Additional hours at $23/hr
+                voucherTotal = voucherValue + extraCharge;
+            } else {
+                voucherValue = getVoucherDiscount(Math.ceil(totalHours));
+                voucherTotal = voucherValue;
+            }
+
+            const regular = 53 * totalHours * frequency;
+            const average = 75 * totalHours * frequency;
+            const discounted = 23 * totalHours;
+            const membershipCostPerCleaning = discounted; // This is the cost of cleaning with FC rate
+            const totalMonthlyMembershipCost = (membershipCostPerCleaning * frequency) + membershipFee;
+            const savingsVsNational = (75 * totalHours * frequency) - totalMonthlyMembershipCost;
+            const initialCleaningCostWithVoucher = voucherTotal;
+            const totalFirstMonthCost = initialCleaningCostWithVoucher + membershipFee;
+            const savingsWithVoucherVsRegular = (53 * totalHours) - initialCleaningCostWithVoucher;
+            const savingsWithVoucherVsNational = (75 * totalHours) - initialCleaningCostWithVoucher;
+
+
+            const targetElement = document.getElementById(elementId);
+            targetElement.innerHTML = `<div class="result-title">${isCustomInput ? 'Customer\'s Preferred Estimate' : 'Recommended Estimate'}</div>`;
+            targetElement.innerHTML += `
+                <p><strong>Total Cleaning Hours:</strong> ${totalHours} HR</p>
+                <p><strong>Initial Voucher Value:</strong> $${voucherValue.toFixed(2)}</p>
+                <p><strong>First Cleaning Cost (with Voucher):</strong> $${initialCleaningCostWithVoucher.toFixed(2)}</p>
+                <p><strong>First Month Total (First Cleaning + Membership):</strong> $${totalFirstMonthCost.toFixed(2)}</p>
+                <p><strong>Regular Rate ($53/hr):</strong> $${(53 * totalHours).toFixed(2)}</p>
+                <p><strong>National Average Rate ($75/hr):</strong> $${(75 * totalHours).toFixed(2)}</p>
+                <p><strong>ForeverClean Rate (roughly $23/hr for future cleanings):</strong> $${membershipCostPerCleaning.toFixed(2)} / cleaning</p>
+                <p><strong>Estimated Monthly Cost (FC Rate + Membership Fee):</strong> $${totalMonthlyMembershipCost.toFixed(2)}</p>
+                <p><span style="color:#00ff99;"><strong>Savings vs National Average (Monthly):</strong></span> $${savingsVsNational.toFixed(2)}</p>
+                <p><span style="color:#00ff99;"><strong>Initial Savings (vs Regular Rate):</strong></span> $${savingsWithVoucherVsRegular.toFixed(2)}</p>
+                <p><span style="color:#00ff99;"><strong>Initial Savings (vs National Average):</strong></span> $${savingsWithVoucherVsNational.toFixed(2)}</p>
+            `;
+
+            // Store globally if this is the recommended estimate (or the primary one to use for sales pitch)
+            if (!isCustomInput) {
+                lastRecommendedHours = totalHours;
+                lastFirstCleaningCost = initialCleaningCostWithVoucher;
+                lastEstimatedMonthlyCost = totalMonthlyMembershipCost;
+                lastVoucherAmount = voucherValue;
+                lastFcRatePerCleaning = membershipCostPerCleaning;
+            }
+        }
+
+        function generateSalesSpiel(hours) {
+            const nationalRate = 75;
+            const fcRate = 23;
+            const savingsPerHour = nationalRate - fcRate;
+            const totalSavings = savingsPerHour * hours;
+
+            return `
+                <div class="result-title">🗣️ Sales Pitch</div>
+                <p>Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for <strong>${hours} hour(s)</strong>.</p>
+                <p>Now normally, cleaners charge around <strong>$${nationalRate}/hour</strong>, which would come out to <strong>$${(nationalRate * hours).toFixed(2)}</strong>.</p>
+                <p>But with your <strong>Forever Clean membership</strong>, you only pay around <strong>$${fcRate}/hour</strong> — that’s just <strong>$${(fcRate * hours).toFixed(2)}</strong> total!</p>
+                <p>That’s a savings of <strong>$${totalSavings.toFixed(2)}</strong> right off the bat. Sounds pretty fair, right?</p>`;
+        }
+
+        function showCleaningCalculations() {
+            const beds = parseInt(bedroomsInput.value);
+            const baths = parseInt(bathroomsInput.value);
+            const custom = parseFloat(customHoursInput.value);
             const recommendedHours = getRecommendedHours(beds, baths);
 
-            document.getElementById('recommendationResult').innerHTML = '<div class="result-title">Recommended Estimate</div>';
-            document.getElementById('customResult').innerHTML = '<div class="result-title">Customer\'s Preference</div>';
+            // Clear previous results
+            recommendationResultDiv.innerHTML = '';
+            customResultDiv.innerHTML = '';
+            spielResultDiv.innerHTML = '';
 
-            calculateAndDisplay(recommendedHours, 'recommendationResult', true);
-            if (custom && custom > 0) calculateAndDisplay(custom, 'customResult', false);
-            else document.getElementById('customResult').innerHTML += '<em>No preferred hours entered.</em>';
-        }
+            // Display recommended estimate
+            calculateAndDisplayCleaning(recommendedHours, 'recommendationResult', false);
 
-        function calculateAndDisplay(hours, elementId, includeExtraHour) {
-            const membershipFee = getSelectedMembershipFee();
-            const isPremium = isPremiumSelected();
-            const frequency = parseInt(document.getElementById("frequency").value) || 1;
-            let premiumExtra = 0;
-
-            if (isPremium) {
-                const inputPremium = parseFloat(document.getElementById('premiumAmount').value) || 0;
-                if (hours > 6) premiumExtra += 25;
-                premiumExtra += inputPremium * 25;
-                if (includeExtraHour) hours += 1;
-            }
-
-            const voucherValue = getVoucherDiscount(hours); // numeric
-            const voucher = getVoucherPrice(hours); // string for display
-            const regular = 53 * hours * frequency;
-            const average = 75 * hours * frequency;
-            const discounted = 23 * hours;
-            const membership = (discounted * frequency) + premiumExtra;
-            const totalMembership = membership + membershipFee;
-            const totalDiscountedPerMonth = discounted * frequency;
-            const savingsVsNational = average - totalMembership;
-            let voucherTotal = 0;
-            if (hours > 6) {
-                voucherTotal = 79 + ((hours - 6) * 23);
+            // Display customer's preferred estimate if provided
+            if (!isNaN(custom) && custom > 0) {
+                calculateAndDisplayCleaning(custom, 'customResult', true);
             } else {
-                voucherTotal = getVoucherDiscount(hours);
+                customResultDiv.innerHTML = '<div class="result-title">Customer\'s Preference</div><em>No preferred hours entered.</em>';
             }
-            const savingsWithVoucher = regular - (voucherTotal + membershipFee);
-            const savingsWithVoucher2 = average - (voucherTotal + membershipFee); // ✅ Correct logic
-            voucherTotal2 = voucherTotal + membershipFee;
-            nationalMembership = average - discounted;
-            document.getElementById(elementId).innerHTML +=
-                `Recommended Hours: ${hours} HOURS 🕰️<br>` +
-                `CHOOSE $53/hr or $75/hr cleaning rate👇<br>` +
-                `Cleaning Rate ($53/hr): <span style="color: #FF0000;">$${regular.toFixed(2)}</span><br>` +
-                `National Cleaning Rate ($75/hr): <span style="color: #FF0000;">$${average.toFixed(2)}</span><br>` +
-                `FC rate at <span style="color: #FF0000;">ROUGHLY $23/hr</span>💪 ( ${frequency}x a month): $${totalDiscountedPerMonth.toFixed(2)} for ${hours} hours<br>` +
-                `FC membership and $23/hr rate($${totalDiscountedPerMonth.toFixed(2)}+ $${membershipFee} fee): $${totalMembership.toFixed(2)}<br>` +
-                `Voucher <span style="color: #FF0000;">IF its more than 6 hrs + $23/hr</span>"<br>:$${voucherTotal.toFixed(2)}<br>` +
-                `<span style="color: #00ff99;">FC savings with membership |$75hr(Regular):</span> $${savingsVsNational.toFixed(2)}<br>` +
-                `<span style="color: #00ff99;">FC savings on subsequent cleaning|$75/hr </span> <br>$${nationalMembership.toFixed(2)}<br>` +
-                `<span style="color: #00ff99;">FC voucher savings|$53/HR</span> <br>$${savingsWithVoucher.toFixed(2)}<br>` +
-                `<span style="color: #00ff99;">FC voucher savings initial clean|National</span> <br>$${savingsWithVoucher2.toFixed(2)}<br>` +
-                `<span style="color: #00ff99;">Voucher Value </span> $${voucherTotal.toFixed(2)} <span style="color: #00ff99;">plus membership</span> $${membershipFee} :</span> <br>$${voucherTotal2.toFixed(2)}` +
-                (elementId === 'customResult'
-                    ? `<br><br><em style="color: orange;">Extra hours = plus $23/hr.</em>` : '');
+
+            // Generate and display sales spiel based on recommended hours
+            spielResultDiv.innerHTML = generateSalesSpiel(recommendedHours);
         }
 
-        function calculateFee() {
-            const cohort = document.getElementById("cohort").value;
-            const hours = parseInt(document.getElementById("hours").value);
+        // ETF Calculator Function
+        function calculateEtfFee() {
+            const cohort = etfCohortSelect.value;
+            const hours = parseFloat(etfHoursInput.value);
             let fee = 0;
 
             if (isNaN(hours) || hours <= 0) {
-                document.getElementById("result").textContent = "Please enter valid hours.";
+                etfDisplayResult.textContent = "Please enter valid hours.";
+                lastCalculatedETF = 0; // Reset ETF if input is invalid
                 return;
             }
 
-            if (cohort === "cohort1") fee = (53 * hours) - getVoucherDiscount(hours);
-            else if (cohort === "cohort2") fee = 25 * hours;
-            else if (cohort === "cohort3" || cohort === "cohort4") fee = 35 * hours;
+            if (cohort === "cohort1") { // $49MF Full Price ETF
+                fee = (53 * hours) - getVoucherDiscount(hours);
+            } else if (cohort === "cohort2") { // $59MF $25/hr ETF
+                fee = 25 * hours;
+            } else if (cohort === "cohort3" || cohort === "cohort4") { // $59MF $35/hr ETF or $49MF $35/hr ETF
+                fee = 35 * hours;
+            }
 
-            document.getElementById("result").textContent = `Result: $${fee.toFixed(2)}`;
+            etfDisplayResult.textContent = `Result: $${fee.toFixed(2)}`;
+            lastCalculatedETF = fee; // Store the calculated ETF
         }
 
-        document.getElementById('hoursOtc').addEventListener('input', () => {
-            const hours = parseFloat(document.getElementById('hoursOtc').value);
-            const results = document.getElementById('resultsOtc');
-            results.innerHTML = '';
 
-            if (!isNaN(hours) && hours > 0) {
-                if (hours >= 3) results.innerHTML += `<div class="result"><strong>Regular 25|25:</strong> $${(hours * 57.75).toFixed(2)}</div>`;
-                results.innerHTML += `<div class="result"><strong>Regular 30|30:</strong> $${(hours * 63).toFixed(2)}</div>`;
-                results.innerHTML += `<div class="result"><strong>Trial Cleaning 20|20:</strong> $${(hours * 52.5).toFixed(2)}<div class="note">* Cancel within 30-day trial to avoid $99 cancellation.</div></div>`;
+        /* Modal Event Listeners */
+        openCleaningCalculatorBtn.addEventListener('click', () => {
+            cleaningCalculatorModal.classList.add('active');
+        });
+
+        closeCleaningCalculatorBtn.addEventListener('click', () => {
+            cleaningCalculatorModal.classList.remove('active');
+        });
+
+        openEtfCalculatorBtn.addEventListener('click', () => {
+            etfCalculatorModal.classList.add('active');
+        });
+
+        closeEtfCalculatorBtn.addEventListener('click', () => {
+            etfCalculatorModal.classList.remove('active');
+        });
+
+        // Close modals when clicking outside content
+        cleaningCalculatorModal.addEventListener('click', (e) => {
+            if (e.target === cleaningCalculatorModal) {
+                cleaningCalculatorModal.classList.remove('active');
             }
         });
+        etfCalculatorModal.addEventListener('click', (e) => {
+            if (e.target === etfCalculatorModal) {
+                etfCalculatorModal.classList.remove('active');
+            }
+        });
+
+        // Calculator Button Event Listeners
+        calculateCleaningEstimateBtn.addEventListener('click', showCleaningCalculations);
+        calculateEtfBtn.addEventListener('click', calculateEtfFee);
+
+        // Initial calculation for ETF when modal opens (optional, but good for default values)
+        etfCalculatorModal.addEventListener('transitionend', () => {
+            if (etfCalculatorModal.classList.contains('active')) {
+                calculateEtfFee(); // Calculate with default values when opened
+            }
+        });
+
+        // Initial calculation for Cleaning when modal opens (optional, but good for default values)
+        cleaningCalculatorModal.addEventListener('transitionend', () => {
+            if (cleaningCalculatorModal.classList.contains('active')) {
+                showCleaningCalculations(); // Calculate with default values when opened
+            }
+        });
+
+        // Ensure calculations update on input changes for ETF
+        etfCohortSelect.addEventListener('change', calculateEtfFee);
+        etfHoursInput.addEventListener('input', calculateEtfFee);
+
+        // Ensure calculations update on input changes for Cleaning
+        bedroomsInput.addEventListener('input', showCleaningCalculations);
+        bathroomsInput.addEventListener('input', showCleaningCalculations);
+        customHoursInput.addEventListener('input', showCleaningCalculations);
+        premiumAmountInput.addEventListener('input', showCleaningCalculations);
+        frequencySelect.addEventListener('change', showCleaningCalculations);
+        membershipFeeRadios.forEach(radio => {
+            radio.addEventListener('change', showCleaningCalculations);
+        });
+
     </script>
-
 </body>
-
 </html>
