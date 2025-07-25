@@ -355,6 +355,18 @@
         .floating-button.etf:hover {
             background-color: #9333ea; /* Darker purple */
         }
+        .floating-button.otc {
+            background-color: #3b82f6; /* Blue for OTC */
+        }
+        .floating-button.otc:hover {
+            background-color: #2563eb; /* Darker blue */
+        }
+        .floating-button.negotiation {
+            background-color: #10b981; /* Green for Negotiation */
+        }
+        .floating-button.negotiation:hover {
+            background-color: #059669; /* Darker green */
+        }
 
         /* Responsive for floating buttons */
         @media (max-width: 768px) {
@@ -368,10 +380,64 @@
                 font-size: 0.9rem;
             }
         }
+
+        /* Password Overlay Styles */
+        #password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            color: white;
+            text-align: center;
+        }
+        #password-overlay input[type="password"] {
+            padding: 1rem;
+            font-size: 1.25rem;
+            border-radius: 0.5rem;
+            border: 1px solid #777;
+            background-color: #555;
+            color: white;
+            margin-bottom: 1rem;
+            width: 80%;
+            max-width: 300px;
+        }
+        #password-overlay button {
+            background-color: #fcd34d;
+            color: #1a1a1a;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        #password-overlay button:hover {
+            background-color: #eab308;
+            transform: translateY(-1px);
+        }
+        #password-error {
+            color: #ef4444;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Password Overlay -->
+    <div id="password-overlay">
+        <h1 class="text-3xl font-bold mb-6">Enter Password to Access Guide</h1>
+        <input type="password" id="password-input" placeholder="Password">
+        <button id="password-submit">Submit</button>
+        <p id="password-error" class="hidden">Incorrect password. Please try again.</p>
+    </div>
+
+    <div class="container hidden" id="main-content">
         <div class="header" id="header-title">Phase 1: Opening Spiel</div>
 
         <div class="nav-bar" id="nav-bar">
@@ -404,7 +470,7 @@
     </div>
 
     <!-- Floating Calculator Buttons -->
-    <div class="floating-button-container">
+    <div class="floating-button-container hidden" id="floating-buttons-container">
         <button class="floating-button" id="open-cleaning-calculator">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h8"/><path d="M8 18h8"/></svg>
             Cleaning Calculator
@@ -412,6 +478,14 @@
         <button class="floating-button etf" id="open-etf-calculator">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             ETF Calculator
+        </button>
+        <button class="floating-button otc" id="open-otc-calculator">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            One-Time Cleaning
+        </button>
+        <button class="floating-button negotiation" id="open-negotiation-calculator">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-handshake"><path d="m11 17 2 2 4-4"/><path d="m5 12 2 2 4-4"/><path d="M7 19H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M18 19h-1a2 2 0 0 0-2 2v1"/></svg>
+            Negotiation
         </button>
     </div>
 
@@ -489,6 +563,66 @@
             <div id="etfResult" class="calculator-results">
                 <div class="result-title">Result:</div>
                 <p id="etf-display-result">Enter hours and select cohort to calculate.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- One-Time Cleaning Calculator Modal -->
+    <div id="otc-calculator-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-otc-calculator">&times;</button>
+            <h2 class="text-2xl font-bold mb-4">One-Time Cleaning Calculator</h2>
+
+            <div class="calculator-section">
+                <h3 class="text-xl font-semibold mb-2">One-Time Cleaning Rates</h3>
+                <div>
+                    <label for="hoursOtc">Hours for One-Time Cleaning:</label>
+                    <input type="number" id="hoursOtc" placeholder="e.g., 3.0" step="0.5" min="0">
+                </div>
+                <button id="calculate-otc">Calculate One-Time Cleaning</button>
+            </div>
+
+            <div id="resultsOtc" class="calculator-results">
+                <div class="result-title">One-Time Cleaning Options:</div>
+                <p>Enter hours to see options.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Negotiation Calculator Modal -->
+    <div id="negotiation-calculator-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-negotiation-calculator">&times;</button>
+            <h2 class="text-2xl font-bold mb-4">Negotiation Calculator</h2>
+
+            <div class="calculator-section">
+                <h3 class="text-xl font-semibold mb-2">Negotiated Membership Price</h3>
+                <div>
+                    <label for="plan">Current Membership Plan:</label>
+                    <select id="plan">
+                        <option value="49">$49/mo Plan</option>
+                        <option value="59">$59/mo Plan</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="discount">Negotiated Monthly Price:</label>
+                    <select id="discount">
+                        <!-- Options populated by JS -->
+                    </select>
+                </div>
+                <div class="radio-group">
+                    <label>Contract Term:</label>
+                    <label><input type="radio" name="term" value="3" checked> 3 Months</label>
+                    <label><input type="radio" name="term" value="6"> 6 Months</label>
+                    <label><input type="radio" name="term" value="9"> 9 Months</label>
+                    <label><input type="radio" name="term" value="12"> 12 Months</label>
+                </div>
+                <button id="calculate-negotiation">Calculate Negotiation</button>
+            </div>
+
+            <div id="negotiationResult" class="calculator-results">
+                <div class="result-title">Negotiation Result:</div>
+                <p>Negotiated Total: $0.00</p>
             </div>
         </div>
     </div>
@@ -625,7 +759,7 @@
             "sales-pitch-cohort-1-pt1": {
                 title: "Phase 5: Sales Pitch (I/II) – Cohort 1",
                 content: [
-                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]]</span>).",
+                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]] = $ [[NATIONAL_AVERAGE_TOTAL]]</span>).",
                     "Now with your FC Membership, you get to enjoy heavily-discounted rates of as low as around $23/hour for your cleanings. You mentioned earlier that you were looking to have your home cleaned ([[RECOMMENDED_HOURS]] hours, frequency) in a month. This means you're only looking at around [[ESTIMATED_MONTHLY_COST]]. How does this sound for you?",
                     "You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hour</span>) cleaning for only (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>)?",
                     "Excellent! I can get you one of our promotional vouchers for (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>) and that would cover the entire (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hours</span>) on your very first cleaning."
@@ -639,6 +773,7 @@
                 content: [
                     "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$49/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
                     "What's good about the membership is that you can cancel anytime.",
+                    "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
                     "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay the difference between the full price of your first cleaning minus the voucher purchase amount.</span>",
                     "Note: If the customer asks how much: \"That should be around <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span>\"",
                     `<table>
@@ -686,7 +821,7 @@
             "sales-pitch-cohort-2-pt1": {
                 title: "Phase 5: Sales Pitch (I/II) – Cohort 2",
                 content: [
-                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]]</span>).",
+                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]] = $ [[NATIONAL_AVERAGE_TOTAL]]</span>).",
                     "Now with your FC Membership, you get to enjoy heavily-discounted rates of as low as around $23/hour for your cleanings. You mentioned earlier that you were looking to have your home cleaned ([[RECOMMENDED_HOURS]] hours, frequency) in a month. This means you're only looking at around [[ESTIMATED_MONTHLY_COST]]. How does this sound for you?",
                     "You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hour</span>) cleaning for only (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>)?",
                     "Excellent! I can get you one of our promotional vouchers for (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>) and that would cover the entire (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hours</span>) on your very first cleaning."
@@ -700,6 +835,7 @@
                 content: [
                     "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$59/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
                     "What's good about the membership is that you can cancel anytime.",
+                    "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
                     "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
                     "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
                     `<table>
@@ -721,9 +857,7 @@
                             <tr>
                                 <td>4 Hours</td>
                                 <td>$100.00</td>
-                            </tr>
-                            <tr>
-                                <td>6 Hours</td>
+                            <td>6 Hours</td>
                                 <td>$150.00</td>
                             </tr>
                         </tbody>
@@ -737,7 +871,7 @@
             "sales-pitch-cohort-3-pt1": {
                 title: "Phase 5: Sales Pitch (I/II) – Cohort 3",
                 content: [
-                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]]</span>).",
+                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]] = $ [[NATIONAL_AVERAGE_TOTAL]]</span>).",
                     "Now with your FC Membership, you get to enjoy heavily-discounted rates of as low as around $23/hour for your cleanings. You mentioned earlier that you were looking to have your home cleaned ([[RECOMMENDED_HOURS]] hours, frequency) in a month. This means you're only looking at around [[ESTIMATED_MONTHLY_COST]]. How does this sound for you?",
                     "You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hour</span>) cleaning for only (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>)?",
                     "Excellent! I can get you one of our promotional vouchers for (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>) and that would cover the entire (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hours</span>) on your very first cleaning."
@@ -751,6 +885,7 @@
                 content: [
                     "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$59/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
                     "What's good about the membership is that you can cancel anytime.",
+                    "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
                     "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
                     "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
                     `<table>
@@ -788,7 +923,7 @@
             "sales-pitch-cohort-4-pt1": {
                 title: "Phase 5: Sales Pitch (I/II) – Cohort 4",
                 content: [
-                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]]</span>).",
+                    "Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for [[RECOMMENDED_HOURS]] hours. Based on national average, the regular price for that would be (<span style='font-weight: bold;'>$75 x [[RECOMMENDED_HOURS]] = $ [[NATIONAL_AVERAGE_TOTAL]]</span>).",
                     "Now with your FC Membership, you get to enjoy heavily-discounted rates of as low as around $23/hour for your cleanings. You mentioned earlier that you were looking to have your home cleaned ([[RECOMMENDED_HOURS]] hours, frequency) in a month. This means you're only looking at around [[ESTIMATED_MONTHLY_COST]]. How does this sound for you?",
                     "You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hour</span>) cleaning for only (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>)?",
                     "Excellent! I can get you one of our promotional vouchers for (<span style='font-weight: bold;'>$[[VOUCHER_AMOUNT]]</span>) and that would cover the entire (<span style='font-weight: bold;'>[[FIRST_CLEANING_HOURS]]-hours</span>) on your very first cleaning."
@@ -802,6 +937,7 @@
                 content: [
                     "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$49/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
                     "What's good about the membership is that you can cancel anytime.",
+                    "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
                     "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
                     "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
                     `<table>
@@ -841,8 +977,11 @@
                 content: [
                     "Step 1: Acknowledge and Present Cleaning Options",
                     "Got it! We'd be happy to take care of that for you!",
-                    "For a non-recurring cleaning, you've got a couple of great options:",
-                    "<ol><li>Standard One-Time Cleaning - this would be at our regular price of (<span style='font-weight: bold;'>$X for X hours</span>). If the cleaning goes over 3 hours, I can also apply a special discount to bring it down to (<span style='font-weight: bold;'>$Y</span>).</li><li>Trial Cleaning - you can also try us out for 30 days at a discounted rate of (<span style='font-weight: bold;'>$X</span>). If you love the service, it automatically rolls into our ForeverClean membership at (<span style='font-weight: bold;'>$49/$59</span>) per month with discounted rates on cleanings. You can cancel any time during the 30 days at no extra cost.</li></ol>",
+                    "<p>For a non-recurring cleaning, you've got a couple of great options:</p>",
+                    "<ol>",
+                    `<li>Standard One-Time Cleaning - this would be at our regular price of (<span style='font-weight: bold;'>$[[OTC_STANDARD_PRICE]] for [[OTC_HOURS]] hours</span>). If the cleaning goes over 3 hours, I can also apply a special discount to bring it down to (<span style='font-weight: bold;'>$[[OTC_DISCOUNTED_PRICE]]</span>).</li>`,
+                    `<li>Trial Cleaning - you can also try us out for 30 days at a discounted rate of (<span style='font-weight: bold;'>$[[OTC_TRIAL_PRICE]]</span>). If you love the service, it automatically rolls into our ForeverClean membership at (<span style='font-weight: bold;'>$49/$59</span>) per month with discounted rates on cleanings. You can cancel any time during the 30 days at no extra cost.</li>`,
+                    "</ol>",
                     "Would either of these work for what you need today?"
                 ],
                 buttons: [
@@ -912,7 +1051,7 @@
             "final-offer": {
                 title: "Phase 5: Sales Pitch – Final Offer",
                 content: [
-                    "Okay, so based on everything we've discussed, here’s what I can do for you. We can schedule your first cleaning for (X hours) for just ($Y). This includes [mention key benefits, e.g., deep cleaning of bathrooms and kitchen, dusting, vacuuming, mopping].",
+                    "Okay, so based on everything we've discussed, here’s what I can do for you. We can schedule your first cleaning for (<span style='font-weight: bold;'>[[RECOMMENDED_HOURS]] hours</span>) for just (<span style='font-weight: bold;'>$[[FIRST_CLEANING_COST]]</span>). This includes [mention key benefits, e.g., deep cleaning of bathrooms and kitchen, dusting, vacuuming, mopping].",
                     "And with the ForeverClean membership at ($49/$59) per month, you’ll get unlimited cleanings at a discounted rate of ($23/hr). This membership is flexible, and you can cancel anytime. If you cancel before the 6-month minimum term, you’d only pay the difference between the full price of your first cleaning and the voucher amount.",
                     "How does that sound? Are you ready to book your first cleaning and start enjoying a sparkling clean home?"
                 ],
@@ -943,6 +1082,7 @@
                     "S2: There's no alternate cleaning date. Is that correct?",
                     "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
                     "After your first appointment, your ForeverClean membership will start, and the first membership fee of $49 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
+                    "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
                     "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in your first cleaning on (<span style='color: red; font-weight: bold;'>date</span>) being charged at full price less the voucher purchase amount, that's around <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span>. Are these terms clear for you?",
                     `<table>
                         <thead>
@@ -995,6 +1135,7 @@
                     "S2: There's no alternate cleaning date. Is that correct?",
                     "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
                     "After your first appointment, your ForeverClean membership will start, and the first membership fee of $59 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
+                    "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
                     "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $25 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
                     `<table>
                         <thead>
@@ -1037,6 +1178,7 @@
                     "S2: There's no alternate cleaning date. Is that correct?",
                     "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
                     "After your first appointment, your ForeverClean membership will start, and the first membership fee of $59 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
+                    "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
                     "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
                     `<table>
                         <thead>
@@ -1079,6 +1221,7 @@
                     "S2: There's no alternate cleaning date. Is that correct?",
                     "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
                     "After your first appointment, your ForeverClean membership will start, and the first membership fee of $49 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
+                    "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
                     "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
                     `<table>
                         <thead>
@@ -1403,7 +1546,7 @@
             "faq-bonded-insured": {
                 title: "FAQs – Are your cleaners bonded and insured?",
                 content: [
-                    "S1: Every Cleaning Professional on Homeaglow has passed through extensive certification and strict criminal background check. And while we do not provide insurance, many of the Cleaning Professionals joined Homeaglow having operated their own cleaning businesses and many choose to carry their own bonding and insurance.",
+                    "S1: Every Cleaning Professional on Homeaglow has passed through extensive certification and strict criminal background check. And while we do not provide insurance, many of the Cleaning Professionals joined Homeaglow having operated their own cleaning businesses and many choose to carry their own bonding and and insurance.",
                     "S2: You would be delighted to know that while the Cleaning Professionals who get onboard the Homeaglow platform are independent contractors, they all go through extensive certification and strict criminal background checking. This gives you the peace of mind knowing that the person you let in your home is someone who has gone through strict screening."
                 ],
                 buttons: [
@@ -1522,6 +1665,14 @@
         let lastVoucherAmount = 0;
         let lastFcRatePerCleaning = 0;
         let lastCalculatedETF = 0;
+        let lastNationalAverageTotal = 0; // New global variable for $75 x hours total
+
+        // New global variables for One-Time Cleaning Calculator
+        let lastOtcHours = 0;
+        let lastOtcStandardPrice = 0;
+        let lastOtcDiscountedPrice = 0; // This will hold the "Regular 30|30" price for now
+        let lastOtcTrialPrice = 0;
+
 
         // Get DOM elements
         const headerTitle = document.getElementById('header-title');
@@ -1529,6 +1680,14 @@
         const contentArea = document.getElementById('content-area');
         const bottomButtons = document.getElementById('bottom-buttons');
         const navButtons = document.querySelectorAll('.nav-button[data-phase]');
+
+        // Password elements
+        const passwordOverlay = document.getElementById('password-overlay');
+        const passwordInput = document.getElementById('password-input');
+        const passwordSubmitBtn = document.getElementById('password-submit');
+        const passwordError = document.getElementById('password-error');
+        const mainContent = document.getElementById('main-content');
+        const floatingButtonsContainer = document.getElementById('floating-buttons-container');
 
         // Calculator Modals and Buttons
         const cleaningCalculatorModal = document.getElementById('cleaning-calculator-modal');
@@ -1538,6 +1697,14 @@
         const etfCalculatorModal = document.getElementById('etf-calculator-modal');
         const openEtfCalculatorBtn = document.getElementById('open-etf-calculator');
         const closeEtfCalculatorBtn = document.getElementById('close-etf-calculator');
+
+        const otcCalculatorModal = document.getElementById('otc-calculator-modal');
+        const openOtcCalculatorBtn = document.getElementById('open-otc-calculator');
+        const closeOtcCalculatorBtn = document.getElementById('close-otc-calculator');
+
+        const negotiationCalculatorModal = document.getElementById('negotiation-calculator-modal');
+        const openNegotiationCalculatorBtn = document.getElementById('open-negotiation-calculator');
+        const closeNegotiationCalculatorBtn = document.getElementById('close-negotiation-calculator');
 
         // Calculator input elements
         const bedroomsInput = document.getElementById('bedrooms');
@@ -1556,6 +1723,16 @@
         const etfHoursInput = document.getElementById('hours');
         const calculateEtfBtn = document.getElementById('calculate-etf');
         const etfDisplayResult = document.getElementById('etf-display-result');
+
+        const hoursOtcInput = document.getElementById('hoursOtc');
+        const calculateOtcBtn = document.getElementById('calculate-otc');
+        const resultsOtcDiv = document.getElementById('resultsOtc');
+
+        const planSelect = document.getElementById('plan');
+        const discountSelect = document.getElementById('discount');
+        const termRadios = document.querySelectorAll('input[name="term"]');
+        const calculateNegotiationBtn = document.getElementById('calculate-negotiation');
+        const negotiationResultDiv = document.getElementById('negotiationResult');
 
 
         let currentPhase = "opening-spiel"; // Initial phase
@@ -1598,6 +1775,24 @@
                 // Only replace ETF if it's a specific ETF value, not 0 (default)
                 if (lastCalculatedETF > 0) {
                     processedText = processedText.replace(/\[\[ETF_CALCULATED_VALUE\]\]/g, lastCalculatedETF.toFixed(2));
+                }
+                // Replace national average total
+                if (lastNationalAverageTotal > 0) {
+                    processedText = processedText.replace(/\[\[NATIONAL_AVERAGE_TOTAL\]\]/g, lastNationalAverageTotal.toFixed(2));
+                }
+
+                // Replace One-Time Cleaning placeholders
+                if (lastOtcHours > 0) {
+                    processedText = processedText.replace(/\[\[OTC_HOURS\]\]/g, lastOtcHours.toFixed(1));
+                }
+                if (lastOtcStandardPrice > 0) {
+                    processedText = processedText.replace(/\[\[OTC_STANDARD_PRICE\]\]/g, lastOtcStandardPrice.toFixed(2));
+                }
+                if (lastOtcDiscountedPrice > 0) {
+                    processedText = processedText.replace(/\[\[OTC_DISCOUNTED_PRICE\]\]/g, lastOtcDiscountedPrice.toFixed(2));
+                }
+                if (lastOtcTrialPrice > 0) {
+                    processedText = processedText.replace(/\[\[OTC_TRIAL_PRICE\]\]/g, lastOtcTrialPrice.toFixed(2));
                 }
 
 
@@ -1827,7 +2022,7 @@
                     case "show-faq-bank-flagged-scam":
                         renderContent("faq-bank-flagged-scam");
                         break;
-                    case "show-faq-cleaner-supplies":
+                    case "faq-cleaner-supplies":
                         renderContent("faq-cleaner-supplies");
                         break;
                     case "show-faq-cleaner-late-no-show":
@@ -1861,10 +2056,33 @@
 
         bottomButtons.addEventListener('click', handleActionClick); // Event delegation for bottom buttons
 
-        // Initial render on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            renderContent(currentPhase);
+        // Initial render on page load is now handled after password check
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     renderContent(currentPhase);
+        // });
+
+        /* Password Protection Logic */
+        passwordSubmitBtn.addEventListener('click', () => {
+            const enteredPassword = passwordInput.value;
+            const correctPassword = "1994"; // The required password
+
+            if (enteredPassword === correctPassword) {
+                passwordOverlay.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                floatingButtonsContainer.classList.remove('hidden');
+                renderContent(currentPhase); // Render content after successful login
+            } else {
+                passwordError.classList.remove('hidden');
+                passwordInput.value = ''; // Clear input on error
+            }
         });
+
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                passwordSubmitBtn.click();
+            }
+        });
+
 
         /* Calculator Logic (from provided script.js, adapted for modals) */
 
@@ -1931,16 +2149,14 @@
                 voucherTotal = voucherValue;
             }
 
-            const regular = 53 * totalHours * frequency;
-            const average = 75 * totalHours * frequency;
-            const discounted = 23 * totalHours;
-            const membershipCostPerCleaning = discounted; // This is the cost of cleaning with FC rate
+            const nationalAverageRate = 75; // Define national average rate
+            const membershipCostPerCleaning = 23 * totalHours; // This is the cost of cleaning with FC rate
             const totalMonthlyMembershipCost = (membershipCostPerCleaning * frequency) + membershipFee;
-            const savingsVsNational = (75 * totalHours * frequency) - totalMonthlyMembershipCost;
+            const savingsVsNational = (nationalAverageRate * totalHours * frequency) - totalMonthlyMembershipCost;
             const initialCleaningCostWithVoucher = voucherTotal;
             const totalFirstMonthCost = initialCleaningCostWithVoucher + membershipFee;
             const savingsWithVoucherVsRegular = (53 * totalHours) - initialCleaningCostWithVoucher;
-            const savingsWithVoucherVsNational = (75 * totalHours) - initialCleaningCostWithVoucher;
+            const savingsWithVoucherVsNational = (nationalAverageRate * totalHours) - initialCleaningCostWithVoucher;
 
 
             const targetElement = document.getElementById(elementId);
@@ -1951,7 +2167,7 @@
                 <p><strong>First Cleaning Cost (with Voucher):</strong> $${initialCleaningCostWithVoucher.toFixed(2)}</p>
                 <p><strong>First Month Total (First Cleaning + Membership):</strong> $${totalFirstMonthCost.toFixed(2)}</p>
                 <p><strong>Regular Rate ($53/hr):</strong> $${(53 * totalHours).toFixed(2)}</p>
-                <p><strong>National Average Rate ($75/hr):</strong> $${(75 * totalHours).toFixed(2)}</p>
+                <p><strong>National Average Rate ($75/hr):</strong> $${(nationalAverageRate * totalHours).toFixed(2)}</p>
                 <p><strong>ForeverClean Rate (roughly $23/hr for future cleanings):</strong> $${membershipCostPerCleaning.toFixed(2)} / cleaning</p>
                 <p><strong>Estimated Monthly Cost (FC Rate + Membership Fee):</strong> $${totalMonthlyMembershipCost.toFixed(2)}</p>
                 <p><span style="color:#00ff99;"><strong>Savings vs National Average (Monthly):</strong></span> $${savingsVsNational.toFixed(2)}</p>
@@ -1966,6 +2182,7 @@
                 lastEstimatedMonthlyCost = totalMonthlyMembershipCost;
                 lastVoucherAmount = voucherValue;
                 lastFcRatePerCleaning = membershipCostPerCleaning;
+                lastNationalAverageTotal = nationalAverageRate * totalHours; // Store the calculated total
             }
         }
 
@@ -2032,53 +2249,140 @@
             lastCalculatedETF = fee; // Store the calculated ETF
         }
 
+        // One-Time Cleaning Calculator Functions
+        function calculateOtcPrices() {
+            const hours = parseFloat(hoursOtcInput.value);
+            resultsOtcDiv.innerHTML = '';
+
+            if (isNaN(hours) || hours <= 0) {
+                resultsOtcDiv.innerHTML += `<p>Please enter valid hours.</p>`;
+                lastOtcHours = 0;
+                lastOtcStandardPrice = 0;
+                lastOtcDiscountedPrice = 0;
+                lastOtcTrialPrice = 0;
+                return;
+            }
+
+            // Store values globally
+            lastOtcHours = hours;
+            lastOtcStandardPrice = (hours * 57.75); // Regular 25|25
+            lastOtcDiscountedPrice = (hours * 63); // Regular 30|30 (used for $Y, assuming this is the "discount" for >3 hours)
+
+            // Trial Cleaning calculation: $52.5 per hour, minimum of 2 hours for calculation
+            let calculatedTrialHours = Math.max(hours, 2); // Ensure minimum of 2 hours for calculation
+            lastOtcTrialPrice = calculatedTrialHours * 52.5;
+
+
+            resultsOtcDiv.innerHTML += `<div class="result"><strong>Regular 25|25:</strong> $${lastOtcStandardPrice.toFixed(2)}</div>`;
+            resultsOtcDiv.innerHTML += `<div class="result"><strong>Regular 30|30:</strong> $${lastOtcDiscountedPrice.toFixed(2)}</div>`;
+            resultsOtcDiv.innerHTML += `<div class="result"><strong>Trial Cleaning:</strong> $${lastOtcTrialPrice.toFixed(2)}</div>`;
+        }
+
+        // Negotiation Calculator Functions
+        function updateDiscountOptions() {
+            const plan = planSelect.value;
+            discountSelect.innerHTML = ''; // Clear existing options
+
+            let prices;
+            if (plan === '49') {
+                prices = [49, 44, 39]; // $49 plan can be negotiated down to $44, $39
+            } else { // plan === '59'
+                prices = [59, 54, 49]; // $59 plan can be negotiated down to $54, $49
+            }
+
+            prices.forEach(price => {
+                const option = document.createElement('option');
+                option.value = price;
+                option.textContent = `$${price.toFixed(2)} / mo`;
+                discountSelect.appendChild(option);
+            });
+
+            // Recalculate negotiation total after updating options
+            calculateNegotiatedPrice();
+        }
+
+        function calculateNegotiatedPrice() {
+            const monthly = parseFloat(discountSelect.value);
+            const term = parseInt(document.querySelector('input[name="term"]:checked').value);
+            const total = monthly * term;
+            negotiationResultDiv.innerHTML = `<div class="result-title">Negotiation Result:</div><p>Negotiated Total: $${total.toFixed(2)}</p>`;
+        }
+
 
         /* Modal Event Listeners */
         openCleaningCalculatorBtn.addEventListener('click', () => {
             cleaningCalculatorModal.classList.add('active');
+            showCleaningCalculations(); // Initial calculation when opened
         });
 
         closeCleaningCalculatorBtn.addEventListener('click', () => {
             cleaningCalculatorModal.classList.remove('active');
+            renderContent(currentPhase); // Re-render main content after closing
         });
 
         openEtfCalculatorBtn.addEventListener('click', () => {
             etfCalculatorModal.classList.add('active');
+            calculateEtfFee(); // Initial calculation when opened
         });
 
         closeEtfCalculatorBtn.addEventListener('click', () => {
             etfCalculatorModal.classList.remove('active');
+            renderContent(currentPhase); // Re-render main content after closing
         });
+
+        openOtcCalculatorBtn.addEventListener('click', () => {
+            otcCalculatorModal.classList.add('active');
+            calculateOtcPrices(); // Initial calculation when opened
+        });
+
+        closeOtcCalculatorBtn.addEventListener('click', () => {
+            otcCalculatorModal.classList.remove('active');
+            renderContent(currentPhase); // Re-render main content after closing
+        });
+
+        openNegotiationCalculatorBtn.addEventListener('click', () => {
+            negotiationCalculatorModal.classList.add('active');
+            updateDiscountOptions(); // Populate discounts and calculate on open
+        });
+
+        closeNegotiationCalculatorBtn.addEventListener('click', () => {
+            negotiationCalculatorModal.classList.remove('active');
+            renderContent(currentPhase); // Re-render main content after closing
+        });
+
 
         // Close modals when clicking outside content
         cleaningCalculatorModal.addEventListener('click', (e) => {
             if (e.target === cleaningCalculatorModal) {
                 cleaningCalculatorModal.classList.remove('active');
+                renderContent(currentPhase);
             }
         });
         etfCalculatorModal.addEventListener('click', (e) => {
             if (e.target === etfCalculatorModal) {
                 etfCalculatorModal.classList.remove('active');
+                renderContent(currentPhase);
             }
         });
+        otcCalculatorModal.addEventListener('click', (e) => {
+            if (e.target === otcCalculatorModal) {
+                otcCalculatorModal.classList.remove('active');
+                renderContent(currentPhase);
+            }
+        });
+        negotiationCalculatorModal.addEventListener('click', (e) => {
+            if (e.target === negotiationCalculatorModal) {
+                negotiationCalculatorModal.classList.remove('active');
+                renderContent(currentPhase);
+            }
+        });
+
 
         // Calculator Button Event Listeners
         calculateCleaningEstimateBtn.addEventListener('click', showCleaningCalculations);
         calculateEtfBtn.addEventListener('click', calculateEtfFee);
-
-        // Initial calculation for ETF when modal opens (optional, but good for default values)
-        etfCalculatorModal.addEventListener('transitionend', () => {
-            if (etfCalculatorModal.classList.contains('active')) {
-                calculateEtfFee(); // Calculate with default values when opened
-            }
-        });
-
-        // Initial calculation for Cleaning when modal opens (optional, but good for default values)
-        cleaningCalculatorModal.addEventListener('transitionend', () => {
-            if (cleaningCalculatorModal.classList.contains('active')) {
-                showCleaningCalculations(); // Calculate with default values when opened
-            }
-        });
+        calculateOtcBtn.addEventListener('click', calculateOtcPrices);
+        calculateNegotiationBtn.addEventListener('click', calculateNegotiatedPrice);
 
         // Ensure calculations update on input changes for ETF
         etfCohortSelect.addEventListener('change', calculateEtfFee);
@@ -2092,6 +2396,16 @@
         frequencySelect.addEventListener('change', showCleaningCalculations);
         membershipFeeRadios.forEach(radio => {
             radio.addEventListener('change', showCleaningCalculations);
+        });
+
+        // Ensure calculations update on input changes for OTC
+        hoursOtcInput.addEventListener('input', calculateOtcPrices);
+
+        // Ensure calculations update on input changes for Negotiation
+        planSelect.addEventListener('change', updateDiscountOptions); // Changes discount options
+        discountSelect.addEventListener('change', calculateNegotiatedPrice); // Selects a new discount
+        termRadios.forEach(radio => {
+            radio.addEventListener('change', calculateNegotiatedPrice); // Changes term
         });
 
     </script>
