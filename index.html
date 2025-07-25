@@ -380,64 +380,10 @@
                 font-size: 0.9rem;
             }
         }
-
-        /* Password Overlay Styles */
-        #password-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #1a1a1a;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            color: white;
-            text-align: center;
-        }
-        #password-overlay input[type="password"] {
-            padding: 1rem;
-            font-size: 1.25rem;
-            border-radius: 0.5rem;
-            border: 1px solid #777;
-            background-color: #555;
-            color: white;
-            margin-bottom: 1rem;
-            width: 80%;
-            max-width: 300px;
-        }
-        #password-overlay button {
-            background-color: #fcd34d;
-            color: #1a1a1a;
-            padding: 0.75rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-        }
-        #password-overlay button:hover {
-            background-color: #eab308;
-            transform: translateY(-1px);
-        }
-        #password-error {
-            color: #ef4444;
-            margin-top: 0.5rem;
-            font-weight: 500;
-        }
     </style>
 </head>
 <body>
-    <!-- Password Overlay -->
-    <div id="password-overlay">
-        <h1 class="text-3xl font-bold mb-6">Enter Password to Access Guide</h1>
-        <input type="password" id="password-input" placeholder="Password">
-        <button id="password-submit">Submit</button>
-        <p id="password-error" class="hidden">Incorrect password. Please try again.</p>
-    </div>
-
-    <div class="container hidden" id="main-content">
+    <div class="container" id="main-content">
         <div class="header" id="header-title">Phase 1: Opening Spiel</div>
 
         <div class="nav-bar" id="nav-bar">
@@ -470,7 +416,7 @@
     </div>
 
     <!-- Floating Calculator Buttons -->
-    <div class="floating-button-container hidden" id="floating-buttons-container">
+    <div class="floating-button-container" id="floating-buttons-container">
         <button class="floating-button" id="open-cleaning-calculator">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h8"/><path d="M8 18h8"/></svg>
             Cleaning Calculator
@@ -1674,22 +1620,17 @@
         let lastOtcTrialPrice = 0;
 
 
-        // Get DOM elements
+        // Get DOM elements (initial query, some will be re-queried after content is visible)
         const headerTitle = document.getElementById('header-title');
         const navBar = document.getElementById('nav-bar');
         const contentArea = document.getElementById('content-area');
         const bottomButtons = document.getElementById('bottom-buttons');
-        const navButtons = document.querySelectorAll('.nav-button[data-phase]');
 
-        // Password elements
-        const passwordOverlay = document.getElementById('password-overlay');
-        const passwordInput = document.getElementById('password-input');
-        const passwordSubmitBtn = document.getElementById('password-submit');
-        const passwordError = document.getElementById('password-error');
+        // Main content and floating buttons containers
         const mainContent = document.getElementById('main-content');
         const floatingButtonsContainer = document.getElementById('floating-buttons-container');
 
-        // Calculator Modals and Buttons
+        // Calculator Modals and Buttons (queried by ID, so they are fine here)
         const cleaningCalculatorModal = document.getElementById('cleaning-calculator-modal');
         const openCleaningCalculatorBtn = document.getElementById('open-cleaning-calculator');
         const closeCleaningCalculatorBtn = document.getElementById('close-cleaning-calculator');
@@ -1706,12 +1647,13 @@
         const openNegotiationCalculatorBtn = document.getElementById('open-negotiation-calculator');
         const closeNegotiationCalculatorBtn = document.getElementById('close-negotiation-calculator');
 
-        // Calculator input elements
+        // Calculator input elements (queried by ID, so they are fine here)
         const bedroomsInput = document.getElementById('bedrooms');
         const bathroomsInput = document.getElementById('bathrooms');
         const customHoursInput = document.getElementById('customHours');
         const premiumAmountInput = document.getElementById('premiumAmount');
         const frequencySelect = document.getElementById('frequency');
+        // This needs to be re-queried if added dynamically, but they are static here.
         const membershipFeeRadios = document.querySelectorAll('input[name="membershipFee"]');
 
         const calculateCleaningEstimateBtn = document.getElementById('calculate-cleaning-estimate');
@@ -1730,6 +1672,7 @@
 
         const planSelect = document.getElementById('plan');
         const discountSelect = document.getElementById('discount');
+        // This needs to be re-queried if added dynamically, but they are static here.
         const termRadios = document.querySelectorAll('input[name="term"]');
         const calculateNegotiationBtn = document.getElementById('calculate-negotiation');
         const negotiationResultDiv = document.getElementById('negotiationResult');
@@ -1813,7 +1756,9 @@
             });
 
             // Update active navigation button
-            navButtons.forEach(btn => {
+            // Re-query navButtons here to ensure they are present in the DOM
+            const currentNavButtons = document.querySelectorAll('.nav-button[data-phase]');
+            currentNavButtons.forEach(btn => {
                 btn.classList.remove('active');
                 // For sub-phases like discovery-level-1, highlight the main 'discovery' nav button
                 const mainPhase = phaseKey.split('-')[0];
@@ -1822,7 +1767,7 @@
                     if (phaseKey.startsWith('discovery-level-') && btn.getAttribute('data-phase') === 'discovery-questions') {
                         btn.classList.add('active');
                     } else if (btn.getAttribute('data-phase') === mainPhase) {
-                         btn.classList.add('active');
+                        btn.classList.add('active');
                     }
                 } else if (phaseKey.startsWith('faq-') && btn.getAttribute('data-phase') === 'faqs') {
                     btn.classList.add('active');
@@ -1963,7 +1908,7 @@
                         renderContent("value-statement-top-rated-cleaners");
                         break;
                     case "show-value-statement-cleaning-professional-availability":
-                        renderContent("value-statement-cleaning-professional-availability");
+                        renderContent("value-value-statement-cleaning-professional-availability");
                         break;
                     case "show-common-objections":
                         renderContent("common-objections");
@@ -2048,41 +1993,6 @@
                 }
             }
         }
-
-        // Add event listeners
-        navButtons.forEach(button => {
-            button.addEventListener('click', handleNavClick);
-        });
-
-        bottomButtons.addEventListener('click', handleActionClick); // Event delegation for bottom buttons
-
-        // Initial render on page load is now handled after password check
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     renderContent(currentPhase);
-        // });
-
-        /* Password Protection Logic */
-        passwordSubmitBtn.addEventListener('click', () => {
-            const enteredPassword = passwordInput.value;
-            const correctPassword = "1994"; // The required password
-
-            if (enteredPassword === correctPassword) {
-                passwordOverlay.classList.add('hidden');
-                mainContent.classList.remove('hidden');
-                floatingButtonsContainer.classList.remove('hidden');
-                renderContent(currentPhase); // Render content after successful login
-            } else {
-                passwordError.classList.remove('hidden');
-                passwordInput.value = ''; // Clear input on error
-            }
-        });
-
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                passwordSubmitBtn.click();
-            }
-        });
-
 
         /* Calculator Logic (from provided script.js, adapted for modals) */
 
@@ -2309,105 +2219,122 @@
         }
 
 
-        /* Modal Event Listeners */
-        openCleaningCalculatorBtn.addEventListener('click', () => {
-            cleaningCalculatorModal.classList.add('active');
-            showCleaningCalculations(); // Initial calculation when opened
-        });
+        /**
+         * Attaches all necessary event listeners to the main content elements.
+         * This function should be called ONLY after the main content is visible.
+         */
+        function attachMainContentEventListeners() {
+            // Re-query navButtons after they are visible to ensure listeners are attached to live elements
+            const navButtons = document.querySelectorAll('.nav-button[data-phase]');
+            navButtons.forEach(button => {
+                button.addEventListener('click', handleNavClick);
+            });
 
-        closeCleaningCalculatorBtn.addEventListener('click', () => {
-            cleaningCalculatorModal.classList.remove('active');
-            renderContent(currentPhase); // Re-render main content after closing
-        });
+            // Event delegation for bottom buttons
+            bottomButtons.addEventListener('click', handleActionClick);
 
-        openEtfCalculatorBtn.addEventListener('click', () => {
-            etfCalculatorModal.classList.add('active');
-            calculateEtfFee(); // Initial calculation when opened
-        });
-
-        closeEtfCalculatorBtn.addEventListener('click', () => {
-            etfCalculatorModal.classList.remove('active');
-            renderContent(currentPhase); // Re-render main content after closing
-        });
-
-        openOtcCalculatorBtn.addEventListener('click', () => {
-            otcCalculatorModal.classList.add('active');
-            calculateOtcPrices(); // Initial calculation when opened
-        });
-
-        closeOtcCalculatorBtn.addEventListener('click', () => {
-            otcCalculatorModal.classList.remove('active');
-            renderContent(currentPhase); // Re-render main content after closing
-        });
-
-        openNegotiationCalculatorBtn.addEventListener('click', () => {
-            negotiationCalculatorModal.classList.add('active');
-            updateDiscountOptions(); // Populate discounts and calculate on open
-        });
-
-        closeNegotiationCalculatorBtn.addEventListener('click', () => {
-            negotiationCalculatorModal.classList.remove('active');
-            renderContent(currentPhase); // Re-render main content after closing
-        });
-
-
-        // Close modals when clicking outside content
-        cleaningCalculatorModal.addEventListener('click', (e) => {
-            if (e.target === cleaningCalculatorModal) {
+            // Calculator Modal Event Listeners
+            openCleaningCalculatorBtn.addEventListener('click', () => {
+                cleaningCalculatorModal.classList.add('active');
+                showCleaningCalculations(); // Initial calculation when opened
+            });
+            closeCleaningCalculatorBtn.addEventListener('click', () => {
                 cleaningCalculatorModal.classList.remove('active');
-                renderContent(currentPhase);
-            }
-        });
-        etfCalculatorModal.addEventListener('click', (e) => {
-            if (e.target === etfCalculatorModal) {
+                renderContent(currentPhase); // Re-render main content after closing
+            });
+
+            openEtfCalculatorBtn.addEventListener('click', () => {
+                etfCalculatorModal.classList.add('active');
+                calculateEtfFee(); // Initial calculation when opened
+            });
+            closeEtfCalculatorBtn.addEventListener('click', () => {
                 etfCalculatorModal.classList.remove('active');
-                renderContent(currentPhase);
-            }
-        });
-        otcCalculatorModal.addEventListener('click', (e) => {
-            if (e.target === otcCalculatorModal) {
+                renderContent(currentPhase); // Re-render main content after closing
+            });
+
+            openOtcCalculatorBtn.addEventListener('click', () => {
+                otcCalculatorModal.classList.add('active');
+                calculateOtcPrices(); // Initial calculation when opened
+            });
+            closeOtcCalculatorBtn.addEventListener('click', () => {
                 otcCalculatorModal.classList.remove('active');
-                renderContent(currentPhase);
-            }
-        });
-        negotiationCalculatorModal.addEventListener('click', (e) => {
-            if (e.target === negotiationCalculatorModal) {
+                renderContent(currentPhase); // Re-render main content after closing
+            });
+
+            openNegotiationCalculatorBtn.addEventListener('click', () => {
+                negotiationCalculatorModal.classList.add('active');
+                updateDiscountOptions(); // Populate discounts and calculate on open
+            });
+            closeNegotiationCalculatorBtn.addEventListener('click', () => {
                 negotiationCalculatorModal.classList.remove('active');
-                renderContent(currentPhase);
-            }
+                renderContent(currentPhase); // Re-render main content after closing
+            });
+
+            // Close modals when clicking outside content
+            cleaningCalculatorModal.addEventListener('click', (e) => {
+                if (e.target === cleaningCalculatorModal) {
+                    cleaningCalculatorModal.classList.remove('active');
+                    renderContent(currentPhase);
+                }
+            });
+            etfCalculatorModal.addEventListener('click', (e) => {
+                if (e.target === etfCalculatorModal) {
+                    etfCalculatorModal.classList.remove('active');
+                    renderContent(currentPhase);
+                }
+            });
+            otcCalculatorModal.addEventListener('click', (e) => {
+                if (e.target === otcCalculatorModal) {
+                    otcCalculatorModal.classList.remove('active');
+                    renderContent(currentPhase);
+                }
+            });
+            negotiationCalculatorModal.addEventListener('click', (e) => {
+                if (e.target === negotiationCalculatorModal) {
+                    negotiationCalculatorModal.classList.remove('active');
+                    renderContent(currentPhase);
+                }
+            });
+
+            // Calculator Button Event Listeners
+            calculateCleaningEstimateBtn.addEventListener('click', showCleaningCalculations);
+            calculateEtfBtn.addEventListener('click', calculateEtfFee);
+            calculateOtcBtn.addEventListener('click', calculateOtcPrices);
+            calculateNegotiationBtn.addEventListener('click', calculateNegotiatedPrice);
+
+            // Ensure calculations update on input changes for ETF
+            etfCohortSelect.addEventListener('change', calculateEtfFee);
+            etfHoursInput.addEventListener('input', calculateEtfFee);
+
+            // Ensure calculations update on input changes for Cleaning
+            bedroomsInput.addEventListener('input', showCleaningCalculations);
+            bathroomsInput.addEventListener('input', showCleaningCalculations);
+            customHoursInput.addEventListener('input', showCleaningCalculations);
+            premiumAmountInput.addEventListener('input', showCleaningCalculations);
+            frequencySelect.addEventListener('change', showCleaningCalculations);
+            membershipFeeRadios.forEach(radio => {
+                radio.addEventListener('change', showCleaningCalculations);
+            });
+
+            // Ensure calculations update on input changes for OTC
+            hoursOtcInput.addEventListener('input', calculateOtcPrices);
+
+            // Ensure calculations update on input changes for Negotiation
+            planSelect.addEventListener('change', updateDiscountOptions); // Changes discount options
+            discountSelect.addEventListener('change', calculateNegotiatedPrice); // Selects a new discount
+            termRadios.forEach(radio => {
+                radio.addEventListener('change', calculateNegotiatedPrice); // Changes term
+            });
+        }
+
+
+        // On page load, ensure the main content is visible and attach event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            mainContent.classList.remove('hidden'); // Ensure main content is visible on load
+            floatingButtonsContainer.classList.remove('hidden'); // Ensure floating buttons are visible on load
+            renderContent(currentPhase); // Render initial content
+            attachMainContentEventListeners(); // Attach event listeners after content is visible
         });
-
-
-        // Calculator Button Event Listeners
-        calculateCleaningEstimateBtn.addEventListener('click', showCleaningCalculations);
-        calculateEtfBtn.addEventListener('click', calculateEtfFee);
-        calculateOtcBtn.addEventListener('click', calculateOtcPrices);
-        calculateNegotiationBtn.addEventListener('click', calculateNegotiatedPrice);
-
-        // Ensure calculations update on input changes for ETF
-        etfCohortSelect.addEventListener('change', calculateEtfFee);
-        etfHoursInput.addEventListener('input', calculateEtfFee);
-
-        // Ensure calculations update on input changes for Cleaning
-        bedroomsInput.addEventListener('input', showCleaningCalculations);
-        bathroomsInput.addEventListener('input', showCleaningCalculations);
-        customHoursInput.addEventListener('input', showCleaningCalculations);
-        premiumAmountInput.addEventListener('input', showCleaningCalculations);
-        frequencySelect.addEventListener('change', showCleaningCalculations);
-        membershipFeeRadios.forEach(radio => {
-            radio.addEventListener('change', showCleaningCalculations);
-        });
-
-        // Ensure calculations update on input changes for OTC
-        hoursOtcInput.addEventListener('input', calculateOtcPrices);
-
-        // Ensure calculations update on input changes for Negotiation
-        planSelect.addEventListener('change', updateDiscountOptions); // Changes discount options
-        discountSelect.addEventListener('change', calculateNegotiatedPrice); // Selects a new discount
-        termRadios.forEach(radio => {
-            radio.addEventListener('change', calculateNegotiatedPrice); // Changes term
-        });
-
     </script>
 </body>
 </html>
