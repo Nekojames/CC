@@ -268,6 +268,10 @@
         }
 
         /* Rose */
+        .nav-button[data-phase="user-manual"] { /* New style for user manual button */
+            background-color: #10b981; /* Green */
+            color: white;
+        }
 
         /* Override active color for specific buttons to maintain contrast */
         .nav-button[data-phase="elevator-pitch"].active,
@@ -414,7 +418,8 @@
         }
 
         .calculator-section input[type="number"],
-        .calculator-section select {
+        .calculator-section select,
+        .calculator-section textarea { /* Added textarea for notes */
             width: 100%;
             padding: 0.75rem;
             border-radius: 0.5rem;
@@ -553,6 +558,14 @@
             background-color: rgba(5, 150, 105, 0.9); /* Darker green with 90% opacity on hover */
         }
 
+        .floating-button.notes { /* New style for notes button */
+            background-color: rgba(255, 193, 7, 0.7); /* Amber color with 70% opacity */
+        }
+
+        .floating-button.notes:hover {
+            background-color: rgba(255, 160, 0, 0.9); /* Darker amber on hover with 90% opacity */
+        }
+
         /* Responsive for floating buttons */
         @media (max-width: 768px) {
             .floating-button-container {
@@ -597,6 +610,7 @@
             <button class="nav-button" data-phase="common-objections">Common Objections</button>
             <button class="nav-button" data-phase="discovery-questions">Discovery Questions</button>
             <button class="nav-button" data-phase="faqs">FAQs</button>
+            <button class="nav-button" data-phase="user-manual">User Manual</button> <!-- New User Manual Button -->
         </div>
 
         <div class="content-area" id="content-area">
@@ -645,6 +659,13 @@
                 <path d="m5 12 2 2 4-4" />
                 <path d="M7 19H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
                 <path d="M18 19h-1a2 2 0 0 0-2 2v1" />
+            </svg>
+        </button>
+        <button class="floating-button notes" id="open-notes-widget">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-edit">
+                <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                <path d="M12.22 10.72a.75.75 0 0 0-.05 1.06L14.5 14.5l1.75-1.75 2.25-2.25a.75.75 0 0 0-1.06-.05L14.5 12.5l-1.75-1.75-2.25-2.25a.75.75 0 0 0-1.06-.05Z"/>
             </svg>
         </button>
     </div>
@@ -782,6 +803,18 @@
             <div id="negotiationResult" class="calculator-results">
                 <div class="result-title">Negotiation Result:</div>
                 <p>Negotiated Total: $0.00</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes Widget Modal -->
+    <div id="notes-widget-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" id="close-notes-widget">&times;</button>
+            <h2 class="text-2xl font-bold mb-4">Notes</h2>
+
+            <div class="calculator-section">
+                <textarea id="notes-textarea" rows="10" placeholder="Jot down your notes here..."></textarea>
             </div>
         </div>
     </div>
@@ -1720,7 +1753,7 @@
                 title: "FAQs – How can I get the same cleaner for all of my upcoming cleaning appointments?",
                 content: [
                     "I get you! It just makes things a whole lot easier if it’s the same person every time. And you would be happy to know that you have the option to book the same Cleaning Professional for all your appointments simply by logging in to your dashboard.",
-                    "However, please keep in mind that this is still subject to the cleaner’s availability, as they may have other commitments. We recommend booking in advance to increase the chances of securing your preferred cleaner. If you have any questions or need assistance with the booking process, feel free to reach out!"
+                    "However, please keep in mind that this is still subject to the cleaner’s availability, as they may have other commitments. We recommend booking in advance to increase the chances of securing your preferred cleaner. If you have any questions or need assistance with the booking process, feel to reach out!"
                 ],
                 buttons: [
                     { text: "Back to FAQs", action: "show-faqs" }
@@ -1817,6 +1850,55 @@
                 title: "System Notes (Placeholder)",
                 content: ["Content for system notes will go here."],
                 buttons: [{ text: "Back to Verbatim Options", action: "show-verbatim" }]
+            },
+            "user-manual": {
+                title: "User Manual: How to Use This Guide",
+                content: [
+                    `
+                    <p>Welcome to your comprehensive Homeaglow Sales Script Guide! This tool is designed to help you navigate through sales calls efficiently, access relevant scripts, and quickly calculate pricing and fees.</p>
+                    <h3 class="text-xl font-semibold mb-2 mt-4">1. Navigating the Guide</h3>
+                    <ul>
+                        <li><strong>Top Navigation Bar:</strong> Use the buttons at the top (e.g., "Opening Spiel", "Discovery", "Sales Pitch", "FAQs") to jump directly to different phases of the sales call or informational sections. The active phase will be highlighted.</li>
+                        <li><strong>Hamburger Menu:</strong> On smaller screens, the navigation buttons might collapse into a hamburger menu icon (three horizontal lines). Click it to expand or collapse the navigation options.</li>
+                        <li><strong>Bottom Action Buttons:</strong> At the bottom of each content section, you'll find "action buttons" (e.g., "Proceed to Level 2", "Book Appointment"). These buttons guide you through the logical flow of a sales call.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-2 mt-4">2. Understanding Content Sections</h3>
+                    <ul>
+                        <li><strong>Content Cards:</strong> The main area displays "content cards" with scripts, explanations, tables, or lists relevant to the current phase.</li>
+                        <li><strong>Placeholders:</strong> Some scripts contain placeholders like <code>[[RECOMMENDED_HOURS]]</code> or <code>[[ETF_CALCULATED_VALUE]]</code>. These will be automatically populated with values from the calculators once you use them.</li>
+                    </ul>
+
+                    <h3 class="text-xl font-semibold mb-2 mt-4">3. Floating Widgets (Calculators & Notes)</h3>
+                    <p>On the bottom right of your screen, you'll see a stack of floating buttons. These open specialized widgets to assist you during your call:</p>
+                    <ul>
+                        <li>
+                            <strong><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle mr-1 lucide lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h8"/><path d="M8 18h8"/></svg> Cleaning Calculator:</strong>
+                            <p class="ml-6">Use this to estimate cleaning hours and costs for regular cleanings. Input bedrooms, bathrooms, custom hours, and premium hours. Select frequency and membership fee. Click "Calculate Estimate" to see recommended hours, initial cleaning costs, and a sales pitch snippet.</p>
+                        </li>
+                        <li>
+                            <strong><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle mr-1 lucide lucide-dollar-sign"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> ETF Calculator:</strong>
+                            <p class="ml-6">Calculate the Early Termination Fee. Select the customer's cohort and input the initial cleaning hours to get the estimated ETF. This value will automatically populate in relevant verbatim scripts.</p>
+                        </li>
+                        <li>
+                            <strong><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle mr-1 lucide lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> One-Time Cleaning (OTC) Calculator:</strong>
+                            <p class="ml-6">Determine pricing for one-time cleaning services. Enter the desired hours, and it will display standard, discounted (for 3+ hours), and trial cleaning rates. These values also populate relevant sales pitch sections.</p>
+                        </li>
+                        <li>
+                            <strong><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle mr-1 lucide lucide-handshake"><path d="m11 17 2 2 4-4"/><path d="m5 12 2 2 4-4"/><path d="M7 19H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M18 19h-1a2 2 0 0 0-2 2v1"/></svg> Negotiation Calculator:</strong>
+                            <p class="ml-6">Assists in negotiating membership prices. Select the current plan, then choose from available negotiated monthly prices and contract terms to see the total negotiated amount.</p>
+                        </li>
+                        <li>
+                            <strong><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle mr-1 lucide lucide-clipboard-edit"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12.22 10.72a.75.75 0 0 0-.05 1.06L14.5 14.5l1.75-1.75 2.25-2.25a.75.75 0 0 0-1.06-.05L14.5 12.5l-1.75-1.75-2.25-2.25a.75.75 0 0 0-1.06-.05Z"/></svg> Notes Widget:</strong>
+                            <p class="ml-6">A simple text area to quickly jot down important information during your call. Your notes are saved automatically in your browser's local storage and will persist even if you close and reopen the guide.</p>
+                        </li>
+                    </ul>
+                    <p class="mt-8 text-center text-gray-400">Created by Neko Austria</p>
+                    `
+                ],
+                buttons: [
+                    { text: "Back to Opening Spiel", action: "show-opening-spiel" }
+                ]
             }
         };
 
@@ -1862,6 +1944,13 @@
         const negotiationCalculatorModal = document.getElementById('negotiation-calculator-modal');
         const openNegotiationCalculatorBtn = document.getElementById('open-negotiation-calculator');
         const closeNegotiationCalculatorBtn = document.getElementById('close-negotiation-calculator');
+
+        // Notes Widget Elements
+        const notesWidgetModal = document.getElementById('notes-widget-modal');
+        const openNotesWidgetBtn = document.getElementById('open-notes-widget');
+        const closeNotesWidgetBtn = document.getElementById('close-notes-widget');
+        const notesTextarea = document.getElementById('notes-textarea');
+
 
         // Calculator input elements (queried by ID, so they are fine here)
         const bedroomsInput = document.getElementById('bedrooms');
@@ -1986,6 +2075,8 @@
                         btn.classList.add('active');
                     }
                 } else if (phaseKey.startsWith('faq-') && btn.getAttribute('data-phase') === 'faqs') {
+                    btn.classList.add('active');
+                } else if (phaseKey === 'user-manual' && btn.getAttribute('data-phase') === 'user-manual') { // New: highlight user manual
                     btn.classList.add('active');
                 }
             });
@@ -2203,6 +2294,9 @@
                         break;
                     case "show-sales-pitch-placeholder":
                         renderContent("sales-pitch-placeholder");
+                        break;
+                    case "show-opening-spiel": // For "Back to Opening Spiel" in User Manual
+                        renderContent("opening-spiel");
                         break;
                     default:
                         console.warn("Unknown action:", action);
@@ -2501,6 +2595,18 @@
                 renderContent(currentPhase); // Re-render main content after closing
             });
 
+            // Notes Widget Event Listeners
+            openNotesWidgetBtn.addEventListener('click', () => {
+                notesWidgetModal.classList.add('active');
+                // Load notes from localStorage if available
+                notesTextarea.value = localStorage.getItem('salesNotes') || '';
+            });
+            closeNotesWidgetBtn.addEventListener('click', () => {
+                notesWidgetModal.classList.remove('active');
+                // Save notes to localStorage when closing
+                localStorage.setItem('salesNotes', notesTextarea.value);
+            });
+
             // Close modals when clicking outside content
             cleaningCalculatorModal.addEventListener('click', (e) => {
                 if (e.target === cleaningCalculatorModal) {
@@ -2524,6 +2630,12 @@
                 if (e.target === negotiationCalculatorModal) {
                     negotiationCalculatorModal.classList.remove('active');
                     renderContent(currentPhase);
+                }
+            });
+            notesWidgetModal.addEventListener('click', (e) => {
+                if (e.target === notesWidgetModal) {
+                    notesWidgetModal.classList.remove('active');
+                    localStorage.setItem('salesNotes', notesTextarea.value); // Save on outside click
                 }
             });
 
