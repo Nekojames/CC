@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,141 +11,263 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a1a1a; /* Black background */
-            color: white; /* White text */
+            background-color: #1a1a1a;
+            /* Black background */
+            color: white;
+            /* White text */
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
             padding: 20px;
         }
+
         .container {
-            background-color: #1a1a1a; /* Match body background */
-            border-radius: 1rem; /* Rounded corners for the main container */
+            background-color: #1a1a1a;
+            /* Match body background */
+            border-radius: 1rem;
+            /* Rounded corners for the main container */
             overflow: hidden;
             width: 100%;
-            max-width: 1200px; /* Max width for larger screens */
+            max-width: 1200px;
+            /* Max width for larger screens */
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
+
         .header {
-            background-color: #000; /* Darker header background */
+            background-color: #000;
+            /* Darker header background */
             color: white;
             padding: 1rem 2rem;
             text-align: center;
-            font-size: 1.875rem; /* text-3xl */
-            font-weight: 600; /* font-semibold */
-            border-bottom: 4px solid #fcd34d; /* Yellow accent */
-            border-radius: 1rem 1rem 0 0; /* Rounded top corners */
+            font-size: 1.875rem;
+            /* text-3xl */
+            font-weight: 600;
+            /* font-semibold */
+            border-bottom: 4px solid #fcd34d;
+            /* Yellow accent */
+            border-radius: 1rem 1rem 0 0;
+            /* Rounded top corners */
         }
+
         .nav-bar {
-            background-color: #000; /* Darker nav background */
+            background-color: #000;
+            /* Darker nav background */
             padding: 0.5rem 1rem;
             display: flex;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-            gap: 0.5rem; /* Space between nav items */
+            flex-wrap: wrap;
+            /* Allow wrapping on smaller screens */
+            gap: 0.5rem;
+            /* Space between nav items */
             justify-content: center;
-            border-bottom: 4px solid #fcd34d; /* Yellow accent */
+            border-bottom: 4px solid #fcd34d;
+            /* Yellow accent */
         }
+
         .nav-button {
             padding: 0.75rem 1.25rem;
-            border-radius: 0.5rem; /* Rounded corners for buttons */
-            font-weight: 500; /* Medium font weight */
+            border-radius: 0.5rem;
+            /* Rounded corners for buttons */
+            font-weight: 500;
+            /* Medium font weight */
             cursor: pointer;
             transition: all 0.2s ease-in-out;
-            border: 2px solid transparent; /* Default transparent border */
-            white-space: nowrap; /* Prevent text wrapping */
-            color: white; /* White text for nav buttons */
+            border: 2px solid transparent;
+            /* Default transparent border */
+            white-space: nowrap;
+            /* Prevent text wrapping */
+            color: white;
+            /* White text for nav buttons */
         }
+
         .nav-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
+
         .nav-button.active {
-            border-color: #fcd34d; /* Yellow border for active */
-            background-color: #fcd34d; /* Yellow background for active */
-            color: #1a1a1a; /* Dark text for active */
-            font-weight: 700; /* Bold text for active */
+            border-color: #fcd34d;
+            /* Yellow border for active */
+            background-color: #fcd34d;
+            /* Yellow background for active */
+            color: #1a1a1a;
+            /* Dark text for active */
+            font-weight: 700;
+            /* Bold text for active */
         }
+
         .content-area {
-            background-color: #333; /* Dark grey for content background */
+            background-color: #333;
+            /* Dark grey for content background */
             padding: 2rem;
-            min-height: 400px; /* Minimum height for content area */
+            min-height: 400px;
+            /* Minimum height for content area */
             display: flex;
             flex-direction: column;
-            gap: 1.5rem; /* Space between content sections */
-            border-radius: 0 0 1rem 1rem; /* Rounded bottom corners */
+            gap: 1.5rem;
+            /* Space between content sections */
+            border-radius: 0 0 1rem 1rem;
+            /* Rounded bottom corners */
         }
+
         .content-card {
-            background-color: #444; /* Slightly lighter grey for content cards */
-            color: white; /* White text for content cards */
+            background-color: #444;
+            /* Slightly lighter grey for content cards */
+            color: white;
+            /* White text for content cards */
             padding: 1.5rem;
-            border-radius: 0.75rem; /* Rounded corners for content cards */
+            border-radius: 0.75rem;
+            /* Rounded corners for content cards */
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            font-size: 1.125rem; /* text-lg */
+            font-size: 1.125rem;
+            /* text-lg */
             line-height: 1.6;
-            margin-bottom: 1rem; /* Space between cards */
+            margin-bottom: 1rem;
+            /* Space between cards */
         }
+
         .content-card ul {
             list-style: disc;
             margin-left: 1.5rem;
         }
+
         .content-card ol {
             list-style: decimal;
             margin-left: 1.5rem;
         }
+
         .content-card table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 1rem;
         }
-        .content-card th, .content-card td {
-            border: 1px solid #555; /* Darker border for tables */
+
+        .content-card th,
+        .content-card td {
+            border: 1px solid #555;
+            /* Darker border for tables */
             padding: 8px;
             text-align: left;
         }
+
         .content-card th {
-            background-color: #555; /* Darker background for table headers */
+            background-color: #555;
+            /* Darker background for table headers */
         }
+
         .bottom-buttons {
-            background-color: #333; /* Dark grey background */
+            background-color: #333;
+            /* Dark grey background */
             padding: 1.5rem 2rem;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 1.5rem; /* Space between bottom buttons */
-            border-radius: 0 0 1rem 1rem; /* Rounded bottom corners */
+            gap: 1.5rem;
+            /* Space between bottom buttons */
+            border-radius: 0 0 1rem 1rem;
+            /* Rounded bottom corners */
         }
+
         .action-button {
-            background-color: #555; /* Grey for action buttons */
-            color: white; /* White text */
+            background-color: #555;
+            /* Grey for action buttons */
+            color: white;
+            /* White text */
             padding: 1rem 2rem;
-            border-radius: 9999px; /* Fully rounded (pill shape) */
-            font-weight: 600; /* Semi-bold */
+            border-radius: 9999px;
+            /* Fully rounded (pill shape) */
+            font-weight: 600;
+            /* Semi-bold */
             cursor: pointer;
             transition: all 0.2s ease-in-out;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border: 2px solid #777; /* Lighter grey border */
+            border: 2px solid #777;
+            /* Lighter grey border */
         }
+
         .action-button:hover {
-            background-color: #fcd34d; /* Yellow on hover */
+            background-color: #fcd34d;
+            /* Yellow on hover */
             border-color: #fcd34d;
-            color: #1a1a1a; /* Dark text on hover */
+            color: #1a1a1a;
+            /* Dark text on hover */
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
+
         /* Specific nav button colors - adjusted for dark theme */
-        .nav-button[data-phase="opening-spiel"] { background-color: #ef4444; color: white; } /* Red */
-        .nav-button[data-phase="discovery"] { background-color: #f97316; color: white; } /* Orange */
-        .nav-button[data-phase="elevator-pitch"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
-        .nav-button[data-phase="data-gathering"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
-        .nav-button[data-phase="sales-pitch"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
-        .nav-button[data-phase="booking"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
-        .nav-button[data-phase="booking-proper"] { background-color: #fcd34d; color: #1a1a1a; } /* Yellow */
-        .nav-button[data-phase="verbatim"] { background-color: #f97316; color: white; } /* Orange */
-        .nav-button[data-phase="value-statements"] { background-color: #ec4899; color: white; } /* Pink */
-        .nav-button[data-phase="common-objections"] { background-color: #a855f7; color: white; } /* Purple */
-        .nav-button[data-phase="discovery-questions"] { background-color: #ec4899; color: white; } /* Pink */
-        .nav-button[data-phase="faqs"] { background-color: #f43f5e; color: white; } /* Rose */
+        .nav-button[data-phase="opening-spiel"] {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        /* Red */
+        .nav-button[data-phase="discovery"] {
+            background-color: #f97316;
+            color: white;
+        }
+
+        /* Orange */
+        .nav-button[data-phase="elevator-pitch"] {
+            background-color: #fcd34d;
+            color: #1a1a1a;
+        }
+
+        /* Yellow */
+        .nav-button[data-phase="data-gathering"] {
+            background-color: #fcd34d;
+            color: #1a1a1a;
+        }
+
+        /* Yellow */
+        .nav-button[data-phase="sales-pitch"] {
+            background-color: #fcd34d;
+            color: #1a1a1a;
+        }
+
+        /* Yellow */
+        .nav-button[data-phase="booking"] {
+            background-color: #fcd34d;
+            color: #1a1a1a;
+        }
+
+        /* Yellow */
+        .nav-button[data-phase="booking-proper"] {
+            background-color: #fcd34d;
+            color: #1a1a1a;
+        }
+
+        /* Yellow */
+        .nav-button[data-phase="verbatim"] {
+            background-color: #f97316;
+            color: white;
+        }
+
+        /* Orange */
+        .nav-button[data-phase="value-statements"] {
+            background-color: #ec4899;
+            color: white;
+        }
+
+        /* Pink */
+        .nav-button[data-phase="common-objections"] {
+            background-color: #a855f7;
+            color: white;
+        }
+
+        /* Purple */
+        .nav-button[data-phase="discovery-questions"] {
+            background-color: #ec4899;
+            color: white;
+        }
+
+        /* Pink */
+        .nav-button[data-phase="faqs"] {
+            background-color: #f43f5e;
+            color: white;
+        }
+
+        /* Rose */
 
         /* Override active color for specific buttons to maintain contrast */
         .nav-button[data-phase="elevator-pitch"].active,
@@ -152,9 +275,12 @@
         .nav-button[data-phase="sales-pitch"].active,
         .nav-button[data-phase="booking"].active,
         .nav-button[data-phase="booking-proper"].active {
-            background-color: #fcd34d; /* Keep yellow */
-            color: #1a1a1a; /* Keep dark text */
-            border-color: #1a1a1a; /* Darker border for emphasis */
+            background-color: #fcd34d;
+            /* Keep yellow */
+            color: #1a1a1a;
+            /* Keep dark text */
+            border-color: #1a1a1a;
+            /* Darker border for emphasis */
         }
 
         /* Hamburger menu icon */
@@ -168,6 +294,7 @@
             padding: 5px;
             box-sizing: content-box;
         }
+
         .hamburger-icon div {
             width: 100%;
             height: 3px;
@@ -181,24 +308,30 @@
                 flex-direction: column;
                 align-items: center;
             }
+
             .nav-button {
                 width: 90%;
             }
+
             .header {
                 font-size: 1.5rem;
                 padding: 0.8rem 1rem;
             }
+
             .content-area {
                 padding: 1rem;
             }
+
             .content-card {
                 padding: 1rem;
                 font-size: 1rem;
             }
+
             .bottom-buttons {
                 flex-direction: column;
                 padding: 1rem;
             }
+
             .action-button {
                 width: 90%;
             }
@@ -220,22 +353,29 @@
             visibility: hidden;
             transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
         }
+
         .modal.active {
             opacity: 1;
             visibility: visible;
         }
+
         .modal-content {
-            background-color: #222; /* Darker background for modal content */
+            background-color: #222;
+            /* Darker background for modal content */
             padding: 2rem;
             border-radius: 1rem;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
             max-width: 90%;
             width: 600px;
             position: relative;
-            color: white; /* White text for modal content */
-            max-height: 90vh; /* Limit height for scrollability */
-            overflow-y: auto; /* Enable scrolling for long content */
+            color: white;
+            /* White text for modal content */
+            max-height: 90vh;
+            /* Limit height for scrollability */
+            overflow-y: auto;
+            /* Enable scrolling for long content */
         }
+
         .modal-close-button {
             position: absolute;
             top: 1rem;
@@ -243,12 +383,14 @@
             background: none;
             border: none;
             font-size: 1.5rem;
-            color: #fcd34d; /* Yellow close button */
+            color: #fcd34d;
+            /* Yellow close button */
             cursor: pointer;
             padding: 0.5rem;
             border-radius: 0.5rem;
             transition: background-color 0.2s ease-in-out;
         }
+
         .modal-close-button:hover {
             background-color: #444;
         }
@@ -264,11 +406,13 @@
             border-radius: 0.75rem;
             background-color: #333;
         }
+
         .calculator-section label {
             font-weight: 500;
             margin-bottom: 0.25rem;
             display: block;
         }
+
         .calculator-section input[type="number"],
         .calculator-section select {
             width: 100%;
@@ -279,43 +423,58 @@
             color: white;
             font-size: 1rem;
         }
+
         .calculator-section input[type="radio"] {
             margin-right: 0.5rem;
         }
+
         .calculator-section .radio-group label {
             display: inline-flex;
             align-items: center;
             margin-right: 1rem;
         }
+
         .calculator-section button {
-            background-color: #fcd34d; /* Yellow button */
-            color: #1a1a1a; /* Dark text */
+            background-color: #fcd34d;
+            /* Yellow button */
+            color: #1a1a1a;
+            /* Dark text */
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
         }
+
         .calculator-section button:hover {
-            background-color: #eab308; /* Darker yellow on hover */
+            background-color: #eab308;
+            /* Darker yellow on hover */
             transform: translateY(-1px);
         }
+
         .calculator-results {
             margin-top: 1.5rem;
             padding: 1rem;
-            border: 1px dashed #fcd34d; /* Yellow dashed border */
+            border: 1px dashed #fcd34d;
+            /* Yellow dashed border */
             border-radius: 0.75rem;
-            background-color: #1a1a1a; /* Black background for results */
+            background-color: #1a1a1a;
+            /* Black background for results */
         }
+
         .calculator-results .result-title {
             font-weight: bold;
             font-size: 1.25rem;
             margin-bottom: 0.75rem;
-            color: #fcd34d; /* Yellow title */
+            color: #fcd34d;
+            /* Yellow title */
         }
-        .calculator-results p, .calculator-results span {
+
+        .calculator-results p,
+        .calculator-results span {
             margin-bottom: 0.5rem;
         }
+
         .calculator-results .note {
             font-size: 0.85rem;
             color: #aaa;
@@ -329,43 +488,69 @@
             right: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px; /* Slightly reduced gap */
             z-index: 999;
         }
+
         .floating-button {
-            background-color: #f43f5e; /* Rose color */
+            /* Original rose color: #f43f5e */
+            background-color: rgba(244, 63, 94, 0.7); /* Rose color with 70% opacity */
             color: white;
-            padding: 15px 20px;
+            /* Adjusted padding for icon-only button */
+            padding: 12px; /* Square padding for icon-only */
             border-radius: 9999px;
             font-weight: 600;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
             display: flex;
+            justify-content: center; /* Center icon horizontally */
             align-items: center;
-            gap: 8px;
+            gap: 0; /* No gap needed for icon-only */
+            font-size: 0.95rem; /* Font size is less relevant for icon-only, but kept for consistency */
+            width: 48px; /* Fixed width for square button */
+            height: 48px; /* Fixed height for square button */
         }
+
+        .floating-button svg { /* Targeting SVG icons specifically */
+            width: 24px; /* Larger icon for icon-only button */
+            height: 24px; /* Larger icon for icon-only button */
+        }
+
         .floating-button:hover {
-            background-color: #e11d48; /* Darker rose */
+            /* Darker rose on hover: #e11d48 */
+            background-color: rgba(225, 29, 72, 0.9); /* Darker rose with 90% opacity on hover */
             transform: translateY(-2px);
         }
+
         .floating-button.etf {
-            background-color: #a855f7; /* Purple for ETF */
+            /* Original purple for ETF: #a855f7 */
+            background-color: rgba(168, 85, 247, 0.7); /* Purple for ETF with 70% opacity */
         }
+
         .floating-button.etf:hover {
-            background-color: #9333ea; /* Darker purple */
+            /* Darker purple on hover: #9333ea */
+            background-color: rgba(147, 51, 234, 0.9); /* Darker purple with 90% opacity on hover */
         }
+
         .floating-button.otc {
-            background-color: #3b82f6; /* Blue for OTC */
+            /* Original blue for OTC: #3b82f6 */
+            background-color: rgba(59, 130, 246, 0.7); /* Blue for OTC with 70% opacity */
         }
+
         .floating-button.otc:hover {
-            background-color: #2563eb; /* Darker blue */
+            /* Darker blue on hover: #2563eb */
+            background-color: rgba(37, 99, 235, 0.9); /* Darker blue with 90% opacity on hover */
         }
+
         .floating-button.negotiation {
-            background-color: #10b981; /* Green for Negotiation */
+            /* Original green for Negotiation: #10b981 */
+            background-color: rgba(16, 185, 129, 0.7); /* Green for Negotiation with 70% opacity */
         }
+
         .floating-button.negotiation:hover {
-            background-color: #059669; /* Darker green */
+            /* Darker green on hover: #059669 */
+            background-color: rgba(5, 150, 105, 0.9); /* Darker green with 90% opacity on hover */
         }
 
         /* Responsive for floating buttons */
@@ -373,15 +558,23 @@
             .floating-button-container {
                 bottom: 10px;
                 right: 10px;
-                gap: 8px;
+                gap: 6px; /* Further reduced gap for mobile */
             }
+
             .floating-button {
-                padding: 12px 15px;
-                font-size: 0.9rem;
+                padding: 10px; /* Adjusted padding for smaller mobile icon-only buttons */
+                width: 40px; /* Smaller fixed width for mobile */
+                height: 40px; /* Smaller fixed height for mobile */
+            }
+
+            .floating-button svg { /* Smaller icons for mobile too */
+                width: 20px; /* Adjusted icon size for mobile */
+                height: 20px; /* Adjusted icon size for mobile */
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container" id="main-content">
         <div class="header" id="header-title">Phase 1: Opening Spiel</div>
@@ -418,20 +611,41 @@
     <!-- Floating Calculator Buttons -->
     <div class="floating-button-container" id="floating-buttons-container">
         <button class="floating-button" id="open-cleaning-calculator">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calculator"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M8 6h8"/><path d="M8 10h8"/><path d="M8 14h8"/><path d="M8 18h8"/></svg>
-            Cleaning Calculator
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-calculator">
+                <rect width="16" height="20" x="4" y="2" rx="2" />
+                <path d="M8 6h8" />
+                <path d="M8 10h8" />
+                <path d="M8 14h8" />
+                <path d="M8 18h8" />
+            </svg>
         </button>
         <button class="floating-button etf" id="open-etf-calculator">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            ETF Calculator
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-dollar-sign">
+                <line x1="12" x2="12" y1="2" y2="22" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
         </button>
         <button class="floating-button otc" id="open-otc-calculator">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            One-Time Cleaning
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-clock">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+            </svg>
         </button>
         <button class="floating-button negotiation" id="open-negotiation-calculator">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-handshake"><path d="m11 17 2 2 4-4"/><path d="m5 12 2 2 4-4"/><path d="M7 19H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M18 19h-1a2 2 0 0 0-2 2v1"/></svg>
-            Negotiation
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-handshake">
+                <path d="m11 17 2 2 4-4" />
+                <path d="m5 12 2 2 4-4" />
+                <path d="M7 19H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" />
+                <path d="M18 19h-1a2 2 0 0 0-2 2v1" />
+            </svg>
         </button>
     </div>
 
@@ -560,7 +774,7 @@
                     <label>Contract Term:</label>
                     <label><input type="radio" name="term" value="6" checked> 6 Months</label>
                     <label><input type="radio" name="term" value="5"> 5 Months</label>
-                    <label><input type="radio" name="term" value="4"> 4 Months</label
+                    <label><input type="radio" name="term" value="4"> 4 Months</label>
                 </div>
                 <button id="calculate-negotiation">Calculate Negotiation</button>
             </div>
@@ -688,17 +902,15 @@
                 ]
             },
             "sales-pitch": {
-                title: "Phase 5: Sales Pitch",
+                title: "Phase 5: DHJ Sales Pitch",
                 content: [
-                    "Please select a sales pitch option below:"
+                    "Please select a DHJ sales pitch option below:"
                 ],
                 buttons: [
                     { text: "DHJ $49MF Full Price ETF (Cohort 1)", action: "show-sales-pitch-cohort-1-pt1" },
                     { text: "DHJ $49MF $35/hr. ETF (Cohort 2)", action: "show-sales-pitch-cohort-2-pt1" },
-                    { text: "Move-Out Cleaning (Placeholder)", action: "show-sales-pitch-placeholder" },
                     { text: "DHJ $59MF $25/hr. ETF (Cohort 3)", action: "show-sales-pitch-cohort-3-pt1" },
-                    { text: "DHJ $59MF $35/hr. ETF (Cohort 4)", action: "show-sales-pitch-cohort-4-pt1" },
-                    { text: "Trial or One-Time Only Cleaning", action: "show-sales-pitch-trial-one-time-pt1" }
+                    { text: "DHJ $59MF $35/hr. ETF (Cohort 4)", action: "show-sales-pitch-cohort-4-pt1" }
                 ]
             },
             "sales-pitch-cohort-1-pt1": {
@@ -781,8 +993,7 @@
                     "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$59/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
                     "What's good about the membership is that you can cancel anytime.",
                     "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
-                    "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
-                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
+                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span> - that is $25 multiplied by the total number of hours of your initial cleaning.\" Are these terms clear for you?",
                     `<table>
                         <thead>
                             <tr>
@@ -831,8 +1042,7 @@
                     "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$59/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
                     "What's good about the membership is that you can cancel anytime.",
                     "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
-                    "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
-                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
+                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning.\" Are these terms clear for you?",
                     `<table>
                         <thead>
                             <tr>
@@ -883,8 +1093,7 @@
                     "By purchasing the voucher, you become a FC member. FC membership is <span style='font-weight: bold;'>$49/mo</span>. And by being a member, you get to book unlimited cleanings at roughly $23/hr., or about (<span style='font-weight: bold;'>$[[FC_RATE_PER_CLEANING]]</span>) per appointment for all your future cleanings.",
                     "What's good about the membership is that you can cancel anytime.",
                     "<span style='font-weight: bold; color: #00ff99;'>I doubt that you will cancel despite of the quality of service that you are getting on this price point.</span>",
-                    "<span style='color: red; font-weight: bold;'>If you cancel before the minimum term of 6 paid months, all you need to do is pay ($XXX)</span>",
-                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span>\"",
+                    "Note: If the customer asks how much: \"That would be a <span style='color: red; font-weight: bold;'>flat rate of $[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning.\" Are these terms clear for you?",
                     `<table>
                         <thead>
                             <tr>
@@ -924,8 +1133,9 @@
                     "Got it! We'd be happy to take care of that for you!",
                     "<p>For a non-recurring cleaning, you've got a couple of great options:</p>",
                     "<ol>",
-                    `<li>Standard One-Time Cleaning - this would be at our regular price of (<span style='font-weight: bold;'>$[[OTC_STANDARD_PRICE]] for [[OTC_HOURS]] hours</span>). If the cleaning goes over 3 hours, I can also apply a special discount to bring it down to (<span style='font-weight: bold;'>$[[OTC_DISCOUNTED_PRICE]]</span>).</li>`,
-                    `<li>Trial Cleaning - you can also try us out for 30 days at a discounted rate of (<span style='font-weight: bold;'>$[[OTC_TRIAL_PRICE]]</span>). If you love the service, it automatically rolls into our ForeverClean membership at (<span style='font-weight: bold;'>$49/$59</span>) per month with discounted rates on cleanings. You can cancel any time during the 30 days at no extra cost.</li>`,
+                    `<li>Standard One-Time Cleaning (30|30) - this would be at our regular price of (<span style='font-weight: bold;'>$63.00 per hour, for a total of $ [[OTC_STANDARD_PRICE]] for [[OTC_HOURS]] hours</span>).</li>`,
+                    `<li>Special Discount (25|25) - If your cleaning is 3 hours or more, I can apply a special discounted rate of (<span style='font-weight: bold;'>$57.75 per hour, for a total of $ [[OTC_DISCOUNTED_PRICE]]</span>).</li>`,
+                    `<li>Trial Cleaning (20|20) - you can also try us out for 30 days at a discounted rate of (<span style='font-weight: bold;'>$52.50 per hour, for a total of $ [[OTC_TRIAL_PRICE]]</span>). If you love the service, it automatically rolls into our ForeverClean membership at (<span style='font-weight: bold;'>$49/$59</span>) per month with discounted rates on cleanings. You can cancel any time during the 30 days at no extra cost.</li>`,
                     "</ol>",
                     "Would either of these work for what you need today?"
                 ],
@@ -1027,7 +1237,7 @@
                     "S2: There's no alternate cleaning date. Is that correct?",
                     "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
                     "After your first appointment, your ForeverClean membership will start, and the first membership fee of $49 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
-                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in your first cleaning on (<span style='color: red; font-weight: bold;'>date</span>) being charged at full price less the voucher purchase amount, that's around <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span>. Are these terms clear for you?",
+                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>6</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in your first cleaning on (<span style='color: red; font-weight: bold;'>date</span>) being charged at full price less the voucher purchase amount, that's around <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span>. Are these terms clear for you?",
                     `<table>
                         <thead>
                             <tr>
@@ -1079,7 +1289,7 @@
                     "S2: There's no alternate cleaning date. Is that correct?",
                     "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
                     "After your first appointment, your ForeverClean membership will start, and the first membership fee of $59 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
-                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $25 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
+                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>6</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>a flat rate of $[[ETF_CALCULATED_VALUE]]</span> - that is $25 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
                     `<table>
                         <thead>
                             <tr>
@@ -1099,9 +1309,7 @@
                             <tr>
                                 <td>4 Hours</td>
                                 <td>$100.00</td>
-                            </tr>
-                            <tr>
-                                <td>6 Hours</td>
+                            <td>6 Hours</td>
                                 <td>$150.00</td>
                             </tr>
                         </tbody>
@@ -1121,8 +1329,8 @@
                     "S2: There's no alternate cleaning date. Is that correct?",
                     "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
                     "After your first appointment, your ForeverClean membership will start, and the first membership fee of $59 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
-    
-                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
+
+                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>6</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>a flat rate of $[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
                     `<table>
                         <thead>
                             <tr>
@@ -1164,7 +1372,7 @@
                     "S2: There's no alternate cleaning date. Is that correct?",
                     "We'll notify you when a cleaner claims your request, and their details will be on your dashboard. This cleaning is covered by your (<span style='font-weight: bold;'>hour</span>) voucher, and your priority areas are (_____). Note: If extras are included – This appointment will also include the cleaning of your (<span style='font-weight: bold;'>mention extras</span>). Is that correct?",
                     "After your first appointment, your ForeverClean membership will start, and the first membership fee of $49 will be charged, and then monthly after that. With ForeverClean, your future cleanings will be heavily discounted, with an estimated cost of $23/hour inclusive of a 15% transaction fee. Is this clear?",
-                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>X-paid</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>$[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
+                    "ForeverClean memberships can be canceled at any time, but cancellations made before (<span style='color: red; font-weight: bold;'>6</span>) months (<span style='color: red; font-weight: bold;'>Minimum Commitment Term</span>) will result in an early cancellation fee of <span style='font-weight: bold;'>a flat rate of $[[ETF_CALCULATED_VALUE]]</span> - that is $35 multiplied by the total number of hours of your initial cleaning. Are these terms clear for you?",
                     `<table>
                         <thead>
                             <tr>
@@ -1279,7 +1487,7 @@
                     "S1: Most of our customers truly value the peace of mind they get knowing every cleaner on the Homeaglow platform is thoroughly vetted, with strict criminal and background checks. But we go beyond safety, we focus on quality too.",
                     "Just to share with you, 91.4% of jobs are completed by cleaners with a 4.5-star rating or higher.",
                     "And because we collect ratings and reviews after every appointment, we’re able to continually curate the best professionals. Unlike the gray market, where underperforming cleaners can bounce between clients, Homeaglow ensures only top-rated, trustworthy cleaners stay on our platform -so you always get someone who knows how to deliver a great clean.",
-                    "S2: Hey you know most of our customers appreciate that all of the cleaning professionals who get on board the platform are thoroughly vetted and have gone through strict criminal and background checking. This gives you the peace of mind, knowing that the person cleaning your home is someone who is trustworthy, and has the experience to do job excellently."
+                    "S2: Hey you know most of our customers appreciate that all of the cleaning professionals who get on board the platform are thoroughly vetted and have gone through strict criminal background checking. This gives you the peace of mind, knowing that the person cleaning your home is someone who is trustworthy, and has the experience to do job excellently."
                 ],
                 buttons: [
                     { text: "Back to Value Statements", action: "show-value-statements" }
@@ -1584,9 +1792,21 @@
                 ]
             },
             "sales-pitch-explicit": {
-                title: "Sales Pitch – Explicit Trial or One Time",
-                content: ["Content for Sales Pitch – Explicit Trial or One Time will go here. This was a button from the Opening Spiel, but no further content was provided for it."],
-                buttons: []
+                title: "Phase 5: Sales Pitch – Explicit Trial or One Time",
+                content: [
+                    "Step 1: Acknowledge and Present Cleaning Options",
+                    "Got it! We'd be happy to take care of that for you!",
+                    "<p>For a non-recurring cleaning, you've got a couple of great options:</p>",
+                    "<ol>",
+                    `<li>Standard One-Time Cleaning (30|30) - this would be at our regular price of (<span style='font-weight: bold;'>$63.00 per hour, for a total of $ [[OTC_STANDARD_PRICE]] for [[OTC_HOURS]] hours</span>).</li>`,
+                    `<li>Special Discount (25|25) - If your cleaning is 3 hours or more, I can apply a special discounted rate of (<span style='font-weight: bold;'>$57.75 per hour, for a total of $ [[OTC_DISCOUNTED_PRICE]]</span>).</li>`,
+                    `<li>Trial Cleaning (20|20) - you can also try us out for 30 days at a discounted rate of (<span style='font-weight: bold;'>$52.50 per hour, for a total of $ [[OTC_TRIAL_PRICE]]</span>). If you love the service, it automatically rolls into our ForeverClean membership at (<span style='font-weight: bold;'>$49/$59</span>) per month with discounted rates on cleanings. You can cancel any time during the 30 days at no extra cost.</li>`,
+                    "</ol>",
+                    "Would either of these work for what you need today?"
+                ],
+                buttons: [
+                    { text: "Trial/ One-Time Clean pt. 2", action: "show-sales-pitch-trial-one-time-pt2" }
+                ]
             },
             "sales-pitch-placeholder": {
                 title: "Sales Pitch Option (Placeholder)",
@@ -1727,9 +1947,9 @@
                 if (lastOtcStandardPrice > 0) {
                     processedText = processedText.replace(/\[\[OTC_STANDARD_PRICE\]\]/g, lastOtcStandardPrice.toFixed(2));
                 }
-                if (lastOtcDiscountedPrice > 0) {
-                    processedText = processedText.replace(/\[\[OTC_DISCOUNTED_PRICE\]\]/g, lastOtcDiscountedPrice.toFixed(2));
-                }
+                // Always replace, it will be 0 if not applicable
+                processedText = processedText.replace(/\[\[OTC_DISCOUNTED_PRICE\]\]/g, lastOtcDiscountedPrice.toFixed(2));
+
                 if (lastOtcTrialPrice > 0) {
                     processedText = processedText.replace(/\[\[OTC_TRIAL_PRICE\]\]/g, lastOtcTrialPrice.toFixed(2));
                 }
@@ -2092,7 +2312,7 @@
             }
         }
 
-        function generateSalesSpiel(hours) {
+        function generateCombinedSalesPitch(hours, voucherAmount, initialCleaningCost) {
             const nationalRate = 75;
             const fcRate = 23;
             const savingsPerHour = nationalRate - fcRate;
@@ -2103,7 +2323,11 @@
                 <p>Thank you for sharing all those with me. For a home that size, we typically recommend an initial cleaning for <strong>${hours} hour(s)</strong>.</p>
                 <p>Now normally, cleaners charge around <strong>$${nationalRate}/hour</strong>, which would come out to <strong>$${(nationalRate * hours).toFixed(2)}</strong>.</p>
                 <p>But with your <strong>Forever Clean membership</strong>, you only pay around <strong>$${fcRate}/hour</strong> — that’s just <strong>$${(fcRate * hours).toFixed(2)}</strong> total!</p>
-                <p>That’s a savings of <strong>$${totalSavings.toFixed(2)}</strong> right off the bat. Sounds pretty fair, right?</p>`;
+                <p>That’s a savings of <strong>$${totalSavings.toFixed(2)}</strong> right off the bat. Sounds pretty fair, right?</p>
+                <br>
+                <p>You're my first customer for today so I want to make sure we get something special for you. How do you like the sound of having your very first (<strong>${hours}-hour</strong>) cleaning for only (<strong>$${voucherAmount.toFixed(2)}</strong>)?</p>
+                <p>Excellent! I can get you one of our promotional vouchers for (<strong>$${voucherAmount.toFixed(2)}</strong>) and that would cover the entire (<strong>${hours}-hours</strong>) on your very first cleaning.</p>
+            `;
         }
 
         function showCleaningCalculations() {
@@ -2117,7 +2341,7 @@
             customResultDiv.innerHTML = '';
             spielResultDiv.innerHTML = '';
 
-            // Display recommended estimate
+            // Display recommended estimate and update global variables
             calculateAndDisplayCleaning(recommendedHours, 'recommendationResult', false);
 
             // Display customer's preferred estimate if provided
@@ -2127,8 +2351,8 @@
                 customResultDiv.innerHTML = '<div class="result-title">Customer\'s Preference</div><em>No preferred hours entered.</em>';
             }
 
-            // Generate and display sales spiel based on recommended hours
-            spielResultDiv.innerHTML = generateSalesSpiel(recommendedHours);
+            // Generate and display combined sales pitch based on recommended hours and calculated voucher info
+            spielResultDiv.innerHTML = generateCombinedSalesPitch(lastRecommendedHours, lastVoucherAmount, lastFirstCleaningCost);
         }
 
         // ETF Calculator Function
@@ -2157,11 +2381,11 @@
 
         // One-Time Cleaning Calculator Functions
         function calculateOtcPrices() {
-            const hours = parseFloat(hoursOtcInput.value);
+            let hours = parseFloat(hoursOtcInput.value);
             resultsOtcDiv.innerHTML = '';
 
             if (isNaN(hours) || hours <= 0) {
-                resultsOtcDiv.innerHTML += `<p>Please enter valid hours.</p>`;
+                resultsOtcDiv.innerHTML += `<p>Please enter valid hours (minimum 2 hours for calculation).</p>`;
                 lastOtcHours = 0;
                 lastOtcStandardPrice = 0;
                 lastOtcDiscountedPrice = 0;
@@ -2169,19 +2393,30 @@
                 return;
             }
 
+            // Apply minimum 2 hours for all calculations
+            hours = Math.max(hours, 2);
+
             // Store values globally
             lastOtcHours = hours;
-            lastOtcStandardPrice = (hours * 57.75); // Regular 25|25
-            lastOtcDiscountedPrice = (hours * 63); // Regular 30|30 (used for $Y, assuming this is the "discount" for >3 hours)
 
-            // Trial Cleaning calculation: $52.5 per hour, minimum of 2 hours for calculation
-            let calculatedTrialHours = Math.max(hours, 2); // Ensure minimum of 2 hours for calculation
-            lastOtcTrialPrice = calculatedTrialHours * 52.5;
+            // 20|20 trial cleaning is $52.5 per hour
+            lastOtcTrialPrice = hours * 52.5;
 
+            // regular cleaning has 30|30 $63 per hour
+            lastOtcStandardPrice = hours * 63;
 
-            resultsOtcDiv.innerHTML += `<div class="result"><strong>Regular 25|25:</strong> $${lastOtcStandardPrice.toFixed(2)}</div>`;
-            resultsOtcDiv.innerHTML += `<div class="result"><strong>Regular 30|30:</strong> $${lastOtcDiscountedPrice.toFixed(2)}</div>`;
-            resultsOtcDiv.innerHTML += `<div class="result"><strong>Trial Cleaning:</strong> $${lastOtcTrialPrice.toFixed(2)}</div>`;
+            // 25|25 only shows if its 3 hours or more 57.75 per hour
+            if (hours >= 3) {
+                lastOtcDiscountedPrice = hours * 57.75;
+            } else {
+                lastOtcDiscountedPrice = 0; // No 25|25 discount if less than 3 hours
+            }
+
+            resultsOtcDiv.innerHTML += `<div class="result"><strong>Standard One-Time Cleaning (30|30):</strong> $${lastOtcStandardPrice.toFixed(2)}</div>`;
+            if (lastOtcDiscountedPrice > 0) { // Only display if a discounted price is applicable
+                resultsOtcDiv.innerHTML += `<div class="result"><strong>Special Discount (25|25, 3+ hours):</strong> $${lastOtcDiscountedPrice.toFixed(2)}</div>`;
+            }
+            resultsOtcDiv.innerHTML += `<div class="result"><strong>Trial Cleaning (20|20):</strong> $${lastOtcTrialPrice.toFixed(2)}</div>`;
         }
 
         // Negotiation Calculator Functions
@@ -2333,4 +2568,5 @@
         });
     </script>
 </body>
+
 </html>
